@@ -1,0 +1,399 @@
+/* ==========================
+  Variables and base styles
+========================== */
+
+:root {
+  --primary-color: #009edb;
+  --secondary-color: #ff3380;
+  --tertiary-color: #aa00ff;
+  --accent-color: #00d2ff;
+  --hover-color: #2b6dc6;
+  --dark-color: #0a0a24;
+  --neon-glow: rgba(3, 123, 234, 0.7);
+  --font-main: 'Arial', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  background: linear-gradient(135deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 50%,
+      var(--tertiary-color) 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ==========================
+  Button styles
+========================== */
+
+button {
+  background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  /* border: none; */
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--neon-glow);
+  transition: background-image .3s, box-shadow .3s;
+}
+
+button:hover {
+  background-image: linear-gradient(45deg,
+      var(--primary-color),
+      var(--accent-color));
+  box-shadow: 0 0 20px var(--accent-color);
+}
+
+/* ==========================
+  Header logo and user info
+========================== */
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-height: 90px;
+  background: linear-gradient(135deg,
+      rgba(10, 10, 36, 0.95) 0%,
+      rgba(27, 35, 95, 0.95) 50%,
+      rgba(43, 109, 198, 0.95));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8),
+              0 0 15px var(--neon-glow);
+  border-bottom: 2px solid rgba(0, 210, 255, 0.7);
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+header:hover {
+  background: linear-gradient(135deg,
+      rgba(10, 10, 36, 1) 0%,
+      rgba(27, 35, 95, 1) 50%,
+      rgba(43, 109, 198, 1));
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.logo-bar {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--accent-color);
+  text-shadow: 0 0 20px var(--neon-glow);
+  width: 2.2em;
+  height: 2.2em;
+  background-color: transparent;
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 10px var(--neon-glow);
+  border-radius: 50%;
+  margin-left: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-name {
+  margin-right: 15px;
+}
+
+.logout-btn {
+  font-size: 1em;
+  border-radius: 6px;
+  padding: 6px 12px;
+}
+
+/* ==========================
+  Main Container
+========================== */
+
+main {
+  width: 90%;
+  max-width: 600px;
+  margin: 100px auto 20px;
+  padding: 30px;
+  background: var(--dark-color);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform .3s, box-shadow .3s;
+  text-shadow: 0 0 10px var(--neon-glow);
+}
+
+main:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+}
+
+.logo {
+  width: 50%;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0 auto;
+  font-size: 3em;
+  color: var(--accent-color);
+  text-shadow: 0 0 20px var(--neon-glow);
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  line-height: 1.4;
+}
+
+/* ==========================
+  Form controls
+========================== */
+
+input[type="search"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #1b235f;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  font-size: 1em;
+  transition: border-color .3s, box-shadow .3s;
+}
+
+input[type="search"]:focus,
+select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+  outline: none;
+}
+
+input[type="search"]::placeholder {
+  color: #7981c1;
+}
+
+#searchBtn {
+  display: inline-block;
+  width: auto;
+  padding: 14px 70px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-size: 1.3em;
+}
+
+/* ==========================
+  Loader & results
+========================== */
+
+#loader {
+  display: none;
+  margin: 20px auto;
+  width: 60px;
+  height: 60px;
+  border: 8px solid rgba(255, 255, 255, 0.1);
+  border-top: 8px solid var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#resultsContainer {
+  display: none;
+  width: 90%;
+  max-width: 1000px;
+  margin: 10px auto;
+  padding: 20px;
+  background: var(--dark-color);
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.resultElement {
+  padding: 15px 20px;
+  margin-top: 15px;
+  background: #1b235f;
+  border-radius: 8px;
+  transition: background-color .3s, box-shadow .3s;
+}
+
+.resultElement:hover {
+  background: var(--hover-color);
+}
+
+.resultElement a {
+  color: var(--accent-color);
+  font-size: 1.2em;
+  text-decoration: none;
+}
+
+/* ==========================
+  Footer
+========================== */
+
+footer {
+  margin: 10px 0;
+  text-align: center;
+  font-size: .9em;
+  color: white;
+}
+
+/* ==========================
+  Breakpoint up to 1024px
+========================== */
+
+/* Enhanced responsiveness for tablets: from 481px to 1024px */
+@media (min-width: 481px) and (max-width: 1024px) {
+  main {
+    width: 90%;
+    max-width: 800px;
+    margin: 100px auto 20px;
+    padding: 25px;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+
+  p {
+    font-size: 1.3em;
+  }
+
+  input[type="search"],
+  select {
+    padding: 11px;
+    font-size: 1.2em;
+  }
+
+  #searchBtn {
+    padding: 13px 120px;
+    font-size: 1.3em;
+  }
+
+  .logo {
+    width: 30%;
+    margin-top: 15px;
+  }
+
+  #resultsContainer {
+    width: 95%;
+    max-height: 350px;
+    margin: 10px auto;
+    padding: 18px;
+  }
+
+  .resultElement {
+    padding: 14px 18px;
+    margin-top: 12px;
+    font-size: 1em;
+  }
+
+  .resultElement a {
+    font-size: 1.1em;
+  }
+}
+
+/* ==========================
+  Breakpoint up to 480px
+========================== */
+
+@media (max-width: 480px) {
+  body {
+    justify-content: flex-start;
+  }
+
+  header {
+    padding: 15px 10px;
+  }
+
+  .user-info {
+    font-size: .9em;
+  }
+
+  main {
+    width: 95%;
+    margin: 100px auto 20px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .logo {
+    width: 50%;
+    margin-top: 10px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: .9em;
+    margin-bottom: 15px;
+  }
+
+  input[type="search"],
+  select {
+    padding: 10px;
+    font-size: .9em;
+  }
+
+  #SearchBtn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1em;
+    margin-top: 15px;
+  }
+
+  #resultsContainer {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
+    max-height: 300px;
+  }
+
+  .resultElement {
+    padding: 12px 15px;
+    font-size: .9em;
+  }
+
+  .resultElement a {
+    font-size: 1em;
+  }
+
+  footer {
+    font-size: .8em;
+    margin: 15px 0;
+  }
+}

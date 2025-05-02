@@ -1,8 +1,8 @@
 // OAuth2 Configuration
-const CLIENT_ID = '985893664937-a0bhrv7ce2vopo1952bo8f9p04a30oac.apps.googleusercontent.com'; // Google Client ID
+const CLIENT_ID = '877506323603-9fhfhbia4vdm3odosobiouf4n019vhar.apps.googleusercontent.com'; // Google Client ID
 const REDIRECT_URI = 'https://luizviniciussoglia.github.io/opportunityhunter/login.html'; // URL where Google will redirect after login (back to login page)
 // URL of Web App in Apps Script that handles the OAuth2 flow (backend)
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_lw6yXYiLJvjq3e6QbleMjbksomieP--YaxRMXnOKRtVmTB0pjQ-c4Tb-2KbSwWXR/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOBcK1xDlu59ZafeVm2GGUa2rGrAhNCP8mya2v4J_NwbPVn0CUnEMeeZrlUQOo-3Qr/exec';
 // Scopes for the OAuth2 request
 const SCOPES = 'email profile';
 

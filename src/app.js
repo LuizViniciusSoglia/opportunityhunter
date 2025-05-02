@@ -28,7 +28,7 @@
     if (!isValidJWT(token)) {
       // Redirect to login page if not authenticated
       const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = `./login.html?redirect=${currentUrl}`;
+      window.location.href = `/login.html?origin=${currentUrl}`;
     }
     else {
       loadUserInfo(token); // Load user information if authenticated
@@ -64,10 +64,11 @@
       const payload = JSON.parse(atob(token.split('.')[1]));
 
       // Update interface with user information
-      userName.textContent = payload.name || payload.email;
+      userName.textContent = payload.name ? payload.name : (payload.email || 'User');
 
       // If we had the user's image URL in the token payload:
-      userAvatar.src = payload.picture || '/api/placeholder/36/36';
+      userAvatar.src = payload.picture || '/img/avatardefault.png'; // Default image if not available
+      userAvatar.alt = payload.name || 'User Avatar'; // Default alt text if not available
     }
     catch (error) {
       console.error('Error decoding token:', error);
@@ -80,7 +81,7 @@
     Cookies.remove('access_token');
     // Redirect to login page if not authenticated
     const currentUrl = encodeURIComponent(window.location.href);
-    window.location.href = `./login.html?redirect=${currentUrl}`;
+    window.location.href = `/login.html?origin=${currentUrl}`;
   }
 
   // Add event listener to logout button
@@ -136,6 +137,9 @@
   // Calls the API and displays results
   async function searchOpport() {
     try {
+      // Show loader while fetching data
+      toggleLoader(true);
+
       // Retrieve the token from cookies
       const token = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? Cookies.get('access_token') : null;
 
@@ -143,26 +147,24 @@
       if (!isValidJWT(token)) {
         // Redirect to login page if not authenticated
         const currentUrl = encodeURIComponent(window.location.href);
-        window.location.href = `./login.html?redirect=${currentUrl}`;
+        window.location.href = `/login.html?origin=${currentUrl}`;
         return;
       }
 
       // Construct API parameters
       const params = new URLSearchParams({
+        action: 'getOpportunities',
         query: queryInput.value,
         country: countrySelect.value,
-        company: companySelect.value
+        company: companySelect.value,
+        //token: token
       });
 
       let res;
       try {
         // Make the API call with the token
         res = await fetch(`${APPS_SCRIPT_API_URL}?${params}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+          method: 'GET'
         });
       } catch (networkError) {
         // Handle network errors

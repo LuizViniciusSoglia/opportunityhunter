@@ -1,8 +1,10 @@
 // OAuth2 Configuration
-const CLIENT_ID = 'YOUR_CLIENT_ID_HERE'; // Google Client ID
-const REDIRECT_URI = 'URL_OF_YOUR_CALLBACK_PAGE'; // URL where Google will redirect after login
-const APPS_SCRIPT_URL = 'URL_OF_YOUR_APPS_SCRIPT_WEB_APP'; // URL of Web App in Apps Script that handles the OAuth2 flow
-const SCOPES = 'email profile'; // Scopes for the OAuth2 request
+const CLIENT_ID = '985893664937-a0bhrv7ce2vopo1952bo8f9p04a30oac.apps.googleusercontent.com'; // Google Client ID
+const REDIRECT_URI = 'https://luizviniciussoglia.github.io/opportunityhunter/login.html'; // URL where Google will redirect after login (back to login page)
+// URL of Web App in Apps Script that handles the OAuth2 flow (backend)
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_lw6yXYiLJvjq3e6QbleMjbksomieP--YaxRMXnOKRtVmTB0pjQ-c4Tb-2KbSwWXR/exec';
+// Scopes for the OAuth2 request
+const SCOPES = 'email profile';
 
 // Function to login with Google
 document.getElementById('btnGoogleLogin').addEventListener('click', function () {
@@ -58,9 +60,9 @@ window.addEventListener('load', function () {
         // Send the code to the backend for processing
         fetch(APPS_SCRIPT_URL, {
             method: 'POST',
-            headers: {
+            /*headers: { // headers causes CORS issues with Apps Script Web App
                 'Content-Type': 'application/json'
-            },
+            },*/
             body: JSON.stringify({ code: code, redirect_uri: REDIRECT_URI })
         })
             .then(response => response.json())
@@ -74,7 +76,7 @@ window.addEventListener('load', function () {
                     });
 
                     // Redirect to main application page
-                    window.location.href = './index.html';
+                    window.location.href = '/index.html';
                 } else {
                     document.getElementById('errorMessage').style.display = 'block';
                     document.getElementById('errorMessage').textContent = data.message || 'Authentication error';

@@ -6,36 +6,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Opportunity Hunter</title>
-  <link rel="icon" type="image/x-icon" href="./img/favicon.png">
-  <link rel="stylesheet" href="./styles/app.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
+  <script src="/src/app.js" defer></script>
+  <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+  <link rel="stylesheet" href="/styles/index.css">
 </head>
 
 <body>
 
   <header>
-    <div class="logo-bar">OP</div>
+    <div class="logo-app-header">OP</div>
     <div class="user-info">
-      <img id="userAvatar" src="/api/placeholder/36/36" alt="User avatar">
+      <img id="userAvatar" src="/img/avatardefault.png" alt="User avatar" crossorigin="anonymous"
+        referrerpolicy="no-referrer">
       <span id="userName" class="user-name">Loading...</span>
       <button id="logoutBtn" class="logout-btn">Sign out</button>
     </div>
   </header>
 
   <main id="mainContent" role="main" aria-label="Main Content">
-    <img src="./img/logo.webp" alt="GenZ Crowd AI" class="logo">
-    <h1>Opportunity Hunter&#x1F609;</h1>
+    <img src="/img/logo.webp" alt="GenZ Crowd AI" class="logo">
+    <h1>Opportunity Hunter&#x1F916;</h1>
     <p>Select the criteria and click the Search button.</p>
     <form id="searchForm" aria-label="Opportunity Search Form">
       <label for="query">Search for (optional):</label>
       <input type="search" id="query" name="query" aria-label="Search Query" placeholder="Search query (optional)"><br>
 
       <label for="country">Choose the Country:</label>
-      <select name="country" id="country" required aria-label="Country Select">
+      <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
         <option value="">Loading...</option>
       </select><br>
 
       <label for="company">Choose the Company:</label>
-      <select name="company" id="company" required aria-label="Company Select">
+      <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
         <option value="">Loading...</option>
       </select><br>
 
@@ -54,9 +57,6 @@
   <footer>
     <p>GenZ Crowd AI | All rights reserved.</p>
   </footer>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
-  <script src="./src/app.js" defer></script>
 
 </body>
 

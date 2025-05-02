@@ -28,7 +28,7 @@
     if (!isValidJWT(token)) {
       // Redirect to login page if not authenticated
       const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = `/login.html?origin=${currentUrl}`;
+      window.location.href = `https://luizviniciussoglia.github.io/opportunityhunter/login.html?origin=${currentUrl}`;
     }
     else {
       loadUserInfo(token); // Load user information if authenticated
@@ -81,7 +81,7 @@
     Cookies.remove('access_token');
     // Redirect to login page if not authenticated
     const currentUrl = encodeURIComponent(window.location.href);
-    window.location.href = `/login.html?origin=${currentUrl}`;
+    window.location.href = `https://luizviniciussoglia.github.io/opportunityhunter/login.html?origin=${currentUrl}`;
   }
 
   // Add event listener to logout button
@@ -147,7 +147,7 @@
       if (!isValidJWT(token)) {
         // Redirect to login page if not authenticated
         const currentUrl = encodeURIComponent(window.location.href);
-        window.location.href = `/login.html?origin=${currentUrl}`;
+        window.location.href = `https://luizviniciussoglia.github.io/opportunityhunter/login.html?origin=${currentUrl}`;
         return;
       }
 

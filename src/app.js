@@ -66,8 +66,9 @@
       // Update interface with user information
       userName.textContent = payload.name ? payload.name : (payload.email || 'User');
 
-      // If we had the user's image URL in the token payload:
-      userAvatar.src = payload.picture || './img/avatardefault.png'; // Default image if not available
+      // If the user's image URL exists in the token payload, a trick is used to avoid caching, which results in a CORS error.
+      // Use the default image if it is not available.
+      userAvatar.src = payload.picture ? (payload.picture + '?not-from-cache') : './img/avatardefault.png';
       userAvatar.alt = payload.name || 'User Avatar'; // Default alt text if not available
     }
     catch (error) {

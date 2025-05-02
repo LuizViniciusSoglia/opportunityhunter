@@ -76,7 +76,7 @@ window.addEventListener('load', function () {
                     });
 
                     // Redirect to main application page
-                    window.location.href = 'https://luizviniciussoglia.github.io/opportunityhunter/index.html';
+                    window.location.href = './index.html';
                 } else {
                     document.getElementById('errorMessage').style.display = 'block';
                     document.getElementById('errorMessage').textContent = data.message || 'Authentication error';

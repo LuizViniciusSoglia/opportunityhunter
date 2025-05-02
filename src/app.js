@@ -28,7 +28,7 @@
     if (!isValidJWT(token)) {
       // Redirect to login page if not authenticated
       const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = `https://luizviniciussoglia.github.io/opportunityhunter/login.html?origin=${currentUrl}`;
+      window.location.href = `./login.html?origin=${currentUrl}`;
     }
     else {
       loadUserInfo(token); // Load user information if authenticated
@@ -67,7 +67,7 @@
       userName.textContent = payload.name ? payload.name : (payload.email || 'User');
 
       // If we had the user's image URL in the token payload:
-      userAvatar.src = payload.picture || '/img/avatardefault.png'; // Default image if not available
+      userAvatar.src = payload.picture || './img/avatardefault.png'; // Default image if not available
       userAvatar.alt = payload.name || 'User Avatar'; // Default alt text if not available
     }
     catch (error) {
@@ -81,7 +81,7 @@
     Cookies.remove('access_token');
     // Redirect to login page if not authenticated
     const currentUrl = encodeURIComponent(window.location.href);
-    window.location.href = `https://luizviniciussoglia.github.io/opportunityhunter/login.html?origin=${currentUrl}`;
+    window.location.href = `./login.html?origin=${currentUrl}`;
   }
 
   // Add event listener to logout button
@@ -147,7 +147,7 @@
       if (!isValidJWT(token)) {
         // Redirect to login page if not authenticated
         const currentUrl = encodeURIComponent(window.location.href);
-        window.location.href = `https://luizviniciussoglia.github.io/opportunityhunter/login.html?origin=${currentUrl}`;
+        window.location.href = `./login.html?origin=${currentUrl}`;
         return;
       }
 

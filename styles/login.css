@@ -9,6 +9,7 @@
     --accent-color: #00d2ff;
     --hover-color: #2b6dc6;
     --neon-glow: rgba(3, 123, 234, 0.7);
+    --error-color: #ff3b30;
     --font-main: 'Arial', sans-serif;
 }
 
@@ -68,9 +69,15 @@ body {
 }
 
 .error-message {
-    color: #d32f2f;
-    margin-top: 20px;
-    display: none;
+    color: var(--error-color);
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 59, 48, 0.7);
+    margin: 10px 0;
+    padding: 8px;
+    border-left: 3px solid var(--error-color);
+    text-align: left;
+    background-color: rgba(255, 59, 48, 0.1);
+    border-radius: 4px;
 }
 
 .loading {

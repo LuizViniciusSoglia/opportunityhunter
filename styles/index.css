@@ -217,7 +217,8 @@ input[type="search"]::placeholder {
 ========================== */
 
 #loader {
-  /* display: none; */ /* Defined with inline CSS*/
+  /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
+  display: none;
   margin: 20px auto;
   width: 60px;
   height: 60px;
@@ -234,7 +235,8 @@ input[type="search"]::placeholder {
 }
 
 #resultsContainer {
-  /* display: none; */ /* Defined with inline CSS */
+  /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
+  display: none;
   width: 90%;
   max-width: 1000px;
   margin: 10px auto;

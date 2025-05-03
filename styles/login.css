@@ -69,7 +69,8 @@ body {
 }
 
 .error-message {
-    /* display: none; */ /* Defined with inline CSS */
+    /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
+    display: none;
     color: var(--error-color);
     font-weight: bold;
     text-shadow: 0 0 5px rgba(255, 59, 48, 0.7);
@@ -82,7 +83,8 @@ body {
 }
 
 .loading {
-    /* display: none; */ /* Defined with inline CSS */
+    /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
+    display: none;
     margin-top: 20px;
 }
 

@@ -31,7 +31,7 @@
       window.location.href = `./login.html?origin=${currentUrl}`;
     }
     else {
-      loadUserInfo(token); // Load user information if authenticated
+      loadUserInfo(); // Load user information if authenticated
       loadInfo(); // Load country and company information
       window.searchOpport = searchOpport; // Exposes searchOpport function to the global scope
     }
@@ -58,21 +58,35 @@
     }
   }
 
-  // Load user information from token
-  function loadUserInfo(token) {
+  // Load user information from user_data cookie stored
+  function loadUserInfo() {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const user = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? JSON.parse(Cookies.get('user_data') || '{}') : null;
+
+      if (!user || typeof user !== 'object') {
+        console.log('User data not found in cookies');
+        userName.textContent = 'User';
+        return;
+      }
 
       // Update interface with user information
-      userName.textContent = payload.name ? payload.name : (payload.email || 'User');
+      const name = user.name ? user.name : (user.email || 'User'); // Use email as fallback if name is not available
+      userName.textContent = name;
 
-      // If the user's image URL exists in the token payload, a trick is used to avoid caching, which results in a CORS error.
+      // If the user's image URL exists in user_data cookie, a trick is used to avoid cache use, which results in a CORS error.
       // Use the default image if it is not available.
-      userAvatar.src = payload.picture ? (payload.picture + '?not-from-cache') : './img/avatardefault.png';
-      userAvatar.alt = payload.name || 'User Avatar'; // Default alt text if not available
+      if (user.picture) {
+        userAvatar.src = user.picture + '?not-from-cache';
+      }
+      userAvatar.alt = name + ' Avatar';
+      userAvatar.onerror = function () {
+        this.onerror = null; // Remove error handler to prevent infinite loop
+        this.src = './img/avatardefault.png'; // Use default image on error
+      };
     }
     catch (error) {
-      console.error('Error decoding token:', error);
+      console.error('Error loading user data:', error);
+      userName.textContent = 'User';
     }
   }
 
@@ -96,7 +110,7 @@
   // The results are displayed dynamically on the page.
 
   // URL of the API endpoint (Google Apps Script Web App)
-  const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycbyuxObDbpJI7n5vONoZ_fhLHZoRpBDfmcLGuTllj3sQ8_uVq7efRzU0v4Lmkqxk2ObX0Q/exec';
+  const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycbxLqZsBoKxmM2c7Bxkw8d3HQmGP3gdqzQx7j_mmVmlnfqHn0pE29fRoBcmwBoNzXg1Gzg/exec';
 
   // Controls the display of loader vs results
   const toggleLoader = show => {
@@ -158,14 +172,19 @@
         query: queryInput.value,
         country: countrySelect.value,
         company: companySelect.value,
-        //token: token
+        token: token // Pass token as URL parameter instead of header
       });
 
       let res;
       try {
         // Make the API call with the token
         res = await fetch(`${APPS_SCRIPT_API_URL}?${params}`, {
-          method: 'GET'
+          method: 'GET',
+          // No Authorization header - headers causes CORS issues with Apps Script Web App (avoiding CORS preflight)
+          /*headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }*/
         });
       } catch (networkError) {
         // Handle network errors
@@ -178,14 +197,14 @@
       let status, response;
       try {
         // Parse the JSON response
-        ({ status, response } = await res.json());
+        ({ status, message, response } = await res.json());
       } catch (e) {
         // Handle invalid JSON responses
         throw new Error('Invalid JSON response from API');
       }
 
       // Display the results
-      displayResults(status, response, companySelect.value);
+      displayResults(status, message, response, companySelect.value);
     } catch (e) {
       // Handle errors and display user-friendly messages
       const userFriendlyMessage = e.message.includes('404')
@@ -204,11 +223,11 @@
   }
 
   // Displays results using DocumentFragment
-  function displayResults(status, response = [], companyFilter) {
+  function displayResults(status, message, response = [], companyFilter) {
     resultsSearch.innerHTML = '';
 
     if (status !== 200) {
-      matchesFound.innerHTML = `<strong>${status} - API Error.</strong>`;
+      matchesFound.innerHTML = `<strong>${status} - ${message}.</strong>`;
       return;
     }
 

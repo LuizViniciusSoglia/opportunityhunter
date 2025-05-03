@@ -2,7 +2,7 @@
 const CLIENT_ID = '877506323603-9fhfhbia4vdm3odosobiouf4n019vhar.apps.googleusercontent.com'; // Google Client ID
 const REDIRECT_URI = 'https://luizviniciussoglia.github.io/opportunityhunter/login.html'; // URL where Google will redirect after login (back to login page)
 // URL of Web App in Apps Script that handles the OAuth2 flow (backend)
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOBcK1xDlu59ZafeVm2GGUa2rGrAhNCP8mya2v4J_NwbPVn0CUnEMeeZrlUQOo-3Qr/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykRiacN1DrYLUSwW4blHC9IUi1CNy4Er8SznzT5vC3T-7oLZAJOBzNmj_p4c1HTk5Q/exec';
 // Scopes for the OAuth2 request
 const SCOPES = 'email profile';
 
@@ -60,7 +60,7 @@ window.addEventListener('load', function () {
         // Send the code to the backend for processing
         fetch(APPS_SCRIPT_URL, {
             method: 'POST',
-            /*headers: { // headers causes CORS issues with Apps Script Web App
+            /*headers: { // headers causes CORS issues with Apps Script Web App (avoiding CORS preflight)
                 'Content-Type': 'application/json'
             },*/
             body: JSON.stringify({ code: code, redirect_uri: REDIRECT_URI })
@@ -74,7 +74,12 @@ window.addEventListener('load', function () {
                         secure: true,
                         sameSite: 'strict'
                     });
-
+                    // Store the user data in cookie
+                    Cookies.set('user_data', data.user, {
+                        expires: 0.5, // 12 hours (0.5 days)
+                        secure: true,
+                        sameSite: 'strict'
+                    });
                     // Redirect to main application page
                     window.location.href = './index.html';
                 } else {

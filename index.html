@@ -23,6 +23,12 @@
     </div>
   </header>
 
+  <noscript>
+    <div class="noscript-message">
+      <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</strong></p>
+    </div>
+  </noscript>
+
   <main id="mainContent" role="main" aria-label="Main Content">
     <img src="./img/logo.webp" alt="GenZ Crowd AI" class="logo">
     <h1>Opportunity Hunter&#x1F916;</h1>
@@ -44,11 +50,11 @@
       <button type="button" id="searchBtn" onclick="searchOpport()">Search</button>
     </form>
 
-    <div id="loader" aria-hidden="true"></div>
+    <div id="loader" aria-hidden="true" style="display: none;"></div>
   </main>
 
   <!-- Container para os resultados da busca -->
-  <div id="resultsContainer">
+  <div id="resultsContainer" style="display: none;" aria-label="Search Results">
     <p id="matchesFound"></p>
     <div id="resultsSearch"></div>
   </div>

@@ -92,11 +92,16 @@
 
   // Handle logout
   function logoutUser() {
-    // Remove token cookie
-    Cookies.remove('access_token');
-    // Redirect to login page if not authenticated
-    const currentUrl = encodeURIComponent(window.location.href);
-    window.location.href = `./login.html?origin=${currentUrl}`;
+    // Clear cookies
+    if (typeof Cookies !== 'undefined' && typeof Cookies.remove === 'function') {
+      Cookies.remove('access_token');
+      Cookies.remove('user_data');
+    } else {
+      console.warn('Cookies library is not available. Unable to clear cookies.');
+    }
+    // Redirect to login page
+    const currentUrl = encodeURIComponent(window.location.href); // Encode the current URL for redirection
+    window.location.href = `./login.html?origin=${currentUrl}`; // Redirect to login page with the current URL as origin parameter
   }
 
   // Add event listener to logout button

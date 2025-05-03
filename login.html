@@ -12,6 +12,13 @@
 </head>
 
 <body>
+
+    <noscript>
+        <div class="noscript-message">
+            <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</strong></p>
+        </div>
+    </noscript>
+
     <div class="login-container">
         <img class="logo-app" src="./img/logo.webp" alt="GenZ Crowd AI">
         <h1>Opportunity Hunter</h1>
@@ -43,11 +50,11 @@
             </div>
         </button>
 
-        <div id="errorMessage" class="error-message">
+        <div id="errorMessage" class="error-message" style="display: none;">
             An error occurred during login. Please try again.
         </div>
 
-        <div id="loading" class="loading">
+        <div id="loading" class="loading" styles="display: none;">
             <div class="spinner"></div>
             <p>Authenticating...</p>
         </div>

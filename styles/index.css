@@ -217,7 +217,7 @@ input[type="search"]::placeholder {
 ========================== */
 
 #loader {
-  display: none;
+  /* display: none; */ /* Defined with inline CSS*/
   margin: 20px auto;
   width: 60px;
   height: 60px;
@@ -234,7 +234,7 @@ input[type="search"]::placeholder {
 }
 
 #resultsContainer {
-  display: none;
+  /* display: none; */ /* Defined with inline CSS */
   width: 90%;
   max-width: 1000px;
   margin: 10px auto;

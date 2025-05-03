@@ -67,6 +67,7 @@ function haveSameProtocolAndHost(url1, url2) {
 }
 
 // Check if we're being redirected back from Google after login
+// code, state and error are URL parameters returned by Google after login (not use these names for other purposes)
 window.addEventListener('load', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');

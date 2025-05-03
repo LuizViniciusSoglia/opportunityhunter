@@ -228,6 +228,10 @@
 
     if (status !== 200) {
       matchesFound.innerHTML = `<strong>${status} - ${message}.</strong>`;
+      if (status === 401) {
+        // If the status is 401, it means the token is invalid or expired
+        logoutUser(); // // Handle unauthorized access - log out the user immediately
+      }
       return;
     }
 

@@ -69,10 +69,11 @@ body {
 }
 
 .error-message {
+    display: none;
     color: var(--error-color);
     font-weight: bold;
     text-shadow: 0 0 5px rgba(255, 59, 48, 0.7);
-    margin: 10px 0;
+    margin: 20px 0;
     padding: 8px;
     border-left: 3px solid var(--error-color);
     text-align: left;

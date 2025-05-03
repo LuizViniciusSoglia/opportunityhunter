@@ -1,17 +1,6 @@
-// Run before any other code
-document.body.style.visibility = 'hidden';
-// Create and append the auth loader
-const authLoader = document.createElement('div');
-authLoader.className = 'auth-loader';
-// Add loading spinner to the auth-loader
-authLoader.innerHTML = '<div class="initial-loading-spinner"></div>';
-document.body.appendChild(authLoader);
-
 (function () {
-  // First, check authentication before accessing any DOM elements
-  checkAuthenticationFirst();
 
-  // DOM Elements Cache - Now moved after auth check
+  // DOM Elements Cache
   const userName = document.getElementById('userName');
   const userAvatar = document.getElementById('userAvatar');
   const logoutBtn = document.getElementById('logoutBtn')
@@ -30,32 +19,22 @@ document.body.appendChild(authLoader);
   // It checks if the user is authenticated by verifying the JWT token stored in cookies.
   // If the token is valid, it loads user information and allows the user to log out.
 
-  function checkAuthenticationFirst() {
+  // Check authentication when loading the page
+  window.addEventListener('load', checkAuthentication);
+
+  // Check if user is authenticated
+  function checkAuthentication() {
     const token = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? Cookies.get('access_token') : null;
     if (!isValidJWT(token)) {
-      // Redirect to login page if not authenticated without showing the page content
+      // Redirect to login page if not authenticated
       const currentUrl = encodeURIComponent(window.location.href);
       window.location.href = `./login.html?origin=${currentUrl}`;
-      return;
     }
-
-    // If we reach here, user is authenticated, make page visible
-    document.body.style.visibility = 'visible';
-    // Remove the auth loader
-    const loader = document.querySelector('.auth-loader');
-    if (loader) {
-      loader.parentNode.removeChild(loader);
+    else {
+      loadUserInfo(); // Load user information if authenticated
+      loadInfo(); // Load country and company information
+      window.searchOpport = searchOpport; // Exposes searchOpport function to the global scope
     }
-
-    // Initialize the app
-    initializeApp();
-  }
-
-  // Function is called only after authentication is confirmed
-  function initializeApp() {
-    loadUserInfo(); // Load user information
-    loadInfo(); // Load country and company information
-    window.searchOpport = searchOpport; // Exposes searchOpport function to the global scope
   }
 
   // Validate if the token is a valid JWT and not expired

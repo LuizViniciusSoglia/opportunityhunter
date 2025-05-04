@@ -423,7 +423,7 @@ footer {
     justify-content: flex-start;
   }
 
-  header {
+  #appHeader {
     padding: 15px 10px;
   }
 

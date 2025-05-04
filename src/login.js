@@ -51,7 +51,6 @@ document.getElementById('btnGoogleLogin').addEventListener('click', function () 
 
         // Redirect to Google consent page
         window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`;
-        document.getElementById('loading').style.display = 'none'; // Hide loading
     } catch (error) {
         document.getElementById('loading').style.display = 'none'; // Hide loading
         document.getElementById('errorMessage').style.display = 'block';

@@ -1,11 +1,27 @@
 (function () {
-  // Execute authentication check immediately when script loads
-  // before any DOM content is shown to user
-  checkAuthenticationEarly();
 
   // DOM Elements Cache - will only be used if authentication passes
   let userName, userAvatar, logoutBtn, queryInput, countrySelect, companySelect,
     searchBtn, loader, resultsContainer, matchesFound, resultsSearch;
+
+  // Cache DOM elements after authentication
+  function cacheElements() {
+    userName = document.getElementById('userName');
+    userAvatar = document.getElementById('userAvatar');
+    logoutBtn = document.getElementById('logoutBtn');
+    queryInput = document.getElementById('query');
+    countrySelect = document.getElementById('country');
+    companySelect = document.getElementById('company');
+    searchBtn = document.getElementById('searchBtn');
+    loader = document.getElementById('loader');
+    resultsContainer = document.getElementById('resultsContainer');
+    matchesFound = document.getElementById('matchesFound');
+    resultsSearch = document.getElementById('resultsSearch');
+  }
+
+  // Execute authentication check immediately when script loads
+  // before any DOM content is shown to user
+  checkAuthenticationEarly();
 
   // Authentication check that runs before DOM is fully loaded
   function checkAuthenticationEarly() {
@@ -38,21 +54,6 @@
     loadUserInfo();
     // Show the main content now that authentication is confirmed
     document.getElementById('mainContent').style.display = 'block';
-  }
-
-  // Cache DOM elements after authentication
-  function cacheElements() {
-    userName = document.getElementById('userName');
-    userAvatar = document.getElementById('userAvatar');
-    logoutBtn = document.getElementById('logoutBtn');
-    queryInput = document.getElementById('query');
-    countrySelect = document.getElementById('country');
-    companySelect = document.getElementById('company');
-    searchBtn = document.getElementById('searchBtn');
-    loader = document.getElementById('loader');
-    resultsContainer = document.getElementById('resultsContainer');
-    matchesFound = document.getElementById('matchesFound');
-    resultsSearch = document.getElementById('resultsSearch');
   }
 
   // Validate if the token is a valid JWT and not expired

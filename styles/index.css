@@ -33,6 +33,68 @@ body {
   overflow-x: hidden;
 }
 
+/* Hide main content by default until authentication is confirmed */
+#mainContent {
+  display: none;
+}
+
+/* loading screen while verifying credentials*/
+#authLoadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+
+.auth-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.auth-spinner {
+  width: 80px;
+  height: 80px;
+  border: 5px solid transparent;
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  animation: spin 1.5s ease-in-out infinite;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.auth-spinner::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 5px solid transparent;
+  border-radius: 50%;
+  border-left-color: var(--secondary-color);
+  border-right-color: var(--secondary-color);
+  animation: spin 1s linear infinite reverse;
+}
+
+.auth-text {
+  color: var(--dark-color);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
 /* ==========================
   Button styles
 ========================== */
@@ -227,12 +289,6 @@ input[type="search"]::placeholder {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 #resultsContainer {
   /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
   display: none;
@@ -274,6 +330,28 @@ footer {
   text-align: center;
   font-size: .9em;
   color: white;
+}
+
+/* ==========================
+  Keyframes for loaders
+========================== */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* ==========================

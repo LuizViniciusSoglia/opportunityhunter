@@ -1,40 +1,58 @@
 (function () {
+  // Execute authentication check immediately when script loads
+  // before any DOM content is shown to user
+  checkAuthenticationEarly();
 
-  // DOM Elements Cache
-  const userName = document.getElementById('userName');
-  const userAvatar = document.getElementById('userAvatar');
-  const logoutBtn = document.getElementById('logoutBtn')
-  const loader = document.getElementById('loader');
-  const resultsContainer = document.getElementById('resultsContainer');
-  const matchesFound = document.getElementById('matchesFound');
-  const resultsSearch = document.getElementById('resultsSearch');
-  const queryInput = document.getElementById('query');
-  const countrySelect = document.getElementById('country');
-  const companySelect = document.getElementById('company');
+  // DOM Elements Cache - will only be used if authentication passes
+  let userName, userAvatar, logoutBtn, queryInput, countrySelect, companySelect,
+    searchBtn, loader, resultsContainer, matchesFound, resultsSearch;
 
-  //=================================================================================
-
-  // Authentication and User Info
-  // This part handles user authentication and displays user information on the page.
-  // It checks if the user is authenticated by verifying the JWT token stored in cookies.
-  // If the token is valid, it loads user information and allows the user to log out.
-
-  // Check authentication when loading the page
-  window.addEventListener('load', checkAuthentication);
-
-  // Check if user is authenticated
-  function checkAuthentication() {
+  // Authentication check that runs before DOM is fully loaded
+  function checkAuthenticationEarly() {
     const token = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? Cookies.get('access_token') : null;
+
     if (!isValidJWT(token)) {
-      // Redirect to login page if not authenticated
+      // Redirect to login page immediately if not authenticated
       const currentUrl = encodeURIComponent(window.location.href);
       window.location.href = `./login.html?origin=${currentUrl}`;
+      // Stop further execution
+      return;
     }
-    else {
-      loadUserInfo(); // Load user information if authenticated
-      loadInfo(); // Load country and company information
-      window.searchOpport = searchOpport; // Exposes searchOpport function to the global scope
+
+    // If authenticated, add event listener to initialize app once DOM is loaded
+    if (document.readyState === "loading") {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
     }
+  }
+
+  // Initialize app only after authentication is confirmed
+  function initializeApp() {
+    // Only cache DOM elements after authentication is confirmed
+    cacheElements();
+    // Now it's safe to initialize the app
+    logoutBtn.addEventListener('click', logoutUser);
+    loadInfo();
+    searchBtn.addEventListener('click', searchOpport);
+    loadUserInfo();
+    // Show the main content now that authentication is confirmed
+    document.getElementById('mainContent').style.display = 'block';
+  }
+
+  // Cache DOM elements after authentication
+  function cacheElements() {
+    userName = document.getElementById('userName');
+    userAvatar = document.getElementById('userAvatar');
+    logoutBtn = document.getElementById('logoutBtn');
+    queryInput = document.getElementById('query');
+    countrySelect = document.getElementById('country');
+    companySelect = document.getElementById('company');
+    searchBtn = document.getElementById('searchBtn');
+    loader = document.getElementById('loader');
+    resultsContainer = document.getElementById('resultsContainer');
+    matchesFound = document.getElementById('matchesFound');
+    resultsSearch = document.getElementById('resultsSearch');
   }
 
   // Validate if the token is a valid JWT and not expired
@@ -103,9 +121,6 @@
     const currentUrl = encodeURIComponent(window.location.href); // Encode the current URL for redirection
     window.location.href = `./login.html?origin=${currentUrl}`; // Redirect to login page with the current URL as origin parameter
   }
-
-  // Add event listener to logout button
-  logoutBtn.addEventListener('click', logoutUser);
 
   //=================================================================================
 

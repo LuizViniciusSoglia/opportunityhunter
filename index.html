@@ -14,54 +14,64 @@
 
 <body>
 
-  <header>
-    <div class="logo-app-header">OP</div>
-    <div class="user-info">
-      <img id="userAvatar" src="./img/avatardefault.png" alt="User avatar">
-      <span id="userName" class="user-name">Loading...</span>
-      <button id="logoutBtn" class="logout-btn">Sign out</button>
+  <div id="authLoadingScreen">
+    <div class="auth-spinner-container">
+      <div class="auth-spinner"></div>
+      <div class="auth-text">Verifying credentials...</div>
     </div>
-  </header>
-
-  <noscript>
-    <div class="noscript-message">
-      <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</strong></p>
-    </div>
-  </noscript>
-
-  <main id="mainContent" role="main" aria-label="Main Content">
-    <img src="./img/logo.webp" alt="GenZ Crowd AI" class="logo">
-    <h1>Opportunity Hunter&#x1F916;</h1>
-    <p>Select the criteria and click the Search button.</p>
-    <form id="searchForm" aria-label="Opportunity Search Form">
-      <label for="query">Search for (optional):</label>
-      <input type="search" id="query" name="query" aria-label="Search Query" placeholder="Search query (optional)"><br>
-
-      <label for="country">Choose the Country:</label>
-      <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
-        <option value="">Loading...</option>
-      </select><br>
-
-      <label for="company">Choose the Company:</label>
-      <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
-        <option value="">Loading...</option>
-      </select><br>
-
-      <button type="button" id="searchBtn" onclick="searchOpport()">Search</button>
-    </form>
-
-    <div id="loader" aria-hidden="true" style="display: none;"></div>
-  </main>
-
-  <!-- Container para os resultados da busca -->
-  <div id="resultsContainer" style="display: none;" aria-label="Search Results">
-    <p id="matchesFound"></p>
-    <div id="resultsSearch"></div>
   </div>
 
-  <footer>
-    <p>GenZ Crowd AI | All rights reserved.</p>
-  </footer>
+  <div id="mainContent">
+    <header>
+      <div class="logo-app-header">OP</div>
+      <div class="user-info">
+        <img id="userAvatar" src="./img/avatardefault.png" alt="User avatar">
+        <span id="userName" class="user-name">Loading...</span>
+        <button id="logoutBtn" class="logout-btn">Sign out</button>
+      </div>
+    </header>
+
+    <noscript>
+      <div class="noscript-message">
+        <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</strong></p>
+      </div>
+    </noscript>
+
+    <main id="mainContent" role="main" aria-label="Main Content">
+      <img src="./img/logo.webp" alt="GenZ Crowd AI" class="logo">
+      <h1>Opportunity Hunter&#x1F916;</h1>
+      <p>Select the criteria and click the Search button.</p>
+      <form id="searchForm" aria-label="Opportunity Search Form">
+        <label for="query">Search for (optional):</label>
+        <input type="search" id="query" name="query" aria-label="Search Query"
+          placeholder="Search query (optional)"><br>
+
+        <label for="country">Choose the Country:</label>
+        <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
+          <option value="">Loading...</option>
+        </select><br>
+
+        <label for="company">Choose the Company:</label>
+        <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
+          <option value="">Loading...</option>
+        </select><br>
+
+        <button type="button" id="searchBtn">Search</button>
+      </form>
+
+      <div id="loader" aria-hidden="true" style="display: none;"></div>
+    </main>
+
+    <!-- Container para os resultados da busca -->
+    <div id="resultsContainer" style="display: none;" aria-label="Search Results">
+      <p id="matchesFound"></p>
+      <div id="resultsSearch"></div>
+    </div>
+
+    <footer>
+      <p>GenZ Crowd AI | All rights reserved.</p>
+    </footer>
+  </div>
 
 </body>
 

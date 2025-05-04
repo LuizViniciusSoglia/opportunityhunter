@@ -1,23 +1,7 @@
 (function () {
-
-  // DOM Elements Cache - will only be used if authentication passes
-  let userName, userAvatar, logoutBtn, queryInput, countrySelect, companySelect,
-    searchBtn, loader, resultsContainer, matchesFound, resultsSearch;
-
-  // Cache DOM elements after authentication
-  function cacheElements() {
-    userName = document.getElementById('userName');
-    userAvatar = document.getElementById('userAvatar');
-    logoutBtn = document.getElementById('logoutBtn');
-    queryInput = document.getElementById('query');
-    countrySelect = document.getElementById('country');
-    companySelect = document.getElementById('company');
-    searchBtn = document.getElementById('searchBtn');
-    loader = document.getElementById('loader');
-    resultsContainer = document.getElementById('resultsContainer');
-    matchesFound = document.getElementById('matchesFound');
-    resultsSearch = document.getElementById('resultsSearch');
-  }
+  // Use variables declaration at the top
+  // But do not access DOM elements yet
+  let elements = {}; // Will store all DOM elements after they're cached
 
   // Execute authentication check immediately when script loads
   // before any DOM content is shown to user
@@ -47,13 +31,35 @@
   function initializeApp() {
     // Only cache DOM elements after authentication is confirmed
     cacheElements();
+
     // Now it's safe to initialize the app
-    logoutBtn.addEventListener('click', logoutUser);
+    elements.logoutBtn.addEventListener('click', logoutUser);
     loadInfo();
-    searchBtn.addEventListener('click', searchOpport);
+    elements.searchBtn.addEventListener('click', searchOpport);
     loadUserInfo();
+
     // Show the main content now that authentication is confirmed
     document.getElementById('mainContent').style.display = 'block';
+
+    // Hide the loading screen
+    document.getElementById('authLoadingScreen').style.display = 'none';
+  }
+
+  // Cache DOM elements after authentication
+  function cacheElements() {
+    elements = {
+      userName: document.getElementById('userName'),
+      userAvatar: document.getElementById('userAvatar'),
+      logoutBtn: document.getElementById('logoutBtn'),
+      queryInput: document.getElementById('query'),
+      countrySelect: document.getElementById('country'),
+      companySelect: document.getElementById('company'),
+      searchBtn: document.getElementById('searchBtn'),
+      loader: document.getElementById('loader'),
+      resultsContainer: document.getElementById('resultsContainer'),
+      matchesFound: document.getElementById('matchesFound'),
+      resultsSearch: document.getElementById('resultsSearch')
+    };
   }
 
   // Validate if the token is a valid JWT and not expired
@@ -84,28 +90,28 @@
 
       if (!user || typeof user !== 'object') {
         console.log('User data not found in cookies');
-        userName.textContent = 'User';
+        elements.userName.textContent = 'User';
         return;
       }
 
       // Update interface with user information
       const name = user.name ? user.name : (user.email || 'User'); // Use email as fallback if name is not available
-      userName.textContent = name;
+      elements.userName.textContent = name;
 
       // If the user's image URL exists in user_data cookie, a trick is used to avoid cache use, which results in a CORS error.
       // Use the default image if it is not available.
       if (user.picture) {
-        userAvatar.src = user.picture + '?not-from-cache';
+        elements.userAvatar.src = user.picture + '?not-from-cache';
       }
-      userAvatar.alt = name + ' Avatar';
-      userAvatar.onerror = function () {
+      elements.userAvatar.alt = name + ' Avatar';
+      elements.userAvatar.onerror = function () {
         this.onerror = null; // Remove error handler to prevent infinite loop
         this.src = './img/avatardefault.png'; // Use default image on error
       };
     }
     catch (error) {
       console.error('Error loading user data:', error);
-      userName.textContent = 'User';
+      elements.userName.textContent = 'User';
     }
   }
 
@@ -135,8 +141,8 @@
 
   // Controls the display of loader vs results
   const toggleLoader = show => {
-    loader.style.display = show ? 'block' : 'none';
-    resultsContainer.style.display = show ? 'none' : 'block';
+    elements.loader.style.display = show ? 'block' : 'none';
+    elements.resultsContainer.style.display = show ? 'none' : 'block';
   };
 
   // Generates <option> tags from an array
@@ -148,10 +154,10 @@
   // Loads country and company selects and injects query string values
   async function loadInfo() {
     try {
-      countrySelect.innerHTML = genOptions(listCountries);
-      companySelect.innerHTML = genOptions(listCompanies);
+      elements.countrySelect.innerHTML = genOptions(listCountries);
+      elements.companySelect.innerHTML = genOptions(listCompanies);
     } catch {
-      countrySelect.innerHTML = companySelect.innerHTML = '<option value="">Error loading</option>';
+      elements.countrySelect.innerHTML = elements.companySelect.innerHTML = '<option value="">Error loading</option>';
     }
 
     // If there are parameters in the URL, set values in the fields
@@ -160,13 +166,13 @@
     const countryParam = params.get('country');
     const companyParam = params.get('company');
     if (queryParam) {
-      queryInput.value = queryParam;
+      elements.queryInput.value = queryParam;
     }
     if (countryParam && listCountries.includes(countryParam)) {
-      countrySelect.value = countryParam;
+      elements.countrySelect.value = countryParam;
     }
     if (companyParam && listCompanies.includes(companyParam)) {
-      companySelect.value = companyParam;
+      elements.companySelect.value = companyParam;
     }
   }
 
@@ -190,9 +196,9 @@
       // Construct API parameters
       const params = new URLSearchParams({
         action: 'getOpportunities',
-        query: queryInput.value,
-        country: countrySelect.value,
-        company: companySelect.value,
+        query: elements.queryInput.value,
+        country: elements.countrySelect.value,
+        company: elements.companySelect.value,
         token: token // Pass token as URL parameter instead of header
       });
 
@@ -225,30 +231,30 @@
       }
 
       // Display the results
-      displayResults(status, message, response, companySelect.value);
+      displayResults(status, message, response, elements.companySelect.value);
     } catch (e) {
       // Handle errors and display user-friendly messages
       const userFriendlyMessage = e.message.includes('404')
         ? 'No results found. Please refine your search criteria.'
         : 'An unexpected error occurred. Please try again later.';
-      matchesFound.innerHTML = `<strong>${userFriendlyMessage}</strong>`;
+      elements.matchesFound.innerHTML = `<strong>${userFriendlyMessage}</strong>`;
     } finally {
       // Hide the loader and scroll to the results container
       toggleLoader(false);
       if ('scrollBehavior' in document.documentElement.style) {
-        resultsContainer.scrollIntoView({ behavior: "smooth" }); // Smooth scroll for supported browsers
+        elements.resultsContainer.scrollIntoView({ behavior: "smooth" }); // Smooth scroll for supported browsers
       } else {
-        resultsContainer.scrollIntoView(); // Fallback for older browsers
+        elements.resultsContainer.scrollIntoView(); // Fallback for older browsers
       }
     }
   }
 
   // Displays results using DocumentFragment
   function displayResults(status, message, response = [], companyFilter) {
-    resultsSearch.innerHTML = '';
+    elements.resultsSearch.innerHTML = '';
 
     if (status !== 200) {
-      matchesFound.innerHTML = `<strong>${status} - ${message}.</strong>`;
+      elements.matchesFound.innerHTML = `<strong>${status} - ${message}.</strong>`;
       if (status === 401) {
         // If the status is 401, it means the token is invalid or expired
         logoutUser(); // // Handle unauthorized access - log out the user immediately
@@ -263,7 +269,7 @@
     );
 
     if (!filtered.length) {
-      matchesFound.innerHTML = '<strong>No Results Found.</strong>';
+      elements.matchesFound.innerHTML = '<strong>No Results Found.</strong>';
       return;
     }
 
@@ -278,9 +284,9 @@
       `;
       frag.appendChild(div);
     });
-    resultsSearch.appendChild(frag);
+    elements.resultsSearch.appendChild(frag);
 
-    matchesFound.innerHTML = `<strong>${filtered.length} Result${filtered.length > 1 ? 's' : ''} Found:</strong>`;
+    elements.matchesFound.innerHTML = `<strong>${filtered.length} Result${filtered.length > 1 ? 's' : ''} Found:</strong>`;
   }
 
   // Lists of countries and companies

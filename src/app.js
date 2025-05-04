@@ -28,7 +28,7 @@
     if (!isValidJWT(token)) {
       // Redirect to login page if not authenticated
       const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = `/login.html?origin=${currentUrl}`;
+      window.location.href = `./login.html?origin=${currentUrl}`;
     }
     else {
       loadUserInfo(); // Load user information if authenticated
@@ -81,7 +81,7 @@
       userAvatar.alt = name + ' Avatar';
       userAvatar.onerror = function () {
         this.onerror = null; // Remove error handler to prevent infinite loop
-        this.src = 'img/avatardefault.png'; // Use default image on error
+        this.src = './img/avatardefault.png'; // Use default image on error
       };
     }
     catch (error) {
@@ -101,7 +101,7 @@
     }
     // Redirect to login page
     const currentUrl = encodeURIComponent(window.location.href); // Encode the current URL for redirection
-    window.location.href = `login.html?origin=${currentUrl}`; // Redirect to login page with the current URL as origin parameter
+    window.location.href = `./login.html?origin=${currentUrl}`; // Redirect to login page with the current URL as origin parameter
   }
 
   // Add event listener to logout button
@@ -167,7 +167,7 @@
       if (!isValidJWT(token)) {
         // Redirect to login page if not authenticated
         const currentUrl = encodeURIComponent(window.location.href);
-        window.location.href = `login.html?origin=${currentUrl}`;
+        window.location.href = `./login.html?origin=${currentUrl}`;
         return;
       }
 

@@ -17,7 +17,7 @@ document.getElementById('btnGoogleLogin').addEventListener('click', function () 
         localStorage.setItem('oauth_state', state);
 
         // Store the URL that the user came from to redirect them back after successful login
-        let redirect = 'index.html'; // Default redirect URL if origin is not allowed
+        let redirect = './index.html'; // Default redirect URL if origin is not allowed
         const urlParams = new URLSearchParams(window.location.search);
         const origin = urlParams.get('origin');
         if (origin) {
@@ -126,7 +126,7 @@ window.addEventListener('load', function () {
                         sameSite: 'strict'
                     });
                     // Redirect to the page the user came from (origin) or default to index.html
-                    const redirect = localStorage.getItem('redirect_after_login') || 'index.html';
+                    const redirect = localStorage.getItem('redirect_after_login') || './index.html';
                     window.location.href = redirect; // Redirect to the original page
                 } else {
                     document.getElementById('errorMessage').style.display = 'block';

@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Find opportunities across companies worldwide with Opportunity Hunter">
+  <meta name="theme-color" content="#009edb">
   <title>Opportunity Hunter</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
   <script src="./src/app.js" defer></script>
@@ -32,44 +33,50 @@
     <div class="user-info">
       <img id="userAvatar" src="./img/avatardefault.png" alt="User avatar">
       <span id="userName" class="user-name">Loading...</span>
-      <button id="logoutBtn" class="logout-btn">Sign out</button>
+      <button id="logoutBtn" class="logout-btn" aria-label="Sign out">Sign out</button>
     </div>
   </header>
 
   <div id="appContainer">
     <main id="mainContent" role="main" aria-label="Main Content">
       <img src="./img/logo.webp" alt="GenZ Crowd AI" class="logo">
-      <h1>Opportunity Hunter&#x1F916;</h1>
+      <h1>Opportunity Hunter <span class="robot-icon" aria-hidden="true">&#x1F916;</span></h1>
       <p>Select the criteria and click the Search button.</p>
       <form id="searchForm" aria-label="Opportunity Search Form">
-        <label for="query">Search for (optional):</label>
-        <input type="search" id="query" name="query" aria-label="Search Query"
-          placeholder="Search query (optional)"><br>
+        <div class="form-group">
+          <label for="query">Search for (optional):</label>
+          <input type="search" id="query" name="query" aria-label="Search Query"
+            placeholder="Search query (optional)">
+        </div>
 
-        <label for="country">Choose the Country:</label>
-        <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
-          <option value="">Loading...</option>
-        </select><br>
+        <div class="form-group">
+          <label for="country">Choose the Country:</label>
+          <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
+            <option value="">Loading...</option>
+          </select>
+        </div>
 
-        <label for="company">Choose the Company:</label>
-        <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
-          <option value="">Loading...</option>
-        </select><br>
+        <div class="form-group">
+          <label for="company">Choose the Company:</label>
+          <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
+            <option value="">Loading...</option>
+          </select>
+        </div>
 
-        <button type="button" id="searchBtn">Search</button>
+        <button type="submit" id="searchBtn" aria-label="Search opportunities">Search</button>
       </form>
 
-      <div id="loader" aria-hidden="true" style="display: none;"></div>
+      <div id="loader" aria-hidden="true" role="status"></div>
     </main>
 
-    <!-- Container para os resultados da busca -->
-    <div id="resultsContainer" style="display: none;" aria-label="Search Results">
+    <!-- Container for search results -->
+    <div id="resultsContainer" aria-label="Search Results">
       <p id="matchesFound"></p>
       <div id="resultsSearch"></div>
     </div>
 
     <footer>
-      <p>GenZ Crowd AI | All rights reserved.</p>
+      <p>&copy; GenZ Crowd AI | All rights reserved.</p>
     </footer>
   </div>
 

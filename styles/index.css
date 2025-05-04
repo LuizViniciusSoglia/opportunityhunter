@@ -20,6 +20,8 @@
 body {
   margin: 0;
   padding: 0;
+  padding-top: 90px;
+  /* Account for fixed header */
   font-family: var(--font-main);
   background: linear-gradient(135deg,
       var(--primary-color) 0%,
@@ -34,6 +36,133 @@ body {
 }
 
 /* ==========================
+  No JavaScript Message
+========================== */
+
+.noscript-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: white;
+  text-align: center;
+  padding: 15px;
+  z-index: 9999;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================
+  Verifing credentials loading screen
+========================== */
+
+/* loading screen while verifying credentials*/
+#authLoadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 50%,
+      var(--tertiary-color) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+
+.auth-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background-color: var(--dark-color);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.auth-spinner {
+  width: 80px;
+  height: 80px;
+  border: 5px solid transparent;
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  animation: spin 1.5s ease-in-out infinite;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.auth-spinner::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 5px solid transparent;
+  border-radius: 50%;
+  border-left-color: var(--secondary-color);
+  border-right-color: var(--secondary-color);
+  animation: spin 1s linear infinite reverse;
+}
+
+.auth-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ==========================
+  Keyframes for loaders
+========================== */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ==========================
+  Button styles
+========================== */
+
+button {
+  background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--neon-glow);
+  transition: background-image .3s, box-shadow .3s;
+}
+
+button:hover {
+  background-image: linear-gradient(45deg,
+      var(--primary-color),
+      var(--accent-color));
+  box-shadow: 0 0 20px var(--accent-color);
+}
+
+/* ==========================
   Header logo and user info
 ========================== */
 
@@ -42,6 +171,7 @@ body {
   display: none;
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   max-height: 90px;
   background: linear-gradient(135deg,
@@ -53,9 +183,10 @@ body {
   border-bottom: 2px solid rgba(0, 210, 255, 0.7);
   color: white;
   padding: 15px 30px;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 1000;
+  z-index: 1001;
   transition: all 0.3s ease;
 }
 
@@ -94,6 +225,7 @@ body {
   height: 36px;
   border-radius: 50%;
   margin-right: 10px;
+  border: 1px solid var(--accent-color);
 }
 
 .user-name {
@@ -119,84 +251,7 @@ body {
 /* Hide appContainer by default until authentication is confirmed */
 #appContainer {
   display: none;
-}
-
-/* loading screen while verifying credentials*/
-#authLoadingScreen {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  background-color: #f8f9fa;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  font-family: Arial, sans-serif;
-}
-
-.auth-spinner-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.auth-spinner {
-  width: 80px;
-  height: 80px;
-  border: 5px solid transparent;
-  border-radius: 50%;
-  border-top-color: var(--primary-color);
-  border-bottom-color: var(--primary-color);
-  animation: spin 1.5s ease-in-out infinite;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-}
-
-.auth-spinner::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border: 5px solid transparent;
-  border-radius: 50%;
-  border-left-color: var(--secondary-color);
-  border-right-color: var(--secondary-color);
-  animation: spin 1s linear infinite reverse;
-}
-
-.auth-text {
-  color: var(--dark-color);
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin-top: 10px;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-/* ==========================
-  Button styles
-========================== */
-
-button {
-  background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-  color: white;
-  /* border: none; */
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-  box-shadow: 0 0 10px var(--neon-glow);
-  transition: background-image .3s, box-shadow .3s;
-}
-
-button:hover {
-  background-image: linear-gradient(45deg,
-      var(--primary-color),
-      var(--accent-color));
-  box-shadow: 0 0 20px var(--accent-color);
 }
 
 /* ==========================
@@ -206,14 +261,13 @@ button:hover {
 main {
   width: 100%;
   max-width: 600px;
-  margin: 100px auto 20px;
+  margin: 20px auto;
   padding: 30px;
   background: var(--dark-color);
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   transition: transform .3s, box-shadow .3s;
-  /* text-shadow: 0 0 10px var(--neon-glow); */
 }
 
 main:hover {
@@ -224,14 +278,19 @@ main:hover {
 .logo {
   width: 50%;
   max-width: 200px;
-  margin: 0 auto;
+  margin: 0 auto 15px;
 }
 
 h1 {
-  margin: 0 auto;
+  margin: 0 auto 15px;
   font-size: 3em;
   color: var(--accent-color);
   text-shadow: 0 0 20px var(--neon-glow);
+}
+
+/* Robot icon styling */
+.robot-icon {
+  font-size: 0.9em;
 }
 
 p {
@@ -244,11 +303,25 @@ p {
   Form controls
 ========================== */
 
+/* Form group styling */
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  color: white;
+  font-weight: bold;
+  text-align: left;
+}
+
 input[type="search"],
 select {
   width: 100%;
   padding: 12px;
-  margin: 10px 0;
+  margin: 5px 0 15px;
   background: #1b235f;
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.5);
@@ -276,6 +349,7 @@ input[type="search"]::placeholder {
   margin-bottom: 20px;
   border-radius: 10px;
   font-size: 1.3em;
+  align-self: center;
 }
 
 /* ==========================
@@ -283,7 +357,6 @@ input[type="search"]::placeholder {
 ========================== */
 
 #loader {
-  /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
   display: none;
   margin: 20px auto;
   width: 60px;
@@ -295,17 +368,21 @@ input[type="search"]::placeholder {
 }
 
 #resultsContainer {
-  /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
   display: none;
   width: 90%;
   max-width: 1000px;
-  margin: 10px auto;
+  margin: 10px auto 30px;
   padding: 20px;
   background: var(--dark-color);
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   max-height: 400px;
   overflow-y: auto;
+  transition: opacity 0.3s ease;
+}
+
+#matchesFound {
+  margin-top: 0;
 }
 
 .resultElement {
@@ -318,12 +395,19 @@ input[type="search"]::placeholder {
 
 .resultElement:hover {
   background: var(--hover-color);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
 }
 
 .resultElement a {
   color: var(--accent-color);
   font-size: 1.2em;
   text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* Match aria-hidden display property */
+[aria-hidden="true"] {
+  display: none;
 }
 
 /* ==========================
@@ -331,32 +415,11 @@ input[type="search"]::placeholder {
 ========================== */
 
 footer {
-  margin: 10px 0;
+  margin: 20px 0 30px;
   text-align: center;
   font-size: .9em;
   color: white;
-}
-
-/* ==========================
-  Keyframes for loaders
-========================== */
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
+  width: 100%;
 }
 
 /* ==========================
@@ -366,9 +429,9 @@ footer {
 /* Enhanced responsiveness for tablets: from 481px to 1024px */
 @media (min-width: 481px) and (max-width: 1024px) {
   main {
-    width: 90%;
-    max-width: 800px;
-    margin: 100px auto 20px;
+    width: 80%;
+    max-width: 700px;
+    margin: 30px auto;
     padding: 25px;
   }
 
@@ -387,19 +450,20 @@ footer {
   }
 
   #searchBtn {
-    padding: 13px 120px;
+    padding: 13px 80px;
     font-size: 1.3em;
   }
 
   .logo {
-    width: 30%;
-    margin-top: 15px;
+    width: 35%;
+    max-width: 180px;
+    margin: 0 auto 15px;
   }
 
   #resultsContainer {
-    width: 95%;
+    width: 85%;
     max-height: 350px;
-    margin: 10px auto;
+    margin: 20px auto 30px;
     padding: 18px;
   }
 
@@ -437,14 +501,14 @@ footer {
 
   main {
     width: 95%;
-    margin: 100px auto 20px;
+    margin: 20px auto;
     padding: 15px;
     border-radius: 8px;
   }
 
   .logo {
     width: 50%;
-    margin-top: 10px;
+    margin: 0 auto 10px;
   }
 
   h1 {
@@ -461,9 +525,10 @@ footer {
   select {
     padding: 10px;
     font-size: .9em;
+    margin: 5px 0 10px;
   }
 
-  #SearchBtn {
+  #searchBtn {
     width: 100%;
     padding: 12px 0;
     font-size: 1em;
@@ -472,7 +537,7 @@ footer {
 
   #resultsContainer {
     width: 95%;
-    margin: 10px auto;
+    margin: 10px auto 20px;
     padding: 15px;
     max-height: 300px;
   }

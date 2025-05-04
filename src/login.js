@@ -9,9 +9,9 @@ const SCOPES = 'email profile';
 // Function to login with Google
 document.getElementById('btnGoogleLogin').addEventListener('click', function () {
     try {
-        // Show loading spinner and hide error message
-        document.getElementById('loading').style.display = 'block';
+        // Hide error message and show loading spinner
         document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
 
         // Generate a random state for security
         const state = Math.random().toString(36).substring(2, 15);

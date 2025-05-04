@@ -18,7 +18,10 @@
     if (!isValidJWT(token)) {
       // Redirect to login page immediately if not authenticated
       const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = `./login.html?origin=${currentUrl}`;
+      // Simulate a mouse click:
+      //window.location.href = `./login.html?origin=${currentUrl}`;
+      // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
+      window.location.replace(`./login.html?origin=${currentUrl}`);
       // Stop further execution
       return;
     }
@@ -35,11 +38,18 @@
   function initializeApp() {
     // Only cache DOM elements after authentication is confirmed
     cacheElements();
-
     // Now it's safe to initialize the app
+
+    // Add Event listeners and other initialization codes
     elements.logoutBtn.addEventListener('click', logoutUser);
+
     loadInfo();
-    elements.searchBtn.addEventListener('click', searchOpport);
+
+    elements.searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      searchOpport();
+    });
+
     loadUserInfo();
 
     // Show the appHeader and appContainer now that authentication is confirmed
@@ -59,7 +69,7 @@
       queryInput: document.getElementById('query'),
       countrySelect: document.getElementById('country'),
       companySelect: document.getElementById('company'),
-      searchBtn: document.getElementById('searchBtn'),
+      searchForm: document.getElementById('searchForm'),
       loader: document.getElementById('loader'),
       resultsContainer: document.getElementById('resultsContainer'),
       matchesFound: document.getElementById('matchesFound'),
@@ -131,7 +141,10 @@
     }
     // Redirect to login page
     const currentUrl = encodeURIComponent(window.location.href); // Encode the current URL for redirection
-    window.location.href = `./login.html?origin=${currentUrl}`; // Redirect to login page with the current URL as origin parameter
+    // Simulate a mouse click:
+    //window.location.href = `./login.html?origin=${currentUrl}`;
+    // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
+    window.location.replace(`./login.html?origin=${currentUrl}`);
   }
 
   //=================================================================================
@@ -193,7 +206,10 @@
       if (!isValidJWT(token)) {
         // Redirect to login page if not authenticated
         const currentUrl = encodeURIComponent(window.location.href);
-        window.location.href = `./login.html?origin=${currentUrl}`;
+        // Simulate a mouse click:
+        //window.location.href = `./login.html?origin=${currentUrl}`;
+        // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
+        window.location.replace(`./login.html?origin=${currentUrl}`);
         return;
       }
 

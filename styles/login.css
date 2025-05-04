@@ -10,7 +10,14 @@
     --hover-color: #2b6dc6;
     --neon-glow: rgba(3, 123, 234, 0.7);
     --error-color: #ff3b30;
+    --error-glow: rgba(255, 59, 48, 0.7);
+    --error-bg: rgba(255, 59, 48, 0.1);
+    --dark-bg: #0a0a24;
+    --google-blue: #4285f4;
+    --white: #ffffff;
     --font-main: 'Arial', sans-serif;
+    --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    --box-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
 * {
@@ -25,7 +32,7 @@ body {
             var(--primary-color) 0%,
             var(--secondary-color) 50%,
             var(--tertiary-color) 100%);
-    color: white;
+    color: var(--white);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,22 +40,49 @@ body {
     overflow-x: hidden;
 }
 
+/* ==========================
+  NoScript Message
+========================== */
+
+.noscript-message {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: var(--error-bg);
+    border-left: 3px solid var(--error-color);
+    border-radius: 4px;
+    text-align: center;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+/* ==========================
+  Login Container
+========================== */
+
 .login-container {
     width: 90%;
     max-width: 400px;
     margin: 80px auto;
     padding: 40px 30px;
-    background: #0a0a24;
+    background: var(--dark-bg);
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--box-shadow);
     text-align: center;
-    transition: transform .3s, box-shadow .3s;
-    /* text-shadow: 0 0 10px var(--neon-glow); */
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .login-container:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    box-shadow: var(--box-shadow-hover);
 }
 
 /* App logo */
@@ -68,22 +102,29 @@ body {
     font-family: var(--font-main);
 }
 
+/* Description text */
+.login-container p {
+    margin-bottom: 25px;
+    color: var(--white);
+    font-size: 1.1em;
+}
+
+/* Error message */
 .error-message {
-    /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
     display: none;
     color: var(--error-color);
     font-weight: bold;
-    text-shadow: 0 0 5px rgba(255, 59, 48, 0.7);
+    text-shadow: 0 0 5px var(--error-glow);
     margin: 20px 0;
     padding: 8px;
     border-left: 3px solid var(--error-color);
     text-align: left;
-    background-color: rgba(255, 59, 48, 0.1);
+    background-color: var(--error-bg);
     border-radius: 4px;
 }
 
+/* Loading indicator */
 .loading {
-    /* display lso defined in the inline CSS to avoid displaying it before loading the JS */
     display: none;
     margin-top: 20px;
 }
@@ -91,11 +132,16 @@ body {
 .spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-    border-top: 4px solid #4285f4;
+    border-top: 4px solid var(--google-blue);
     width: 24px;
     height: 24px;
     animation: spin 1s linear infinite;
     margin: 0 auto;
+}
+
+.loading p {
+    margin-top: 10px;
+    font-size: 0.9em;
 }
 
 @keyframes spin {
@@ -111,21 +157,18 @@ body {
 footer {
     margin: 30px 0;
     text-align: center;
-    font-size: .9em;
-    color: white;
+    font-size: 0.9em;
+    color: var(--white);
 }
 
 /* ==========================
-    Responsiveness
-  ========================== */
+  Responsiveness
+========================== */
 
-/* Tablets (481px up to 1024px) */
-@media (min-width: 481px) and (max-width: 1024px) {
+/* Tablets and larger (481px and up) */
+@media (min-width: 481px) {
     .login-container {
         width: 85%;
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 25px;
     }
 
     .login-container h1 {
@@ -135,8 +178,16 @@ footer {
     .login-container p {
         font-size: 1.2em;
     }
+}
 
-    .logo-app {
+/* Desktop (769px and up) */
+@media (min-width: 769px) {
+    .login-container {
+        max-width: 500px;
+        padding: 40px;
+    }
+
+    .login-container .logo-app {
         width: 50%;
     }
 }
@@ -151,7 +202,7 @@ footer {
     }
 
     .login-container h1 {
-        font-size: 2em;
+        font-size: 1.8em;
         margin-bottom: 15px;
     }
 
@@ -161,7 +212,7 @@ footer {
     }
 
     footer {
-        font-size: .8em;
+        font-size: 0.8em;
         margin: 15px 0;
     }
 }

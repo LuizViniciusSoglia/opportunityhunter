@@ -8,48 +8,56 @@ const SCOPES = 'email profile';
 
 // Function to login with Google
 document.getElementById('btnGoogleLogin').addEventListener('click', function () {
-    // Show loading spinner
-    document.getElementById('loading').style.display = 'block';
+    try {
+        // Show loading spinner
+        document.getElementById('loading').style.display = 'block';
 
-    // Generate a random state for security
-    const state = Math.random().toString(36).substring(2, 15);
-    localStorage.setItem('oauth_state', state);
+        // Generate a random state for security
+        const state = Math.random().toString(36).substring(2, 15);
+        localStorage.setItem('oauth_state', state);
 
-    // Store the URL that the user came from to redirect them back after successful login
-    let redirect = './index.html'; // Default redirect URL if origin is not allowed
-    const urlParams = new URLSearchParams(window.location.search);
-    const origin = urlParams.get('origin');
-    if (origin) {
-        try {
-            const decodedOrigin = decodeURIComponent(origin);
-            const currentSiteUrl = window.location.origin; // protocol + "//" + host of the current page (login.html)
-            // Use the haveSameProtocolAndHost function to verify the origin is from our site
-            if (haveSameProtocolAndHost(decodedOrigin, currentSiteUrl)) {
-                redirect = decodedOrigin; // Only set redirect if origin has the same protocol and host as our site
-            } else {
-                console.log('Redirect blocked: Origin is from a different domain');
+        // Store the URL that the user came from to redirect them back after successful login
+        let redirect = './index.html'; // Default redirect URL if origin is not allowed
+        const urlParams = new URLSearchParams(window.location.search);
+        const origin = urlParams.get('origin');
+        if (origin) {
+            try {
+                const decodedOrigin = decodeURIComponent(origin);
+                const currentSiteUrl = window.location.origin; // protocol + "//" + host of the current page (login.html)
+                // Use the haveSameProtocolAndHost function to verify the origin is from our site
+                if (haveSameProtocolAndHost(decodedOrigin, currentSiteUrl)) {
+                    redirect = decodedOrigin; // Only set redirect if origin has the same protocol and host as our site
+                } else {
+                    console.log('Redirect blocked: Origin is from a different domain');
+                }
+            } catch (error) {
+                console.error('Invalid redirect URL parameter:', error);
+                // Keep the default redirect if there was an error
             }
-        } catch (error) {
-            console.error('Invalid redirect URL parameter:', error);
-            // Keep the default redirect if there was an error
         }
+
+        localStorage.setItem('redirect_after_login', redirect);
+
+        // OAuth2 request parameters
+        const authParams = new URLSearchParams({
+            client_id: CLIENT_ID,
+            redirect_uri: REDIRECT_URI,
+            response_type: 'code',
+            scope: SCOPES,
+            state: state,
+            access_type: 'offline',
+            prompt: 'consent'
+        });
+
+        // Redirect to Google consent page
+        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`;
+        document.getElementById('loading').style.display = 'none'; // Hide loading
+    } catch (error) {
+        document.getElementById('loading').style.display = 'none'; // Hide loading
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'Error redirecting to Google consent page';
+        console.error('Error:', error);
     }
-
-    localStorage.setItem('redirect_after_login', redirect);
-
-    // OAuth2 request parameters
-    const authParams = new URLSearchParams({
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        response_type: 'code',
-        scope: SCOPES,
-        state: state,
-        access_type: 'offline',
-        prompt: 'consent'
-    });
-
-    // Redirect to Google consent page
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`;
 });
 
 function haveSameProtocolAndHost(url1, url2) {
@@ -119,8 +127,6 @@ window.addEventListener('load', function () {
                     });
                     // Redirect to the page the user came from (origin) or default to index.html
                     const redirect = localStorage.getItem('redirect_after_login') || './index.html';
-                    // Clear the redirect after login from local storage to avoid redirect loops
-                    localStorage.removeItem('redirect_after_login');
                     window.location.href = redirect; // Redirect to the original page
                 } else {
                     document.getElementById('errorMessage').style.display = 'block';
@@ -133,10 +139,9 @@ window.addEventListener('load', function () {
                 console.error('Error:', error);
             })
             .finally(() => {
-                // Hide loading
-                document.getElementById('loading').style.display = 'none';
-                // Clear state
-                localStorage.removeItem('oauth_state');
+                document.getElementById('loading').style.display = 'none'; // Hide loading
+                localStorage.removeItem('oauth_state'); // Clear state
+                localStorage.removeItem('redirect_after_login'); // Clear the redirect location to avoid redirect loops
             });
     }
 });

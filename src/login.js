@@ -6,6 +6,15 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykRiacN1DrYLUS
 // Scopes for the OAuth2 request
 const SCOPES = 'email profile';
 
+window.addEventListener("popstate", function (event) {
+    // Check if the user navigated back to the login page
+    if (window.location.pathname === '/login.html') {
+        document.getElementById('loading').style.display = 'none'; // Hide loading
+        // Clear the redirect location to avoid redirect loops
+        localStorage.removeItem('redirect_after_login');
+    }
+});
+
 // Function to login with Google
 document.getElementById('btnGoogleLogin').addEventListener('click', function () {
     try {

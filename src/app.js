@@ -38,7 +38,8 @@
     elements.searchBtn.addEventListener('click', searchOpport);
     loadUserInfo();
 
-    // Show the appContainer now that authentication is confirmed
+    // Show the appHeader and appContainer now that authentication is confirmed
+    document.getElementById('appHeader').style.display = 'flex';
     document.getElementById('appContainer').style.display = 'block';
 
     // Hide the loading screen

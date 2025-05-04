@@ -14,6 +14,12 @@
 
 <body>
 
+  <noscript>
+    <div class="noscript-message">
+      <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</strong></p>
+    </div>
+  </noscript>
+
   <div id="authLoadingScreen">
     <div class="auth-spinner-container">
       <div class="auth-spinner"></div>
@@ -21,23 +27,16 @@
     </div>
   </div>
 
+  <header id="appHeader" aria-label="Application Header">
+    <div class="logo-app-header">OP</div>
+    <div class="user-info">
+      <img id="userAvatar" src="./img/avatardefault.png" alt="User avatar">
+      <span id="userName" class="user-name">Loading...</span>
+      <button id="logoutBtn" class="logout-btn">Sign out</button>
+    </div>
+  </header>
+
   <div id="appContainer">
-    <header>
-      <div class="logo-app-header">OP</div>
-      <div class="user-info">
-        <img id="userAvatar" src="./img/avatardefault.png" alt="User avatar">
-        <span id="userName" class="user-name">Loading...</span>
-        <button id="logoutBtn" class="logout-btn">Sign out</button>
-      </div>
-    </header>
-
-    <noscript>
-      <div class="noscript-message">
-        <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser
-            settings.</strong></p>
-      </div>
-    </noscript>
-
     <main id="mainContent" role="main" aria-label="Main Content">
       <img src="./img/logo.webp" alt="GenZ Crowd AI" class="logo">
       <h1>Opportunity Hunter&#x1F916;</h1>

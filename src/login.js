@@ -6,15 +6,6 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykRiacN1DrYLUS
 // Scopes for the OAuth2 request
 const SCOPES = 'email profile';
 
-window.addEventListener("popstate", function (event) {
-    // Check if the user navigated back to the login page
-    if (window.location.pathname === '/login.html') {
-        document.getElementById('loading').style.display = 'none'; // Hide loading
-        // Clear the redirect location to avoid redirect loops
-        localStorage.removeItem('redirect_after_login');
-    }
-});
-
 // Function to login with Google
 document.getElementById('btnGoogleLogin').addEventListener('click', function () {
     try {
@@ -85,6 +76,10 @@ function haveSameProtocolAndHost(url1, url2) {
 // Check if we're being redirected back from Google after login
 // code, state and error are URL parameters returned by Google after login (not use these names for other purposes)
 window.addEventListener('load', function () {
+
+    document.getElementById('loading').style.display = 'none'; // Hide loading spinner by default
+    document.getElementById('errorMessage').style.display = 'none'; // Hide error message by default
+
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const state = urlParams.get('state');

@@ -38,8 +38,8 @@
     elements.searchBtn.addEventListener('click', searchOpport);
     loadUserInfo();
 
-    // Show the main content now that authentication is confirmed
-    document.getElementById('mainContent').style.display = 'block';
+    // Show the appContainer now that authentication is confirmed
+    document.getElementById('appContainer').style.display = 'block';
 
     // Hide the loading screen
     document.getElementById('authLoadingScreen').style.display = 'none';

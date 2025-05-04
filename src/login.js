@@ -9,8 +9,9 @@ const SCOPES = 'email profile';
 // Function to login with Google
 document.getElementById('btnGoogleLogin').addEventListener('click', function () {
     try {
-        // Show loading spinner
+        // Show loading spinner and hide error message
         document.getElementById('loading').style.display = 'block';
+        document.getElementById('errorMessage').style.display = 'none';
 
         // Generate a random state for security
         const state = Math.random().toString(36).substring(2, 15);
@@ -50,7 +51,10 @@ document.getElementById('btnGoogleLogin').addEventListener('click', function () 
         });
 
         // Redirect to Google consent page
-        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`;
+        // Simulate a mouse click:
+        //window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`;
+        // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
+        window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`);
     } catch (error) {
         document.getElementById('loading').style.display = 'none'; // Hide loading
         document.getElementById('errorMessage').style.display = 'block';

@@ -344,11 +344,12 @@ input[type="search"]::placeholder {
 #searchBtn {
   display: inline-block;
   width: auto;
-  padding: 14px 70px;
+  padding: 15px 70px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
   font-size: 1.3em;
+  font-weight: bold;
   align-self: center;
 }
 
@@ -450,7 +451,7 @@ footer {
   }
 
   #searchBtn {
-    padding: 13px 80px;
+    padding: 15px 80px;
     font-size: 1.3em;
   }
 
@@ -501,7 +502,7 @@ footer {
 
   main {
     width: 95%;
-    margin: 20px auto;
+    margin: 10px auto;
     padding: 15px;
     border-radius: 8px;
   }
@@ -530,7 +531,7 @@ footer {
 
   #searchBtn {
     width: 100%;
-    padding: 12px 0;
+    padding: 15px 0;
     font-size: 1em;
     margin-top: 15px;
   }

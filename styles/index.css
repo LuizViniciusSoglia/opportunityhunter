@@ -288,8 +288,8 @@ h1 {
   text-shadow: 0 0 20px var(--neon-glow);
 }
 
-/* Robot icon styling */
-.robot-icon {
+/* Title icon styling */
+.title-icon {
   font-size: 0.9em;
 }
 

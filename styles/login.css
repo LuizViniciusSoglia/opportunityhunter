@@ -102,6 +102,11 @@ main {
     font-family: var(--font-main);
 }
 
+/* Title icon styling */
+.title-icon {
+    font-size: 0.9em;
+}
+
 /* Description text */
 .login-container p {
     margin-bottom: 25px;

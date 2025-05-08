@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Find opportunities across companies worldwide with Opportunity Hunter">
-  <meta name="theme-color" content="#009edb">
-  <title>Opportunity Hunter</title>
+  <meta name="description" content="Find opportunities across companies worldwide with GenZ Crowd AI Apps">
+  <title>GenZ Crowd AI Apps</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
-  <script src="./src/app.js" defer></script>
+  <script src="./src/shared-scripts.js" defer></script>
+  <script src="./src/index.js" defer></script>
   <link rel="icon" type="image/x-icon" href="./img/favicon.png">
+  <link rel="stylesheet" href="./styles/shared-styles.css">
   <link rel="stylesheet" href="./styles/index.css">
 </head>
 
@@ -17,7 +18,8 @@
 
   <noscript>
     <div class="noscript-message">
-      <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</strong></p>
+      <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser
+          settings.</strong></p>
     </div>
   </noscript>
 
@@ -28,58 +30,49 @@
     </div>
   </div>
 
-  <header id="appHeader" aria-label="Application Header">
-    <div class="logo-app-header">OP</div>
-    <div class="user-info">
-      <img id="userAvatar" src="./img/avatardefault.png" alt="User avatar">
-      <span id="userName" class="user-name">Loading...</span>
-      <button id="logoutBtn" class="logout-btn" aria-label="Sign out">Sign out</button>
-    </div>
-  </header>
+  <div id="navMenuAndHeaderElement"></div>
 
   <div id="appContainer">
-    <main id="mainContent" role="main" aria-label="Main Content">
-      <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
-      <h1>Opportunity Hunter <span class="title-icon" aria-hidden="true">&#x1F916;</span></h1>
-      <p>Select the criteria and click the Search button.</p>
-      <form id="searchForm" aria-label="Opportunity Search Form">
-        <div class="form-group">
-          <label for="query">Search for (optional):</label>
-          <input type="search" id="query" name="query" aria-label="Search Query"
-            placeholder="Search query (optional)">
-        </div>
+    <main role="main" aria-label="Main Content">
+      <div class="menu-title">
+        <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
+        <h1>Our Amazing Apps</h1>
+      </div>
 
-        <div class="form-group">
-          <label for="country">Choose the Country:</label>
-          <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
-            <option value="">Loading...</option>
-          </select>
-        </div>
+      <div class="menu-container" role="menu" aria-label="Menu">
+        <a class="menuItem item1" href="./opportunity-hunter.html" role="menuitem" aria-label="Opportunity Hunter">
+          <div class="icon-container">
+            <span class="title-icon" aria-hidden="true">&#x1F48E;</span>
+          </div>
+          <h1>Opportunity Hunter</h1>
+          <p>Find the best remote work opportunities with AI-powered job matching</p>
+          <span class="btn">Explore</span>
+        </a>
 
-        <div class="form-group">
-          <label for="company">Choose the Company:</label>
-          <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
-            <option value="">Loading...</option>
-          </select>
-        </div>
+        <a class="menuItem item2" href="./resume-maker-ai.html" role="menuitem" aria-label="Resume Maker AI">
+          <div class="icon-container">
+            <span class="title-icon" aria-hidden="true">&#x1F916;</span>
+          </div>
+          <h1>Resume Maker AI</h1>
+          <p>Build your professional resume using the power of AI assistance</p>
+          <span class="btn">Create</span>
+        </a>
 
-        <button type="submit" id="searchBtn" aria-label="Search opportunities">Search</button>
-      </form>
-
-      <div id="loader" aria-hidden="true" role="status"></div>
+        <a class="menuItem item3" href="./consulting.html" role="menuitem" aria-label="Personalized Consulting">
+          <div class="icon-container">
+            <span class="title-icon" aria-hidden="true">&#x1F4A1;</span>
+          </div>
+          <h1>Personalized Consulting</h1>
+          <p>Expert help for every stage of your remote job journey</p>
+          <span class="btn">Connect</span>
+        </a>
+      </div>
     </main>
-
-    <!-- Container for search results -->
-    <div id="resultsContainer" aria-label="Search Results">
-      <p id="matchesFound"></p>
-      <div id="resultsSearch"></div>
-    </div>
 
     <footer>
       <p>&copy; GenZ Crowd AI | All rights reserved.</p>
     </footer>
   </div>
-
 </body>
 
 </html>

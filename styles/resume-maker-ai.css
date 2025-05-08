@@ -1,0 +1,122 @@
+/* ==========================
+  Body
+========================== */
+
+body {
+  background: linear-gradient(135deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 50%,
+      var(--tertiary-color) 100%);
+}
+
+/* ==========================
+  App Container
+========================== */
+
+/* Hide appContainer by default until authentication is confirmed */
+#appContainer {
+  display: none;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ==========================
+  Main Container
+========================== */
+
+main {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background: var(--dark-color);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform .3s, box-shadow .3s;
+}
+
+main:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+}
+
+.logo {
+  width: 50%;
+  max-width: 200px;
+  margin: 0 auto 15px;
+}
+
+h1 {
+  margin: 0 auto 15px;
+  font-size: 3em;
+  color: var(--secondary-color);
+  text-shadow: 0 0 15px var(--secondary-color);
+}
+
+/* Title icon styling */
+.title-icon {
+  font-size: 0.9em;
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  line-height: 1.4;
+}
+
+/* Enhanced responsiveness for tablets: from 481px to 1024px */
+@media (min-width: 481px) and (max-width: 1024px) {
+  main {
+    width: 80%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+
+  p {
+    font-size: 1.3em;
+  }
+}
+
+/* ==========================
+  Breakpoint up to 480px
+========================== */
+
+@media (max-width: 480px) {
+  #appContainer {
+    display: none;
+    width: 100%;
+    max-width: 460px;
+    margin: 0;
+    padding: 0;
+  }
+
+  main {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .logo {
+    width: 50%;
+    margin: 0 auto 10px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: .9em;
+    margin-bottom: 15px;
+  }
+}

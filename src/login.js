@@ -2,7 +2,7 @@
 const CLIENT_ID = '877506323603-9fhfhbia4vdm3odosobiouf4n019vhar.apps.googleusercontent.com'; // Google Client ID
 const REDIRECT_URI = 'https://luizviniciussoglia.github.io/opportunityhunter/login.html'; // URL where Google will redirect after login (back to login page)
 // URL of Web App in Apps Script that handles the OAuth2 flow (backend)
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykRiacN1DrYLUSwW4blHC9IUi1CNy4Er8SznzT5vC3T-7oLZAJOBzNmj_p4c1HTk5Q/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySg3bwEA0H7L5cY57TnfCyamoylcHsjFLXKZdvtQJHB5AqaOB1bFSNSSC8H1COnqUl/exec';
 // Scopes for the OAuth2 request
 const SCOPES = 'email profile';
 

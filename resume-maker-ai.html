@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Build your professional resume using the power of AI assistance">
+  <title>Resume Maker AI</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
+  <script src="./src/shared-scripts.js" defer></script>
+  <script src="./src/resume-maker-ai.js" defer></script>
+  <link rel="icon" type="image/x-icon" href="./img/favicon.png">
+  <link rel="stylesheet" href="./styles/shared-styles.css">
+  <link rel="stylesheet" href="./styles/resume-maker-ai.css">
+</head>
+
+<body>
+
+  <noscript>
+    <div class="noscript-message">
+      <p><strong>JavaScript is required to use this application. Please enable JavaScript in your browser
+          settings.</strong></p>
+    </div>
+  </noscript>
+
+  <div id="authLoadingScreen">
+    <div class="auth-spinner-container">
+      <div class="auth-spinner"></div>
+      <div class="auth-text">Verifying credentials...</div>
+    </div>
+  </div>
+
+  <div id="navMenuAndHeaderElement"></div>
+
+  <div id="appContainer">
+    <main id="mainContent" role="main" aria-label="Main Content">
+      <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
+      <h1>Resume Maker AI <span class="title-icon" aria-hidden="true">&#x1F916;</span></h1>
+      <p>Build your professional resume using the power of AI assistance</p>
+    </main>
+
+    <footer>
+      <p>&copy; GenZ Crowd AI | All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+
+</html>

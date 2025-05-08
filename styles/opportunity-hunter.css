@@ -1,0 +1,289 @@
+/* ==========================
+  Body
+========================== */
+
+body {
+  background: linear-gradient(135deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 50%,
+      var(--tertiary-color) 100%);
+}
+
+/* ==========================
+  App Container
+========================== */
+
+/* Hide appContainer by default until authentication is confirmed */
+#appContainer {
+  display: none;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ==========================
+  Main Container
+========================== */
+
+main {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background: var(--dark-color);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform .3s, box-shadow .3s;
+}
+
+main:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+}
+
+.logo {
+  width: 50%;
+  max-width: 200px;
+  margin: 0 auto 15px;
+}
+
+h1 {
+  margin: 0 auto 15px;
+  font-size: 3em;
+  color: var(--accent-color);
+  text-shadow: 0 0 20px var(--neon-glow);
+}
+
+/* Title icon styling */
+.title-icon {
+  font-size: 0.9em;
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  line-height: 1.4;
+}
+
+/* ==========================
+  Form controls
+========================== */
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  color: white;
+  font-weight: bold;
+  text-align: left;
+}
+
+input[type="search"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0 15px;
+  background: #1b235f;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  font-size: 1em;
+  transition: border-color .3s, box-shadow .3s;
+}
+
+input[type="search"]:focus,
+select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+  outline: none;
+}
+
+input[type="search"]::placeholder {
+  color: #7981c1;
+}
+
+#searchBtn {
+  display: inline-block;
+  width: auto;
+  padding: 15px 80px;
+  border-radius: 12px;
+  font-size: 1.3em;
+  align-self: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* ==========================
+  Loader & results
+========================== */
+
+#loader {
+  display: none;
+  margin: 20px auto;
+  width: 60px;
+  height: 60px;
+  border: 8px solid rgba(255, 255, 255, 0.1);
+  border-top: 8px solid var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+#resultsContainer {
+  display: none;
+  width: 90%;
+  max-width: 1000px;
+  margin: 10px auto 30px;
+  padding: 20px;
+  background: var(--dark-color);
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  max-height: 400px;
+  overflow-y: auto;
+  transition: opacity 0.3s ease;
+}
+
+#matchesFound {
+  margin-top: 0;
+}
+
+.resultElement {
+  padding: 15px 20px;
+  margin-top: 15px;
+  background: #1b235f;
+  border-radius: 8px;
+  transition: background-color .3s, box-shadow .3s;
+}
+
+.resultElement:hover {
+  background: var(--hover-color);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+}
+
+.resultElement a {
+  color: var(--accent-color);
+  font-size: 1.2em;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* Enhanced responsiveness for tablets: from 481px to 1024px */
+@media (min-width: 481px) and (max-width: 1024px) {
+  main {
+    width: 80%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+
+  p {
+    font-size: 1.3em;
+  }
+
+  input[type="search"],
+  select {
+    padding: 11px;
+    font-size: 1.2em;
+  }
+
+  .logo {
+    width: 35%;
+    max-width: 180px;
+    margin: 0 auto 15px;
+  }
+
+  #resultsContainer {
+    width: 85%;
+    max-height: 350px;
+    margin: 20px auto 30px;
+    padding: 18px;
+  }
+
+  .resultElement {
+    padding: 14px 18px;
+    margin-top: 12px;
+    font-size: 1em;
+  }
+
+  .resultElement a {
+    font-size: 1.1em;
+  }
+}
+
+/* ==========================
+  Breakpoint up to 480px
+========================== */
+
+@media (max-width: 480px) {
+  #appContainer {
+    display: none;
+    width: 100%;
+    max-width: 460px;
+    margin: 0;
+    padding: 0;
+  }
+
+  main {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .logo {
+    width: 50%;
+    margin: 0 auto 10px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: .9em;
+    margin-bottom: 15px;
+  }
+
+  input[type="search"],
+  select {
+    padding: 10px;
+    font-size: .9em;
+    margin: 5px 0 10px;
+  }
+
+  #searchBtn {
+    width: 100%;
+    padding: 18px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  #resultsContainer {
+    width: 95%;
+    margin: 10px auto 20px;
+    padding: 15px;
+    max-height: 300px;
+  }
+
+  .resultElement {
+    padding: 12px 15px;
+    font-size: .9em;
+  }
+
+  .resultElement a {
+    font-size: 1em;
+  }
+}

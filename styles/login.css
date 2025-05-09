@@ -7,13 +7,11 @@
     --secondary-color: #ff3380;
     --tertiary-color: #aa00ff;
     --accent-color: #00d2ff;
-    --hover-color: #2b6dc6;
+    --dark-bg: #0a0a24;
     --neon-glow: rgba(3, 123, 234, 0.7);
     --error-color: #ff3b30;
     --error-glow: rgba(255, 59, 48, 0.7);
-    --error-bg: rgba(255, 59, 48, 0.1);
-    --dark-bg: #0a0a24;
-    --google-blue: #4285f4;
+    --error-bg: rgba(255, 59, 48, 0.3);
     --white: #ffffff;
     --font-main: 'Arial', sans-serif;
     --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
@@ -70,8 +68,8 @@ main {
 
 .login-container {
     width: 90%;
-    max-width: 400px;
-    margin: 80px auto;
+    max-width: 500px;
+    margin: 20px auto;
     padding: 40px 30px;
     background: var(--dark-bg);
     border-radius: 12px;
@@ -96,7 +94,7 @@ main {
 /* Title */
 .login-container h1 {
     margin-bottom: 20px;
-    font-size: 2em;
+    font-size: 2.5em;
     color: var(--accent-color);
     text-shadow: 0 0 20px var(--neon-glow);
     font-family: var(--font-main);
@@ -111,7 +109,7 @@ main {
 .login-container p {
     margin-bottom: 25px;
     color: var(--white);
-    font-size: 1.1em;
+    font-size: 1.2em;
 }
 
 /* Error message */
@@ -137,7 +135,7 @@ main {
 .spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-    border-top: 4px solid var(--google-blue);
+    border-top: 4px solid #4285f4;
     width: 24px;
     height: 24px;
     animation: spin 1s linear infinite;
@@ -170,39 +168,32 @@ footer {
   Responsiveness
 ========================== */
 
-/* Tablets and larger (481px and up) */
-@media (min-width: 481px) {
+/* Tablets (481px up to 1024px) */
+@media (min-width: 481px) and (max-width: 1024px) {
     .login-container {
         width: 85%;
+        max-width: 700px;
     }
 
     .login-container h1 {
-        font-size: 2.5em;
+        font-size: 3em;
     }
 
     .login-container p {
+        font-size: 1.5em;
+    }
+    footer {
         font-size: 1.2em;
-    }
-}
-
-/* Desktop (769px and up) */
-@media (min-width: 769px) {
-    .login-container {
-        max-width: 500px;
-        padding: 40px;
-    }
-
-    .login-container .logo-app {
-        width: 50%;
+        margin: 15px 0;
     }
 }
 
 /* Mobile (up to 480px) */
 @media (max-width: 480px) {
     .login-container {
-        width: 95%;
+        width: 100%;
         margin: 20px auto;
-        padding: 20px;
+        padding: 40px 20px;
         border-radius: 8px;
     }
 

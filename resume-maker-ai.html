@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Build your professional resume using the power of AI assistance">
   <title>Resume Maker AI</title>
+  <link rel="stylesheet" href="./styles/shared-styles.css">
+  <link rel="stylesheet" href="./styles/resume-maker-ai.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
   <script src="./src/shared-scripts.js" defer></script>
   <script src="./src/resume-maker-ai.js" defer></script>
   <link rel="icon" type="image/x-icon" href="./img/favicon.png">
-  <link rel="stylesheet" href="./styles/shared-styles.css">
-  <link rel="stylesheet" href="./styles/resume-maker-ai.css">
 </head>
 
 <body>
@@ -34,10 +34,193 @@
 
   <div id="appContainer">
     <main id="mainContent" role="main" aria-label="Main Content">
-      <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
-      <h1>Resume Maker AI <span class="title-icon" aria-hidden="true">&#x1F916;</span></h1>
-      <p>Build your professional resume using the power of AI assistance</p>
+      <div class="descriptionContainer">
+        <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
+        <h1>Resume Maker AI <span class="title-icon" aria-hidden="true">&#x1F916;</span></h1>
+        <p>Build your professional resume using the power of AI assistance</p>
+      </div>
     </main>
+
+    <!-- ====== Resume Maker UI (Dark Theme) ====== -->
+    <div id="resumeForm">
+      <h2>Create Your Resume</h2>
+      <form id="cvForm" novalidate>
+        <!-- Personal Info -->
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" maxlength="30" required>
+          <div class="char-limit-msg hidden"></div>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" maxlength="30" required>
+          <div class="char-limit-msg hidden"></div>
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" maxlength="50" autocomplete="email" required>
+          <div class="char-limit-msg hidden"></div>
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" maxlength="100" autocomplete="street-address" required>
+          <div class="char-limit-msg hidden"></div>
+        </div>
+
+        <!-- Education -->
+        <div class="form-group">
+          <label>Educational Experiences</label>
+          <div id="educationList"></div>
+          <button type="button" id="addEducationBtn" class="btn-add">+ Add Education</button>
+          <div id="educationError" class="error-msg hidden">
+            Maximum of 3 education entries reached.
+          </div>
+        </div>
+
+        <!-- Professional Experience -->
+        <div class="form-group">
+          <label>Professional Experiences</label>
+          <div id="experienceList"></div>
+          <button type="button" id="addExperienceBtn" class="btn-add">+ Add Experience</button>
+          <div id="experienceError" class="error-msg hidden">
+            Maximum of 3 experience entries reached.
+          </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="form-group">
+          <label>Languages</label>
+          <div id="languageList">
+            <div class="language-row">
+              <input type="text" name="language[]" maxlength="20" placeholder="Language">
+              <div class="char-limit-msg hidden"></div>
+              <select name="languageLevel[]">
+                <option value="">Level</option>
+                <option>Basic</option>
+                <option>Intermediate</option>
+                <option>Fluent</option>
+                <option>Native</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" id="addLanguageBtn" class="btn-add">+ Add Language</button>
+          <div id="languageError" class="error-msg hidden">
+            Maximum of 4 languages reached.
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="form-group">
+          <label for="skills">Skills <small>(comma-separated)</small></label>
+          <textarea id="skills" name="skills" rows="2" maxlength="100"
+            placeholder="e.g. JavaScript, Communication"></textarea>
+          <div class="char-limit-msg hidden"></div>
+        </div>
+
+        <!-- Summary -->
+        <div class="form-group">
+          <label for="summary">Short Summary</label>
+          <textarea id="summary" name="summary" rows="3" maxlength="300"
+            placeholder="A brief professional summary…"></textarea>
+          <div class="char-limit-msg hidden"></div>
+          <button type="button" class="btn-ai" id="generateSummaryBtn">
+            &#x1F916; Summary with AI
+          </button>
+        </div>
+
+        <!-- Generate -->
+        <div class="form-actions">
+          <button type="button" id="generateCvBtn" class="btn-primary">
+            Generate Resume
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ==== EDUCATION MODAL ==== -->
+    <div id="modalEdu" class="modal hidden">
+      <div class="modal-content">
+        <h3>Add Education</h3>
+        <form id="modalEduForm" novalidate>
+          <div class="form-group">
+            <label for="eduInstitution">Institution Name</label>
+            <input type="text" id="eduInstitution" name="institution" maxlength="50" required>
+            <div class="char-limit-msg hidden"></div>
+          </div>
+          <div class="form-group">
+            <label for="eduLocation">City, Country</label>
+            <input type="text" id="eduLocation" name="location" maxlength="50" required>
+            <div class="char-limit-msg hidden"></div>
+          </div>
+          <div class="form-group">
+            <label for="eduStart">Start Date</label>
+            <input type="month" id="eduStart" name="start" required>
+          </div>
+          <div class="form-group">
+            <label for="eduEnd">End Date</label>
+            <input type="month" id="eduEnd" name="end">
+          </div>
+          <div class="form-group">
+            <label for="eduDesc">Description</label>
+            <textarea id="eduDesc" name="description" rows="3" maxlength="200" required></textarea>
+            <div class="char-limit-msg hidden"></div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="cancelEduBtn" class="btn-secondary">Cancel</button>
+            <button type="button" id="saveEduBtn" class="btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==== EXPERIENCE MODAL ==== -->
+    <div id="modalExp" class="modal hidden">
+      <div class="modal-content">
+        <h3>Add Experience</h3>
+        <form id="modalExpForm" novalidate>
+          <div class="form-group">
+            <label for="expCompany">Company Name</label>
+            <input type="text" id="expCompany" name="company" maxlength="50" autocomplete="organization" required>
+            <div class="char-limit-msg hidden"></div>
+          </div>
+          <div class="form-group">
+            <label for="expLocation">City, Country</label>
+            <input type="text" id="expLocation" name="location" maxlength="50" required>
+            <div class="char-limit-msg hidden"></div>
+          </div>
+          <div class="form-group">
+            <label for="expStart">Start Date</label>
+            <input type="month" id="expStart" name="start" required>
+          </div>
+          <div class="form-group">
+            <label for="expEnd">End Date</label>
+            <input type="month" id="expEnd" name="end">
+          </div>
+          <div class="form-group">
+            <label for="expDesc">Description</label>
+            <textarea id="expDesc" name="description" rows="3" maxlength="200" required></textarea>
+            <div class="char-limit-msg hidden"></div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="cancelExpBtn" class="btn-secondary">Cancel</button>
+            <button type="button" id="saveExpBtn" class="btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==== PREVIEW & PDF ==== -->
+    <div id="resumePreview" class="hidden"></div>
+    <div id="previewActions" class="hidden">
+      <button type="button" class="btn-secondary" id="editBtn">Edit</button>
+      <button type="button" class="btn-primary" id="downloadPdfBtn">
+        Download PDF
+      </button>
+    </div>
 
     <footer>
       <p>&copy; GenZ Crowd AI | All rights reserved.</p>

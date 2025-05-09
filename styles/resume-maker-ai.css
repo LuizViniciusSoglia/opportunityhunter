@@ -23,10 +23,10 @@ body {
 }
 
 /* ==========================
-  Main Container
+  Description Container
 ========================== */
 
-main {
+.descriptionContainer {
   width: 100%;
   max-width: 600px;
   margin: 20px auto;
@@ -36,11 +36,6 @@ main {
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   transition: transform .3s, box-shadow .3s;
-}
-
-main:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
 .logo {
@@ -67,9 +62,302 @@ p {
   line-height: 1.4;
 }
 
-/* Enhanced responsiveness for tablets: from 481px to 1024px */
+/* ====================================================================== */
+/*                        resume-maker-ai app                             */
+/* ====================================================================== */
+
+/* Utility */
+.hidden {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/*                           Form Container                              */
+/* ---------------------------------------------------------------------- */
+#resumeForm {
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 2rem;
+  background: var(--dark-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+#resumeForm h2 {
+  margin-bottom: 1.5rem;
+  color: var(--tertiary-color);
+  text-shadow: 0 0 15px var(--tertiary-color);
+  font-family: var(--font-main);
+}
+
+/* ---------------------------------------------------------------------- */
+/*                           Form Elements                               */
+/* ---------------------------------------------------------------------- */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+  color: #fff;
+  font-family: var(--font-main);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background: #1b235f;
+  color: white;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  line-height: 1.3;
+  transition: border-color .3s, box-shadow .3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+  outline: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder,
+.form-group select::placeholder {
+  color: #7981c1;
+}
+
+.form-group input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Character-limit notice */
+.char-limit-msg {
+  color: #009edb;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.educationItem {
+  margin: 10px 0;
+  padding: 0 0.6rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background: #501b5f;
+  color: white;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  overflow-wrap: break-word;
+}
+
+.experienceItem {
+  margin: 10px 0;
+  padding: 0 0.6rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background: #1b4a5f;
+  color: white;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  overflow-wrap: break-word;
+}
+
+/* Flex layout for language rows */
+.language-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/*                              Action Buttons                           */
+/* ---------------------------------------------------------------------- */
+.btn-add {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background: var(--tertiary-color);
+  box-shadow: 0 0 10px var(--tertiary-color);
+  color: #121212;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+}
+
+.btn-ai {
+  margin-top: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 10px 10px;
+  font-size: 0.9rem;
+}
+
+.form-actions,
+#previewActions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-family: var(--font-main);
+  font-weight: bold;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #121212;
+}
+
+.btn-secondary {
+  background: #333;
+  color: #ddd;
+  margin-right: 0.75rem;
+  box-shadow: 0 0 10px #333;
+}
+
+/* ---------------------------------------------------------------------- */
+/*                         Resume Preview Styles                         */
+/* ---------------------------------------------------------------------- */
+.cv-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  line-height: 1.5;
+}
+
+.cv-container h1 {
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.cv-container h2 {
+  margin-top: 1.2rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.2rem;
+  color: var(--accent-color);
+}
+
+.cv-container p {
+  margin: 0.5rem 0;
+}
+
+.cv-container ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/*                            Modal Styles                               */
+/* ---------------------------------------------------------------------- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  z-index: 1;
+}
+
+.modal input[type="month"] {
+  color-scheme: dark;
+}
+
+.modal.hidden {
+  /* ensure hidden modals stay hidden */
+  display: none;
+}
+
+.modal-content {
+  margin-top: 90px;
+  background: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  color: #e0e0e0;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+  text-shadow: 0 0 20px var(--neon-glow);
+}
+
+.modal-actions {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.error-msg {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+/* ==========================
+  All hover effects
+========================== */
+
+@media (hover: hover) and (pointer: fine) {
+  .descriptionContainer:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  }
+
+  .btn-secondary:hover {
+    background: #2a2a2a;
+    box-shadow: 0 0 20px #333;
+    transform: translateY(-2px);
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/*                       Responsive Adjustments                          */
+/* ---------------------------------------------------------------------- */
+@media (max-width: 768px) {
+
+  #resumeForm,
+  .cv-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .language-row {
+    flex-direction: column;
+  }
+}
+
+/* ==========================
+  Responsiveness for tablets: from 481px to 1024px
+========================== */
+
 @media (min-width: 481px) and (max-width: 1024px) {
-  main {
+  .descriptionContainer {
     width: 80%;
     max-width: 700px;
     margin: 30px auto;
@@ -98,10 +386,16 @@ p {
     padding: 0;
   }
 
-  main {
+  .descriptionContainer {
     width: 95%;
     margin: 10px auto;
     padding: 15px;
+    border-radius: 8px;
+  }
+
+  #resumeForm {
+    width: 95%;
+    margin: 10px auto;
     border-radius: 8px;
   }
 

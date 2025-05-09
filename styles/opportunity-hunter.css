@@ -23,10 +23,10 @@ body {
 }
 
 /* ==========================
-  Main Container
+  Form Container
 ========================== */
 
-main {
+.formContainer {
   width: 100%;
   max-width: 600px;
   margin: 20px auto;
@@ -36,11 +36,6 @@ main {
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   transition: transform .3s, box-shadow .3s;
-}
-
-main:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
 .logo {
@@ -161,11 +156,6 @@ input[type="search"]::placeholder {
   transition: background-color .3s, box-shadow .3s;
 }
 
-.resultElement:hover {
-  background: var(--hover-color);
-  box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-}
-
 .resultElement a {
   color: var(--accent-color);
   font-size: 1.2em;
@@ -173,9 +163,28 @@ input[type="search"]::placeholder {
   transition: color 0.2s ease;
 }
 
-/* Enhanced responsiveness for tablets: from 481px to 1024px */
+/* ==========================
+  All hover effects
+========================== */
+
+@media (hover: hover) and (pointer: fine) {
+  .resultElement:hover {
+    background: #2b6dc6;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+  }
+
+  .formContainer:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* ==========================
+  Responsiveness for tablets: from 481px to 1024px
+========================== */
+
 @media (min-width: 481px) and (max-width: 1024px) {
-  main {
+  .formContainer {
     width: 80%;
     max-width: 700px;
     margin: 30px auto;
@@ -233,7 +242,7 @@ input[type="search"]::placeholder {
     padding: 0;
   }
 
-  main {
+  .formContainer {
     width: 95%;
     margin: 10px auto;
     padding: 15px;

@@ -23,10 +23,10 @@ body {
 }
 
 /* ==========================
-  Main Container
+  Description Container
 ========================== */
 
-main {
+.descriptionContainer {
   width: 100%;
   max-width: 600px;
   margin: 20px auto;
@@ -36,11 +36,6 @@ main {
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   transition: transform .3s, box-shadow .3s;
-}
-
-main:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
 .logo {
@@ -67,9 +62,23 @@ p {
   line-height: 1.4;
 }
 
-/* Enhanced responsiveness for tablets: from 481px to 1024px */
+/* ==========================
+  All hover effects
+========================== */
+
+@media (hover: hover) and (pointer: fine) {
+  .descriptionContainer:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* ==========================
+  Responsiveness for tablets: from 481px to 1024px
+========================== */
+
 @media (min-width: 481px) and (max-width: 1024px) {
-  main {
+  .descriptionContainer {
     width: 80%;
     max-width: 700px;
     margin: 30px auto;
@@ -86,7 +95,7 @@ p {
 }
 
 /* ==========================
-  Breakpoint up to 480px
+  Breakpoint up to 480px: cellphones
 ========================== */
 
 @media (max-width: 480px) {
@@ -98,7 +107,7 @@ p {
     padding: 0;
   }
 
-  main {
+  .descriptionContainer {
     width: 95%;
     margin: 10px auto;
     padding: 15px;

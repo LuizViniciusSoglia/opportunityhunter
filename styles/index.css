@@ -21,9 +21,11 @@ body::before {
       var(--dark-color) 90%);
   opacity: 0.1;
   z-index: -1;
-  animation: backgroundPulse 15s infinite alternate;
+  /* animation: backgroundPulse 15s infinite alternate; */
 }
 
+/* Background animation for the body */
+/*
 @keyframes backgroundPulse {
   0% {
     opacity: 0.1;
@@ -40,6 +42,7 @@ body::before {
     transform: scale(1);
   }
 }
+*/
 
 /* ==========================
   App Container
@@ -55,10 +58,10 @@ body::before {
 }
 
 /* ==========================
-  Main Container
+  Description Container
 ========================== */
 
-main {
+.descriptionContainer {
   width: 100%;
   padding: 20px 0;
 }
@@ -77,11 +80,7 @@ main {
   /* backdrop-filter: blur(10px); */
   position: relative;
   overflow: hidden;
-}
-
-.menu-title:hover {
-  border-bottom: 1px solid rgba(0, 210, 255, 0.8);
-  box-shadow: inset 0 -1px 10px rgba(255, 255, 255, 0.2), 0 0 15px var(--neon-glow);
+  transition: all 0.3s ease;
 }
 
 .menu-title::before {
@@ -179,28 +178,12 @@ main {
   transform: scaleX(0);
 }
 
-.menuItem:hover {
-  transform: translateY(-15px) scale(1.03);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-}
-
-.menuItem:hover::after {
-  transform: scaleX(1);
-}
-
 /* Color specific menu items */
 .item1 {
   background: linear-gradient(135deg,
       rgba(10, 10, 36, 0.8) 0%,
       rgba(0, 158, 219, 0.2) 100%);
   border: 1px solid rgba(0, 210, 255, 0.3);
-}
-
-.item1:hover {
-  background: linear-gradient(135deg,
-      rgba(10, 10, 36, 0.9) 0%,
-      rgba(0, 158, 219, 0.3) 100%);
-  box-shadow: 0 15px 40px rgba(0, 158, 219, 0.3);
 }
 
 .item1::after {
@@ -217,13 +200,6 @@ main {
   border: 1px solid rgba(255, 51, 128, 0.3);
 }
 
-.item2:hover {
-  background: linear-gradient(135deg,
-      rgba(10, 10, 36, 0.9) 0%,
-      rgba(255, 51, 128, 0.3) 100%);
-  box-shadow: 0 15px 40px rgba(255, 51, 128, 0.3);
-}
-
 .item2::after {
   background: linear-gradient(to right,
       transparent,
@@ -236,13 +212,6 @@ main {
       rgba(10, 10, 36, 0.8) 0%,
       rgba(170, 0, 255, 0.2) 100%);
   border: 1px solid rgba(170, 0, 255, 0.3);
-}
-
-.item3:hover {
-  background: linear-gradient(135deg,
-      rgba(10, 10, 36, 0.9) 0%,
-      rgba(170, 0, 255, 0.3) 100%);
-  box-shadow: 0 15px 40px rgba(170, 0, 255, 0.3);
 }
 
 .item3::after {
@@ -312,10 +281,6 @@ main {
   font-weight: 700;
 }
 
-.menuItem:hover h1 {
-  transform: scale(1.05);
-}
-
 .item1 h1 {
   color: var(--accent-color);
   text-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
@@ -375,34 +340,146 @@ main {
   color: var(--tertiary-color);
 }
 
-.menuItem:hover .btn {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* ==========================
+  All hover effects
+========================== */
 
-.item1:hover .btn {
-  background: rgba(0, 210, 255, 0.1);
-  border-color: var(--accent-color);
-  box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-}
+@media (hover: hover) and (pointer: fine) {
+  .menu-title:hover {
+    border-bottom: 1px solid rgba(0, 210, 255, 0.8);
+    box-shadow: inset 0 -1px 10px rgba(255, 255, 255, 0.2), 0 0 15px var(--neon-glow);
+  }
 
-.item2:hover .btn {
-  background: rgba(255, 51, 128, 0.1);
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 15px rgba(255, 51, 128, 0.3);
-}
+  .item1:hover .btn {
+    background: rgba(0, 210, 255, 0.1);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+  }
 
-.item3:hover .btn {
-  background: rgba(170, 0, 255, 0.1);
-  border-color: var(--tertiary-color);
-  box-shadow: 0 0 15px rgba(170, 0, 255, 0.3);
+  .item2:hover .btn {
+    background: rgba(255, 51, 128, 0.1);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(255, 51, 128, 0.3);
+  }
+
+  .item3:hover .btn {
+    background: rgba(170, 0, 255, 0.1);
+    border-color: var(--tertiary-color);
+    box-shadow: 0 0 15px rgba(170, 0, 255, 0.3);
+  }
+
+  .menuItem:hover {
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .menuItem:hover::after {
+    transform: scaleX(1);
+  }
+
+  .item1:hover {
+    background: linear-gradient(135deg,
+        rgba(10, 10, 36, 0.9) 0%,
+        rgba(0, 158, 219, 0.3) 100%);
+    box-shadow: 0 15px 40px rgba(0, 158, 219, 0.3);
+  }
+
+  .item2:hover {
+    background: linear-gradient(135deg,
+        rgba(10, 10, 36, 0.9) 0%,
+        rgba(255, 51, 128, 0.3) 100%);
+    box-shadow: 0 15px 40px rgba(255, 51, 128, 0.3);
+  }
+
+  .item3:hover {
+    background: linear-gradient(135deg,
+        rgba(10, 10, 36, 0.9) 0%,
+        rgba(170, 0, 255, 0.3) 100%);
+    box-shadow: 0 15px 40px rgba(170, 0, 255, 0.3);
+  }
+
+  .menuItem:hover h1 {
+    transform: scale(1.05);
+  }
+
+  .menuItem:hover .btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================
-  Breakpoint up to 1024px
+  Styles for touch devices like phones and tablets (apply the "hover style" as the normal style
 ========================== */
 
-/* Enhanced responsiveness for tablets: from 481px to 1024px */
+@media (hover: none) and (pointer: coarse) {
+  .menu-title {
+    border-bottom: 1px solid rgba(0, 210, 255, 0.8);
+    box-shadow: inset 0 -1px 10px rgba(255, 255, 255, 0.2), 0 0 15px var(--neon-glow);
+  }
+
+  .item1 .btn {
+    background: rgba(0, 210, 255, 0.1);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+  }
+
+  .item2 .btn {
+    background: rgba(255, 51, 128, 0.1);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(255, 51, 128, 0.3);
+  }
+
+  .item3 .btn {
+    background: rgba(170, 0, 255, 0.1);
+    border-color: var(--tertiary-color);
+    box-shadow: 0 0 15px rgba(170, 0, 255, 0.3);
+  }
+
+  .menuItem {
+    /* transform: translateY(-15px) scale(1.03); */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .menuItem::after {
+    transform: scaleX(1);
+  }
+
+  .item1 {
+    background: linear-gradient(135deg,
+        rgba(10, 10, 36, 0.9) 0%,
+        rgba(0, 158, 219, 0.3) 100%);
+    box-shadow: 0 15px 40px rgba(0, 158, 219, 0.3);
+  }
+
+  .item2 {
+    background: linear-gradient(135deg,
+        rgba(10, 10, 36, 0.9) 0%,
+        rgba(255, 51, 128, 0.3) 100%);
+    box-shadow: 0 15px 40px rgba(255, 51, 128, 0.3);
+  }
+
+  .item3 {
+    background: linear-gradient(135deg,
+        rgba(10, 10, 36, 0.9) 0%,
+        rgba(170, 0, 255, 0.3) 100%);
+    box-shadow: 0 15px 40px rgba(170, 0, 255, 0.3);
+  }
+
+  .menuItem h1 {
+    transform: scale(1.05);
+  }
+
+  .menuItem .btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================
+  Responsiveness for tablets: from 481px to 1024px
+========================== */
+
 @media (min-width: 481px) and (max-width: 1024px) {
   .menu-title {
     width: 90%;

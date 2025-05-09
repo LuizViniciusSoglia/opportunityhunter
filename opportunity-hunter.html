@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Find opportunities across companies worldwide with Opportunity Hunter">
   <title>Opportunity Hunter</title>
+  <link rel="stylesheet" href="./styles/shared-styles.css">
+  <link rel="stylesheet" href="./styles/opportunity-hunter.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
   <script src="./src/shared-scripts.js" defer></script>
   <script src="./src/opportunity-hunter.js" defer></script>
   <link rel="icon" type="image/x-icon" href="./img/favicon.png">
-  <link rel="stylesheet" href="./styles/shared-styles.css">
-  <link rel="stylesheet" href="./styles/opportunity-hunter.css">
 </head>
 
 <body>
@@ -34,33 +34,36 @@
 
   <div id="appContainer">
     <main id="mainContent" role="main" aria-label="Main Content">
-      <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
-      <h1>Opportunity Hunter <span class="title-icon" aria-hidden="true">&#x1F48E;</span></h1>
-      <p>Select the criteria and click the Search button.</p>
-      <form id="searchForm" aria-label="Opportunity Search Form">
-        <div class="form-group">
-          <label for="query">Search for (optional):</label>
-          <input type="search" id="query" name="query" aria-label="Search Query" placeholder="Search query (optional)">
-        </div>
+      <div class="formContainer">
+        <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
+        <h1>Opportunity Hunter <span class="title-icon" aria-hidden="true">&#x1F48E;</span></h1>
+        <p>Select the criteria and click the Search button.</p>
+        <form id="searchForm" aria-label="Opportunity Search Form">
+          <div class="form-group">
+            <label for="query">Search for (optional):</label>
+            <input type="search" id="query" name="query" aria-label="Search Query"
+              placeholder="Search query (optional)">
+          </div>
 
-        <div class="form-group">
-          <label for="country">Choose the Country:</label>
-          <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
-            <option value="">Loading...</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="country">Choose the Country:</label>
+            <select name="country" id="country" autocomplete="off" required aria-label="Country Select">
+              <option value="">Loading...</option>
+            </select>
+          </div>
 
-        <div class="form-group">
-          <label for="company">Choose the Company:</label>
-          <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
-            <option value="">Loading...</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="company">Choose the Company:</label>
+            <select name="company" id="company" autocomplete="off" required aria-label="Company Select">
+              <option value="">Loading...</option>
+            </select>
+          </div>
 
-        <button type="submit" id="searchBtn" aria-label="Search opportunities">Search</button>
-      </form>
+          <button type="submit" id="searchBtn" aria-label="Search opportunities">Search</button>
+        </form>
 
-      <div id="loader" aria-hidden="true" role="status"></div>
+        <div id="loader" aria-hidden="true" role="status"></div>
+      </div>
     </main>
 
     <!-- Container for search results -->

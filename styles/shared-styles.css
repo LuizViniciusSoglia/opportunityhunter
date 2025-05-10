@@ -196,6 +196,8 @@ button {
 
 button:active {
     transform: translateY(1px);
+    /* Box that Google Chrome shows when you click on an element */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .logout-btn {
@@ -203,6 +205,15 @@ button:active {
     border-radius: 8px;
     padding: 8px 16px;
     font-weight: bold;
+}
+
+/* ==========================
+Hyperlink styles
+========================== */
+
+a:active {
+    /* Box that Google Chrome shows when you click on an element */
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* ==========================

@@ -9,6 +9,17 @@ body {
       var(--tertiary-color) 100%);
 }
 
+h1 {
+  margin: 0 auto 15px;
+  font-size: 3em;
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  line-height: 1.4;
+}
+
 /* ==========================
   App Container
 ========================== */
@@ -38,28 +49,20 @@ body {
   transition: transform .3s, box-shadow .3s;
 }
 
+.descriptionContainer h1 {
+  color: var(--secondary-color);
+  text-shadow: 0 0 15px var(--secondary-color);
+}
+
 .logo {
   width: 50%;
   max-width: 200px;
   margin: 0 auto 15px;
 }
 
-h1 {
-  margin: 0 auto 15px;
-  font-size: 3em;
-  color: var(--secondary-color);
-  text-shadow: 0 0 15px var(--secondary-color);
-}
-
 /* Title icon styling */
 .title-icon {
   font-size: 0.9em;
-}
-
-p {
-  margin-bottom: 20px;
-  font-size: 1.2em;
-  line-height: 1.4;
 }
 
 /* ====================================================================== */
@@ -82,6 +85,11 @@ p {
   background: var(--dark-color);
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+#resumeForm h1 {
+  color: var(--secondary-color);
+  text-shadow: 0 0 15px var(--secondary-color);
 }
 
 #resumeForm h2 {
@@ -110,7 +118,7 @@ p {
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 0.6rem;
+  padding: 0.4rem;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   background: #1b235f;
@@ -139,16 +147,25 @@ p {
   color-scheme: dark;
 }
 
+/* Limit of elements reached notice */
+.error-msg {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  margin: 0.3rem 0 0.5rem;
+  font-weight: bold;
+}
+
 /* Character-limit notice */
 .char-limit-msg {
-  color: #009edb;
+  color: var(--secondary-color);
   font-size: 0.8rem;
   margin-top: 0.2rem;
+  font-weight: bold;
 }
 
 .educationItem {
-  margin: 10px 0;
-  padding: 0 0.6rem;
+  margin-bottom: 20px;
+  padding: 1rem 1rem 0;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   background: #501b5f;
@@ -159,8 +176,8 @@ p {
 }
 
 .experienceItem {
-  margin: 10px 0;
-  padding: 0 0.6rem;
+  margin-bottom: 20px;
+  padding: 1rem 1rem 0;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   background: #1b4a5f;
@@ -174,7 +191,11 @@ p {
 .language-row {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 20px;
+  padding: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background: #00177c;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -182,7 +203,6 @@ p {
 /* ---------------------------------------------------------------------- */
 .btn-add {
   display: inline-block;
-  margin-top: 0.5rem;
   background: var(--tertiary-color);
   box-shadow: 0 0 10px var(--tertiary-color);
   color: #121212;
@@ -192,6 +212,14 @@ p {
   cursor: pointer;
   font-family: var(--font-main);
   font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.btn-delete {
+  background: #e30b5c;
+  box-shadow: none;
+  font-weight: bold;
+  padding: 0.5rem 0.8rem;
 }
 
 .btn-ai {
@@ -218,16 +246,34 @@ p {
   font-weight: bold;
 }
 
-.btn-primary {
+.btn-secondary {
+  margin-right: 0.75rem;
+}
+
+#saveEduBtn,
+#saveExpBtn,
+#generateCvBtn {
   background: var(--primary-color);
   color: #121212;
 }
 
-.btn-secondary {
-  background: #333;
+#cancelEduBtn,
+#cancelExpBtn {
+  background: #cd2767;
   color: #ddd;
-  margin-right: 0.75rem;
-  box-shadow: 0 0 10px #333;
+  box-shadow: 0 0 10px #cd2767;
+}
+
+#downloadPdfBtn {
+  background: #2aea54;
+  color: #121212;
+  box-shadow: 0 0 10px #2aea54;
+}
+
+#editBtn {
+  background: #3a3a3a;
+  color: #ddd;
+  box-shadow: 0 0 10px #3a3a3a;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -237,24 +283,24 @@ p {
   max-width: 700px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #1e1e1e;
-  color: #e0e0e0;
-  border: 1px solid #333;
-  border-radius: 8px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 0;
   font-family: var(--font-main);
   line-height: 1.5;
 }
 
 .cv-container h1 {
   margin-bottom: 0.5rem;
-  color: var(--accent-color);
+  color: black;
 }
 
 .cv-container h2 {
   margin-top: 1.2rem;
-  border-bottom: 2px solid var(--accent-color);
+  border-bottom: 2px solid black;
   padding-bottom: 0.2rem;
-  color: var(--accent-color);
+  color: black;
 }
 
 .cv-container p {
@@ -294,8 +340,8 @@ p {
 
 .modal-content {
   margin-top: 90px;
-  background: #2a2a2a;
-  padding: 1.5rem;
+  background: #00177c;
+  padding: 1rem 1.5rem;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
@@ -304,19 +350,20 @@ p {
 
 .modal-content h3 {
   margin-top: 0;
+  margin-bottom: 0.6rem;
   color: var(--accent-color);
   text-shadow: 0 0 20px var(--neon-glow);
+  font-size: 1.5rem;
 }
 
 .modal-actions {
   text-align: right;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
-.error-msg {
-  color: var(--secondary-color);
-  font-size: 0.9rem;
-  margin-top: 0.3rem;
+#modalEduForm div,
+#modalExpForm div {
+  margin: 0.7rem;
 }
 
 /* ==========================
@@ -329,10 +376,20 @@ p {
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
   }
 
-  .btn-secondary:hover {
-    background: #2a2a2a;
-    box-shadow: 0 0 20px #333;
-    transform: translateY(-2px);
+  #cancelEduBtn:hover,
+  #cancelExpBtn:hover {
+    background: var(--secondary-color);
+    box-shadow: 0 0 20px var(--secondary-color);
+  }
+
+  #downloadPdfBtn:hover {
+    background: #4cf671;
+    box-shadow: 0 0 20px #4cf671;
+  }
+
+  #editBtn:hover {
+    background: #505050;
+    box-shadow: 0 0 20px #505050;
   }
 }
 
@@ -348,7 +405,9 @@ p {
   }
 
   .language-row {
-    flex-direction: column;
+    flex-direction: block;
+    margin: 1rem -0.6rem;
+    padding: 0.6rem;
   }
 }
 

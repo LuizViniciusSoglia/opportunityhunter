@@ -43,7 +43,7 @@
 
     <!-- ====== Resume Maker UI (Dark Theme) ====== -->
     <div id="resumeForm">
-      <h2>Create Your Resume</h2>
+      <h2>Create Your Resume &#x1F4C4;</h2>
       <form id="cvForm" novalidate>
         <!-- Personal Info -->
         <div class="form-group">
@@ -75,42 +75,30 @@
         <div class="form-group">
           <label>Educational Experiences</label>
           <div id="educationList"></div>
-          <button type="button" id="addEducationBtn" class="btn-add">+ Add Education</button>
           <div id="educationError" class="error-msg hidden">
             Maximum of 3 education entries reached.
           </div>
+          <button type="button" id="addEducationBtn" class="btn-add">+ Add Education</button>
         </div>
 
         <!-- Professional Experience -->
         <div class="form-group">
           <label>Professional Experiences</label>
           <div id="experienceList"></div>
-          <button type="button" id="addExperienceBtn" class="btn-add">+ Add Experience</button>
           <div id="experienceError" class="error-msg hidden">
             Maximum of 3 experience entries reached.
           </div>
+          <button type="button" id="addExperienceBtn" class="btn-add">+ Add Experience</button>
         </div>
 
         <!-- Languages -->
         <div class="form-group">
           <label>Languages</label>
-          <div id="languageList">
-            <div class="language-row">
-              <input type="text" name="language[]" maxlength="20" placeholder="Language">
-              <div class="char-limit-msg hidden"></div>
-              <select name="languageLevel[]">
-                <option value="">Level</option>
-                <option>Basic</option>
-                <option>Intermediate</option>
-                <option>Fluent</option>
-                <option>Native</option>
-              </select>
-            </div>
-          </div>
-          <button type="button" id="addLanguageBtn" class="btn-add">+ Add Language</button>
+          <div id="languageList"></div>
           <div id="languageError" class="error-msg hidden">
             Maximum of 4 languages reached.
           </div>
+          <button type="button" id="addLanguageBtn" class="btn-add">+ Add Language</button>
         </div>
 
         <!-- Skills -->
@@ -144,10 +132,10 @@
     <!-- ==== EDUCATION MODAL ==== -->
     <div id="modalEdu" class="modal hidden">
       <div class="modal-content">
-        <h3>Add Education</h3>
+        <h3>Add Education &#x1F393;</h3>
         <form id="modalEduForm" novalidate>
           <div class="form-group">
-            <label for="eduInstitution">Institution Name</label>
+            <label for="eduInstitution">Degree - Institution</label>
             <input type="text" id="eduInstitution" name="institution" maxlength="50" required>
             <div class="char-limit-msg hidden"></div>
           </div>
@@ -180,10 +168,10 @@
     <!-- ==== EXPERIENCE MODAL ==== -->
     <div id="modalExp" class="modal hidden">
       <div class="modal-content">
-        <h3>Add Experience</h3>
+        <h3>Add Experience &#x1F3E2;</h3>
         <form id="modalExpForm" novalidate>
           <div class="form-group">
-            <label for="expCompany">Company Name</label>
+            <label for="expCompany">Position - Company</label>
             <input type="text" id="expCompany" name="company" maxlength="50" autocomplete="organization" required>
             <div class="char-limit-msg hidden"></div>
           </div>

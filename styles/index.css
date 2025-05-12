@@ -63,14 +63,14 @@ body::before {
 
 .descriptionContainer {
   width: 100%;
-  padding: 20px 0;
+  padding-top: 15px;
 }
 
 /* Menu title card */
 .menu-title {
   width: 100%;
   max-width: 800px;
-  margin: 0 auto 40px;
+  margin: 0 auto 30px;
   padding: 25px;
   background: rgba(10, 10, 36, 0.8);
   border-radius: 20px;
@@ -95,7 +95,7 @@ body::before {
       rgba(255, 255, 255, 0.1) 20%,
       rgba(255, 255, 255, 0.1) 40%,
       transparent 40%);
-  animation: shine 8s linear infinite;
+  animation: shine 6s linear infinite;
   pointer-events: none;
 }
 
@@ -521,7 +521,7 @@ body::before {
   .menu-title {
     width: 100%;
     padding: 20px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
   }
 
   .menu-title img {

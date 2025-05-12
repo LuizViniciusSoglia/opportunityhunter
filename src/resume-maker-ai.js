@@ -90,7 +90,7 @@
       modalEduForm.reportValidity();
       return;
     }
-    const inst = document.getElementById('eduInstitution').value.trim();
+    const title = document.getElementById('eduTitle').value.trim();
     const loc = document.getElementById('eduLocation').value.trim();
     const start = document.getElementById('eduStart').value;
     const end = document.getElementById('eduEnd').value;
@@ -100,7 +100,7 @@
     item.className = 'educationItem';
     item.innerHTML = `
         <button class="btn-delete">X</button>
-        <h4 class="info">${inst}</h4>
+        <h4 class="info">${title}</h4>
         <span class="info">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</span>
         <p class="info">${desc}</p>`;
 
@@ -126,7 +126,7 @@
       modalExpForm.reportValidity();
       return;
     }
-    const comp = document.getElementById('expCompany').value.trim();
+    const title = document.getElementById('expTitle').value.trim();
     const loc = document.getElementById('expLocation').value.trim();
     const start = document.getElementById('expStart').value;
     const end = document.getElementById('expEnd').value;
@@ -136,7 +136,7 @@
     item.className = 'experienceItem';
     item.innerHTML = `
         <button class="btn-delete">X</button>
-        <h4 class="info">${comp}</h4>
+        <h4 class="info">${title}</h4>
         <span class="info">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</span>
         <p class="info">${desc}</p>`;
 
@@ -234,12 +234,16 @@
 
     let education = [...eduList.querySelectorAll('.educationItem')];
     education = education.reduce((previous, current) => {
-      return previous + '<ul>' + [...current.querySelectorAll('.info')].map(e => `<li>${e.textContent}</li>`).join('') + '</ul>';
+      return previous + '<ul class="eduListItem">' + [...current.querySelectorAll('.info')].map((e, i) =>
+        `<li>${i === 0 ? `<strong>${e.textContent}</strong>` : e.textContent}</li>`)
+        .join('') + '</ul>';
     }, "");
 
     let experience = [...expList.querySelectorAll('.experienceItem')];
     experience = experience.reduce((previous, current) => {
-      return previous + '<ul>' + [...current.querySelectorAll('.info')].map(e => `<li>${e.textContent}</li>`).join('') + '</ul>';
+      return previous + '<ul class="expListItem">' + [...current.querySelectorAll('.info')].map((e, i) =>
+        `<li>${i === 0 ? `<strong>${e.textContent}</strong>` : e.textContent}</li>`)
+        .join('') + '</ul>';
     }, "");
 
     const data = {
@@ -260,21 +264,29 @@
     };
 
     const html = `
-        <section class="cv-container">
-          <h1>${data.firstName} ${data.lastName}</h1>
-          <p><strong>Date of Birth:</strong> ${data.dob}</p>
-          <p><strong>Email:</strong> ${data.email}</p>
-          <p><strong>Address:</strong> ${data.address}</p>
-          <h2>Summary</h2><p>${data.summary}</p>
-          <h2>Education</h2>
-          ${data.education}
-          <h2>Experience</h2>
-          ${data.experience}
-          <h2>Languages</h2>
-          <ul>${data.languages.map(l => `<li>${l.name} (${l.level})</li>`).join('')}</ul>
-          <h2>Skills</h2>
-          <ul>${data.skills.map(s => `<li>${s}</li>`).join('')}</ul>
-        </section>`;
+    <section class="cv-container">
+      <h1>${data.firstName} ${data.lastName}</h1>
+      ${data.dob ? `<p><strong>Date of Birth:</strong> ${data.dob}</p>` : ``}
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Address:</strong> ${data.address}</p>
+      ${data.summary ? `<h2>Summary</h2><p>${data.summary}</p>` : ``}
+      ${data.education ?
+        `<h2>Education</h2>
+        ${data.education}` : ``
+      }
+      ${data.experience ?
+        `<h2>Experience</h2>
+        ${data.experience}` : ``
+      }
+      ${data.languages.length ?
+        `<h2>Languages</h2>
+        <ul class="langList">${data.languages.map(l => `<li>${l.name} (${l.level})</li>`).join('')}</ul>` : ``
+      }
+      ${data.skills.length ?
+        `<h2>Skills</h2>
+        <ul class="skillsList">${data.skills.map(s => `<li>${s}</li>`).join('')}</ul>` : ``
+      }
+    </section>`;
 
     document.getElementById('resumeForm').classList.add('hidden');
     previewDiv.innerHTML = html;
@@ -289,7 +301,8 @@
     actionsDiv.classList.add('hidden');
   });
 
-  // ---- PDF Download Setup ----
+  /*
+  // ---- PDF Download Setup - using html2pdf ----
   const pdfScript = document.createElement('script');
   pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js';
   pdfScript.crossorigin = 'anonymous';
@@ -307,5 +320,37 @@
       .from(previewDiv.querySelector('.cv-container'))
       .toPdf()
       .save();
+  });
+  */
+
+  // ---- PDF Download Setup - using jsPDF ----
+  // DISABLED - Imported directly into html file
+  /*const pdfScript = document.createElement('script');
+  pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js';
+  pdfScript.crossorigin = 'anonymous';
+  pdfScript.referrerpolicy = 'no-referrer';
+  pdfScript.onload = () => pdfReady = true;
+  document.body.appendChild(pdfScript);*/
+
+  downloadBtn.addEventListener('click', () => {
+    pdfReady = typeof window.jspdf !== 'undefined' ? true : false;
+    if (!pdfReady) return alert('PDF library loading, please wait.');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'pt',
+      format: 'a4'
+    });
+    const source = previewDiv.querySelector('.cv-container');
+    const filename = `${form.firstName.value}_${form.lastName.value}_CV.pdf`;
+    doc.html(source, {
+      callback: function (doc) {
+        doc.save(filename);
+      },
+      autoPaging: 'text',
+      margin: [20, 10, 20, 10],
+      width: 580,
+      windowWidth: 580
+    });
   });
 })();

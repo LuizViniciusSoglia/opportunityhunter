@@ -11,6 +11,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
   <script src="./src/shared-scripts.js" defer></script>
   <script src="./src/resume-maker-ai.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js" defer></script>
+  <script src="./src/html2canvas.min.js" defer></script>
   <link rel="icon" type="image/x-icon" href="./img/favicon.png">
 </head>
 
@@ -104,7 +106,7 @@
         <!-- Skills -->
         <div class="form-group">
           <label for="skills">Skills <small>(comma-separated)</small></label>
-          <textarea id="skills" name="skills" rows="2" maxlength="100"
+          <textarea id="skills" name="skills" rows="2" maxlength="300"
             placeholder="e.g. JavaScript, Communication"></textarea>
           <div class="char-limit-msg hidden"></div>
         </div>
@@ -135,13 +137,13 @@
         <h3>Add Education &#x1F393;</h3>
         <form id="modalEduForm" novalidate>
           <div class="form-group">
-            <label for="eduInstitution">Degree - Institution</label>
-            <input type="text" id="eduInstitution" name="institution" maxlength="50" required>
+            <label for="eduTitle">Degree Title</label>
+            <input type="text" id="eduTitle" name="institution" maxlength="50" required>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="form-group">
-            <label for="eduLocation">City, Country</label>
-            <input type="text" id="eduLocation" name="location" maxlength="50" required>
+            <label for="eduLocation">Institution - City, Country</label>
+            <input type="text" id="eduLocation" name="location" maxlength="60" required>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="form-group">
@@ -154,7 +156,7 @@
           </div>
           <div class="form-group">
             <label for="eduDesc">Description</label>
-            <textarea id="eduDesc" name="description" rows="3" maxlength="200" required></textarea>
+            <textarea id="eduDesc" name="description" rows="3" maxlength="200"></textarea>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="modal-actions">
@@ -171,13 +173,13 @@
         <h3>Add Experience &#x1F3E2;</h3>
         <form id="modalExpForm" novalidate>
           <div class="form-group">
-            <label for="expCompany">Position - Company</label>
-            <input type="text" id="expCompany" name="company" maxlength="50" autocomplete="organization" required>
+            <label for="expTitle">Position Title</label>
+            <input type="text" id="expTitle" name="company" maxlength="50" autocomplete="organization" required>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="form-group">
-            <label for="expLocation">City, Country</label>
-            <input type="text" id="expLocation" name="location" maxlength="50" required>
+            <label for="expLocation">Company - City, Country</label>
+            <input type="text" id="expLocation" name="location" maxlength="60" required>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="form-group">
@@ -190,7 +192,7 @@
           </div>
           <div class="form-group">
             <label for="expDesc">Description</label>
-            <textarea id="expDesc" name="description" rows="3" maxlength="200" required></textarea>
+            <textarea id="expDesc" name="description" rows="3" maxlength="200"></textarea>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="modal-actions">

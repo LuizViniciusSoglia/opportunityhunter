@@ -14,6 +14,11 @@ h1 {
   font-size: 3em;
 }
 
+h2 {
+  margin: 0 auto 15px;
+  font-size: 2rem;
+}
+
 p {
   margin-bottom: 20px;
   font-size: 1.2em;
@@ -93,10 +98,9 @@ p {
 }
 
 #resumeForm h2 {
-  margin-bottom: 1.5rem;
   color: var(--tertiary-color);
   text-shadow: 0 0 15px var(--tertiary-color);
-  font-family: var(--font-main);
+  text-align: center;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -216,7 +220,11 @@ p {
 }
 
 .btn-delete {
-  background: #e30b5c;
+  /*background: #e30b5c;
+  box-shadow: none;
+  font-weight: bold;
+  padding: 0.5rem 0.8rem;*/
+  background: transparent;
   box-shadow: none;
   font-weight: bold;
   padding: 0.5rem 0.8rem;
@@ -265,9 +273,9 @@ p {
 }
 
 #downloadPdfBtn {
-  background: #2aea54;
+  background: var(--accent-color);
   color: #121212;
-  box-shadow: 0 0 10px #2aea54;
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
 #editBtn {
@@ -282,18 +290,20 @@ p {
 .cv-container {
   max-width: 700px;
   margin: 2rem auto;
-  padding: 2rem;
+  padding: 20px;
   background: white;
   color: black;
   border: none;
   border-radius: 0;
   font-family: var(--font-main);
   line-height: 1.5;
+  overflow-wrap: break-word;
 }
 
 .cv-container h1 {
   margin-bottom: 0.5rem;
   color: black;
+  font-size: 2.2rem;
 }
 
 .cv-container h2 {
@@ -301,15 +311,27 @@ p {
   border-bottom: 2px solid black;
   padding-bottom: 0.2rem;
   color: black;
+  font-size: 1.3rem;
 }
 
 .cv-container p {
   margin: 0.5rem 0;
+  font-size: 0.9rem;
 }
 
 .cv-container ul {
+  margin-left: 1.2rem;
+  font-size: 0.9rem;
+}
+
+.eduListItem,
+.expListItem {
+  list-style-type: none;
+}
+
+.langList,
+.skillsList {
   list-style-type: disc;
-  margin-left: 1.5rem;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -397,13 +419,6 @@ p {
 /*                       Responsive Adjustments                          */
 /* ---------------------------------------------------------------------- */
 @media (max-width: 768px) {
-
-  #resumeForm,
-  .cv-container {
-    padding: 1rem;
-    margin: 1rem;
-  }
-
   .language-row {
     flex-direction: block;
     margin: 1rem -0.6rem;
@@ -425,6 +440,10 @@ p {
 
   h1 {
     font-size: 2.5em;
+  }
+
+  h2 {
+    font-size: 2rem;
   }
 
   p {
@@ -454,7 +473,8 @@ p {
 
   #resumeForm {
     width: 95%;
-    margin: 10px auto;
+    margin: 10px;
+    padding: 20px;
     border-radius: 8px;
   }
 
@@ -464,12 +484,17 @@ p {
   }
 
   h1 {
-    font-size: 1.8em;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
     margin-bottom: 15px;
   }
 
   p {
-    font-size: .9em;
+    font-size: 0.9rem;
     margin-bottom: 15px;
   }
 }

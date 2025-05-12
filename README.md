@@ -43,7 +43,7 @@
 Start your remote job hunt with **opportunityhunter** and join the future of work.
 
 **[🔗 Visit opportunityhunter now](#)**  
-(*Website expected to launch in Q3 2025!*)
+(*Soon!*)
 
 ---
 Made with 💡 by **Genz Crowd AI**

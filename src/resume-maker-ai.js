@@ -327,58 +327,39 @@
     actionsDiv.classList.add('hidden');
   });
 
-  /*
-  // ---- PDF Download Setup - using html2pdf ----
-  const pdfScript = document.createElement('script');
-  pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js';
-  pdfScript.crossorigin = 'anonymous';
-  pdfScript.referrerpolicy = 'no-referrer';
-  pdfScript.onload = () => pdfReady = true;
-  document.body.appendChild(pdfScript);
 
+  // ---- PDF Download Setup - using jsPDF and html2canvas ----
   downloadBtn.addEventListener('click', () => {
-    if (!pdfReady) return alert('PDF library loading, please wait.');
-    html2pdf()
-      .set({
-        margin: 10,
-        filename: `${form.firstName.value}_${form.lastName.value}_CV.pdf`
-      })
-      .from(previewDiv.querySelector('.cv-container'))
-      .toPdf()
-      .save();
-  });
-  */
-
-  // ---- PDF Download Setup - using jsPDF ----
-  // DISABLED - Imported directly into html file
-  /*const pdfScript = document.createElement('script');
-  pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js';
-  pdfScript.crossorigin = 'anonymous';
-  pdfScript.referrerpolicy = 'no-referrer';
-  pdfScript.onload = () => pdfReady = true;
-  document.body.appendChild(pdfScript);*/
-
-  downloadBtn.addEventListener('click', () => {
-    pdfReady = typeof window.jspdf !== 'undefined' ? true : false;
-    if (!pdfReady) return alert('PDF library loading, please wait.');
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'pt',
-      format: 'a4'
-    });
-    const source = previewDiv.querySelector('.cv-container');
-    // Retira as tags strong - evita erros de formatação
-    source.innerHTML = source.innerHTML.replace(/\<strong\>/g, '').replace(/\<\/strong\>/g, '');
-    const filename = `${form.firstName.value}_${form.lastName.value}_CV.pdf`;
-    doc.html(source, {
-      callback: function (doc) {
-        doc.save(filename);
-      },
-      autoPaging: 'text',
-      margin: [20, 10, 20, 10],
-      width: 580,
-      windowWidth: 580
-    });
+    const pdfReady = typeof window.jspdf !== 'undefined' && typeof window.html2canvas !== 'undefined';
+    if (!pdfReady) {
+      alert('PDF generation library is not ready. Please try again in a moment.');
+      return;
+    }
+    try {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: 'a4'
+      });
+      const source = previewDiv.querySelector('.cv-container');
+      // Retira as tags strong - evita erros de formatação
+      source.innerHTML = source.innerHTML.replace(/\<strong\>/g, '').replace(/\<\/strong\>/g, '');
+      const filename = `${form.firstName.value}_${form.lastName.value}_Resume.pdf`;
+      doc.html(source, {
+        callback: function (doc) {
+          doc.save(filename);
+        },
+        autoPaging: 'text',
+        margin: [20, 10, 20, 10],
+        // A4 width in pixels at 96 DPI is approx 794px
+        // Using points for jsPDF, so we aim for a canvas that matches jsPDF's expectations (jsPDF A4 width is 595.28 points)
+        width: 575.28, // 595.28 - margin 10 points each side
+        windowWidth: 575.28
+      });
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+      alert("An error occurred while generating the PDF. Please check the console.");
+    }
   });
 })();

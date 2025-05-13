@@ -63,6 +63,31 @@ p {
 }
 
 /* ==========================
+  Link buttons
+========================== */
+
+.linkbtn:link,
+.linkbtn:visited {
+  background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  box-shadow: 0 0 10px var(--neon-glow);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 15px 20px;
+  margin: 10px 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.linkbtn:active {
+  /* Box that Google Chrome shows when you click on an element */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================
   All hover effects
 ========================== */
 
@@ -70,6 +95,13 @@ p {
   .descriptionContainer:hover {
     transform: translateY(-10px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  }
+
+  .linkbtn:hover {
+    background-image: linear-gradient(45deg,
+        var(--primary-color),
+        var(--accent-color));
+    box-shadow: 0 0 20px var(--accent-color), 0 0 40px rgba(0, 210, 255, 0.4);
   }
 }
 

@@ -8,7 +8,7 @@
     <title>Log in - GenZ Crowd AI Apps</title>
     <link rel="stylesheet" href="./styles/login.css">
     <link rel="stylesheet" href="./styles/googlebutton.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js" integrity="sha512-nlp9/l96/EpjYBx7EP7pGASVXNe80hGhYAUrjeXnu/fyF5Py0/RXav4BBNs7n5Hx1WFhOEOWSAVjGeC3oKxDVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./src/login.js" defer></script>
     <link rel="icon" type="image/x-icon" href="./img/favicon.png">
 </head>
@@ -33,7 +33,7 @@
                 <div class="gsi-material-button-content-wrapper">
                     <div class="gsi-material-button-icon">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                            xmlns:xlink="http://www.w3.org/1999/xlink">
                             <path fill="#EA4335"
                                 d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z">
                             </path>
@@ -50,15 +50,14 @@
                         </svg>
                     </div>
                     <span class="gsi-material-button-contents">Sign in with Google</span>
-                    <span style="display: none;">Sign in with Google</span>
                 </div>
             </button>
 
-            <div id="errorMessage" class="error-message" style="display: none;">
+            <div id="errorMessage" class="error-message">
                 An error occurred during login. Please try again.
             </div>
 
-            <div id="loading" class="loading" style="display: none;">
+            <div id="loading" class="loading">
                 <div class="spinner"></div>
                 <p>Authenticating...</p>
             </div>

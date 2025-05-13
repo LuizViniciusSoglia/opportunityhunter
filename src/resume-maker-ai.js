@@ -9,6 +9,7 @@
   const MAX_EDU = 3, MAX_EXP = 3, MAX_LANG = 4;
 
   // ---- Element References ----
+  const resumeForm = document.getElementById('resumeForm');
   const addEduBtn = document.getElementById('addEducationBtn');
   const addExpBtn = document.getElementById('addExperienceBtn');
   const addLangBtn = document.getElementById('addLanguageBtn');
@@ -288,7 +289,7 @@
       }
     </section>`;
 
-    document.getElementById('resumeForm').classList.add('hidden');
+    resumeForm.classList.add('hidden');
     previewDiv.innerHTML = html;
     previewDiv.classList.remove('hidden');
     actionsDiv.classList.remove('hidden');
@@ -296,7 +297,7 @@
 
   // ---- Back to Edit ----
   editBtn.addEventListener('click', () => {
-    document.getElementById('resumeForm').classList.remove('hidden');
+    resumeForm.classList.remove('hidden');
     previewDiv.classList.add('hidden');
     actionsDiv.classList.add('hidden');
   });

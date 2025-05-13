@@ -40,19 +40,22 @@
   let pdfReady = false;
 
   // ---- Helper: bind character-limit warning ----
-  function bindCharLimit(field) {
+  function bindCharLimit(field, addListener = true) {
     const max = field.getAttribute('maxlength');
     if (!max) return;
     const msg = field.parentElement.querySelector('.char-limit-msg');
     if (!msg) return;
-    field.addEventListener('input', () => {
+    function checkMaxLength() {
       if (field.value.length >= max) {
         msg.textContent = `Maximum length ${max} characters reached.`;
         msg.classList.remove('hidden');
       } else {
         msg.classList.add('hidden');
       }
-    });
+    }
+    if (addListener) {
+      field.addEventListener('input', checkMaxLength);
+    } else { checkMaxLength(); } // Just check for max characters reached
   }
   // attach to every input/textarea with maxlength
   document.querySelectorAll('input[maxlength],textarea[maxlength]')
@@ -67,23 +70,29 @@
     msg.classList.add('hidden');
   }
 
+  // ---- Modal Management ----
+  function openModal(modalElement, list, maxItems) {
+    if (list.childElementCount < maxItems) {
+      modalElement.classList.add('modal-visible');
+      // Focus first focusable element in modal for accessibility
+      const firstFocusable = modalElement.querySelector('input, textarea, button');
+      if (firstFocusable) firstFocusable.focus();
+    }
+  }
+
+  function closeModal(modalElement, modalForm) {
+    modalElement.classList.remove('modal-visible');
+    modalForm.reset();
+    // delete every char limit warning from each input/textarea
+    modalElement.querySelectorAll('input[maxlength],textarea[maxlength]')
+      .forEach(removeWarningCharLimit);
+  }
+
   // ---- Modal Open/Close ----
-  addEduBtn.addEventListener('click', () => {
-    let eduCount = eduList.childElementCount;
-    if (eduCount < MAX_EDU) modalEdu.classList.remove('hidden');
-  });
-  cancelEduBtn.addEventListener('click', () => {
-    modalEdu.classList.add('hidden');
-    modalEduForm.reset();
-  });
-  addExpBtn.addEventListener('click', () => {
-    let expCount = expList.childElementCount;
-    if (expCount < MAX_EXP) modalExp.classList.remove('hidden');
-  });
-  cancelExpBtn.addEventListener('click', () => {
-    modalExp.classList.add('hidden');
-    modalExpForm.reset();
-  });
+  addEduBtn.addEventListener('click', () => openModal(modalEdu, eduList, MAX_EDU));
+  addExpBtn.addEventListener('click', () => openModal(modalExp, expList, MAX_EXP));
+  cancelEduBtn.addEventListener('click', () => closeModal(modalEdu, modalEduForm));
+  cancelExpBtn.addEventListener('click', () => closeModal(modalExp, modalExpForm));
 
   // ---- Save Education Entry ----
   saveEduBtn.addEventListener('click', () => {
@@ -91,20 +100,19 @@
       modalEduForm.reportValidity();
       return;
     }
-    const title = document.getElementById('eduTitle').value.trim();
-    const loc = document.getElementById('eduLocation').value.trim();
-    const start = document.getElementById('eduStart').value;
-    const end = document.getElementById('eduEnd').value;
-    const desc = document.getElementById('eduDesc').value.trim();
+    const title = escapeHtml(document.getElementById('eduTitle').value.trim());
+    const loc = escapeHtml(document.getElementById('eduLocation').value.trim());
+    const start = escapeHtml(document.getElementById('eduStart').value);
+    const end = escapeHtml(document.getElementById('eduEnd').value);
+    const desc = escapeHtml(document.getElementById('eduDesc').value.trim());
 
     const item = document.createElement('div');
     item.className = 'educationItem';
     item.innerHTML = `
         <button class="btn-delete">X</button>
-        <h4 class="info">${title}</h4>
-        <span class="info">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</span>
-        <p class="info">${desc}</p>`;
-
+        <h4 class="item-meta">${title}</h4>
+        <p class="item-meta">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</p>
+        <p class="item-meta">${desc}</p>`;
     let eduCount = eduList.childElementCount;
     eduList.appendChild(item);
     eduCount++;
@@ -112,13 +120,7 @@
       addEduBtn.disabled = true;
       eduError.classList.remove('hidden');
     }
-
-    // delete every char limit warning from each input/textarea with maxlength in modalEdu
-    modalEdu.querySelectorAll('input[maxlength],textarea[maxlength]')
-      .forEach(removeWarningCharLimit);
-
-    modalEdu.classList.add('hidden');
-    modalEduForm.reset();
+    closeModal(modalEdu, modalEduForm);
   });
 
   // ---- Save Experience Entry ----
@@ -127,20 +129,19 @@
       modalExpForm.reportValidity();
       return;
     }
-    const title = document.getElementById('expTitle').value.trim();
-    const loc = document.getElementById('expLocation').value.trim();
-    const start = document.getElementById('expStart').value;
-    const end = document.getElementById('expEnd').value;
-    const desc = document.getElementById('expDesc').value.trim();
+    const title = escapeHtml(document.getElementById('expTitle').value.trim());
+    const loc = escapeHtml(document.getElementById('expLocation').value.trim());
+    const start = escapeHtml(document.getElementById('expStart').value);
+    const end = escapeHtml(document.getElementById('expEnd').value);
+    const desc = escapeHtml(document.getElementById('expDesc').value.trim());
 
     const item = document.createElement('div');
     item.className = 'experienceItem';
     item.innerHTML = `
         <button class="btn-delete">X</button>
-        <h4 class="info">${title}</h4>
-        <span class="info">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</span>
-        <p class="info">${desc}</p>`;
-
+        <h4 class="item-meta">${title}</h4>
+        <p class="item-meta">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</p>
+        <p class="item-meta">${desc}</p>`;
     let expCount = expList.childElementCount;
     expList.appendChild(item);
     expCount++;
@@ -148,13 +149,7 @@
       addExpBtn.disabled = true;
       expError.classList.remove('hidden');
     }
-
-    // delete every char limit warning from each input/textarea with maxlength in modalExp
-    modalExp.querySelectorAll('input[maxlength],textarea[maxlength]')
-      .forEach(removeWarningCharLimit);
-
-    modalExp.classList.add('hidden');
-    modalExpForm.reset();
+    closeModal(modalExp, modalExpForm);
   });
 
   // ---- Add Language Inline ----
@@ -190,7 +185,6 @@
     if (nItems <= 0) { return; }
     if (e.target && e.target.nodeName === "BUTTON") {
       if (e.target.classList.contains("btn-delete")) {
-        e.target.parentNode.remove();
         const parent = this.parentElement;
         const addBtn = parent.querySelector('.btn-add');
         const msgError = parent.querySelector('.error-msg');
@@ -200,6 +194,7 @@
         if (msgError) {
           if (!msgError.classList.contains("hidden")) { msgError.classList.add('hidden'); }
         }
+        e.target.parentNode.remove();
       }
     }
   }
@@ -213,6 +208,17 @@
   // ---- Delete Language Item ----
   langList.addEventListener('click', deleteItemList);
 
+  // ---- Helper to escape HTML ----
+  function escapeHtml(unsafe) {
+    if (unsafe === null || unsafe === undefined) return '';
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // ---- Format YYYY-MM to “Mon YYYY” ----
   function formatMonth(v) {
     if (!v) return '';
@@ -222,46 +228,65 @@
   }
 
   // ---- Generate AI Summary ----
-  document.getElementById('generateSummaryBtn')
-    .addEventListener('click', () => {
-      const firstEdu = eduList.querySelector('h4')?.textContent || '';
-      const firstExp = expList.querySelector('h4')?.textContent || '';
-      document.getElementById('summary').value =
-        `Background in ${firstEdu} and experience at ${firstExp}.`;
+  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);
+  function generateSummary() {
+    const genStatus = document.getElementById('generate-summary-status');
+    genStatus.classList.remove('hidden');
+    // Simulating AI API Response Time - 2s
+    new Promise(resolve => setTimeout(resolve, 2000)).then(() => {
+      const firstEduTitle = eduList.querySelector('h4')?.textContent || '';
+      const firstExpTitle = expList.querySelector('h4')?.textContent || '';
+      let summaryText = "Seeking a challenging role to leverage my skills and experience.Seeking a challenging role to leverage my skills and experience.oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
+      if (firstEduTitle && firstExpTitle) {
+        summaryText = `A dedicated professional with a background in ${firstEduTitle} and significant experience at ${firstExpTitle}. Eager to contribute to a dynamic team.`;
+      } else if (firstEduTitle) {
+        summaryText = `A recent graduate with a degree in ${firstEduTitle}, looking to apply academic knowledge and grow professionally.`;
+      } else if (firstExpTitle) {
+        summaryText = `An experienced professional from ${firstExpTitle}, seeking new opportunities to apply a proven track record of success.`;
+      }
+      const summaryField = document.getElementById('summary');
+      summaryField.value = summaryText;
+      bindCharLimit(summaryField, false); // Trigger char limit update
+      genStatus.classList.add('hidden');
     });
+  }
 
   // ---- Generate CV Preview ----
   generateBtn.addEventListener('click', () => {
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
 
     let education = [...eduList.querySelectorAll('.educationItem')];
     education = education.reduce((previous, current) => {
-      return previous + '<ul class="eduListItem">' + [...current.querySelectorAll('.info')].map((e, i) =>
-        `<li>${i === 0 ? `<strong>${e.textContent}</strong>` : e.textContent}</li>`)
+      return previous + '<ul class="eduListItem">' + [...current.querySelectorAll('.item-meta')].map((e, i) =>
+        `<li>${i === 0 ? `<strong>${escapeHtml(e.textContent)}</strong>` : escapeHtml(e.textContent)}</li>`)
         .join('') + '</ul>';
     }, "");
 
     let experience = [...expList.querySelectorAll('.experienceItem')];
     experience = experience.reduce((previous, current) => {
-      return previous + '<ul class="expListItem">' + [...current.querySelectorAll('.info')].map((e, i) =>
-        `<li>${i === 0 ? `<strong>${e.textContent}</strong>` : e.textContent}</li>`)
+      return previous + '<ul class="expListItem">' + [...current.querySelectorAll('.item-meta')].map((e, i) =>
+        `<li>${i === 0 ? `<strong>${escapeHtml(e.textContent)}</strong>` : escapeHtml(e.textContent)}</li>`)
         .join('') + '</ul>';
     }, "");
 
     const data = {
-      firstName: form.firstName.value,
-      lastName: form.lastName.value,
-      dob: form.dob.value,
-      email: form.email.value,
-      address: form.address.value,
-      summary: form.summary.value,
+      firstName: escapeHtml(form.firstName.value),
+      lastName: escapeHtml(form.lastName.value),
+      dob: escapeHtml(form.dob.value),
+      email: escapeHtml(form.email.value),
+      address: escapeHtml(form.address.value),
+      summary: escapeHtml(form.summary.value),
       education: education,
       experience: experience,
       languages: [...langList.querySelectorAll('input[name="language[]"]')]
         .map((inp, i) => ({
-          name: inp.value.trim(),
-          level: form.querySelectorAll('select[name="languageLevel[]"]')[i].value
+          name: escapeHtml(inp.value.trim()),
+          level: escapeHtml(form.querySelectorAll('select[name="languageLevel[]"]')[i].value)
         })).filter(l => l.name),
-      skills: form.skills.value.split(',').map(s => s.trim()).filter(Boolean)
+      skills: escapeHtml(form.skills.value).split(',').map(s => s.trim()).filter(Boolean)
     };
 
     const html = `
@@ -343,6 +368,8 @@
       format: 'a4'
     });
     const source = previewDiv.querySelector('.cv-container');
+    // Retira as tags strong - evita erros de formatação
+    source.innerHTML = source.innerHTML.replace(/\<strong\>/g, '').replace(/\<\/strong\>/g, '');
     const filename = `${form.firstName.value}_${form.lastName.value}_CV.pdf`;
     doc.html(source, {
       callback: function (doc) {

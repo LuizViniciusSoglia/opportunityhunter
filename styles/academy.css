@@ -47,8 +47,21 @@ body {
 h1 {
   margin: 0 auto 15px;
   font-size: 3em;
+}
+
+#title-1 {
+  color: var(--primary-color);
+  text-shadow: 0 0 15px var(--primary-color);
+}
+
+#title-2 {
   color: var(--tertiary-color);
   text-shadow: 0 0 15px var(--tertiary-color);
+}
+
+#title-3 {
+  color: var(--secondary-color);
+  text-shadow: 0 0 15px var(--secondary-color);
 }
 
 /* Title icon styling */

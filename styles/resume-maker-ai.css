@@ -172,10 +172,9 @@ p {
   padding: 1rem 1rem 0;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
-  background: #501b5f;
+  background: #00177c;
   color: white;
   font-family: var(--font-main);
-  font-size: 0.8rem;
   overflow-wrap: break-word;
 }
 
@@ -184,11 +183,15 @@ p {
   padding: 1rem 1rem 0;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
-  background: #1b4a5f;
+  background: #00177c;
   color: white;
   font-family: var(--font-main);
-  font-size: 0.8rem;
   overflow-wrap: break-word;
+}
+
+.item-meta {
+  font-size: 0.8rem;
+  line-height: 1;
 }
 
 /* Flex layout for language rows */
@@ -200,6 +203,12 @@ p {
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   background: #00177c;
+}
+
+.generate-status {
+  color: white;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -355,15 +364,29 @@ p {
   justify-content: center;
   overflow: auto;
   z-index: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  /* Add transform for potential animation */
+  opacity: 0;
+  /* Start hidden for animation */
+  transform: scale(0.95);
+  /* Optional: slight scale effect */
+}
+
+.modal-visible {
+  /* Apply when modal should be visible */
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal:not(.modal-visible) {
+  opacity: 0;
+  transform: scale(0.95);
+  /* Prevent interaction when hidden */
+  pointer-events: none;
 }
 
 .modal input[type="month"] {
   color-scheme: dark;
-}
-
-.modal.hidden {
-  /* ensure hidden modals stay hidden */
-  display: none;
 }
 
 .modal-content {
@@ -406,6 +429,11 @@ p {
 
   #cancelEduBtn:hover,
   #cancelExpBtn:hover {
+    background: var(--secondary-color);
+    box-shadow: 0 0 20px var(--secondary-color);
+  }
+
+  .btn-delete:hover {
     background: var(--secondary-color);
     box-shadow: 0 0 20px var(--secondary-color);
   }

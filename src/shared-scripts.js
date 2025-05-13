@@ -3,7 +3,7 @@ function checkAuthenticationEarly() {
     try {
         const token = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? Cookies.get('access_token') : null;
 
-        if (!isValidJWT(token)) {
+        /*if (!isValidJWT(token)) {
             // Redirect to login page immediately if not authenticated
             const currentUrl = encodeURIComponent(window.location.href);
             // Simulate a mouse click:
@@ -12,7 +12,7 @@ function checkAuthenticationEarly() {
             window.location.replace(`./login.html?origin=${currentUrl}`);
             // Stop further execution
             return false;
-        }
+        }*/
 
         // If authenticated, add event listener to initialize app once DOM is loaded
         if (document.readyState === "loading") {
@@ -91,8 +91,8 @@ function putCommonElements() {
             </li>
             <li><a href="./resume-maker-ai.html" class="nav-link"><span class="nav-icon">&#x1F916;</span>Resume Maker AI</a>
             </li>
-            <li><a href="./academy.html" class="nav-link"><span class="nav-icon">&#x1F4A1;</span>Personalized
-                Academy</a></li>
+            <li><a href="./academy.html" class="nav-link"><span class="nav-icon">&#x1F4A1;</span>GenZ Academy</a>
+            </li>
             <li><a href="#" class="nav-link sign-out" onclick="logoutUser(); return false;"><span
                 class="nav-icon">&#x27A1;&#xFE0F;</span>Sign
                 Out</a></li>

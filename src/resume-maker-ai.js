@@ -75,8 +75,8 @@
     if (list.childElementCount < maxItems) {
       modalElement.classList.add('modal-visible');
       // Focus first focusable element in modal for accessibility
-      const firstFocusable = modalElement.querySelector('input, textarea, button');
-      if (firstFocusable) firstFocusable.focus();
+      //const firstFocusable = modalElement.querySelector('input, textarea, button');
+      //if (firstFocusable) firstFocusable.focus();
     }
   }
 
@@ -228,28 +228,22 @@
   }
 
   // ---- Generate AI Summary ----
-  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);
   function generateSummary() {
-    const genStatus = document.getElementById('generate-summary-status');
-    genStatus.classList.remove('hidden');
-    // Simulating AI API Response Time - 2s
-    new Promise(resolve => setTimeout(resolve, 2000)).then(() => {
-      const firstEduTitle = eduList.querySelector('h4')?.textContent || '';
-      const firstExpTitle = expList.querySelector('h4')?.textContent || '';
-      let summaryText = "Seeking a challenging role to leverage my skills and experience.Seeking a challenging role to leverage my skills and experience.oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
-      if (firstEduTitle && firstExpTitle) {
-        summaryText = `A dedicated professional with a background in ${firstEduTitle} and significant experience at ${firstExpTitle}. Eager to contribute to a dynamic team.`;
-      } else if (firstEduTitle) {
-        summaryText = `A recent graduate with a degree in ${firstEduTitle}, looking to apply academic knowledge and grow professionally.`;
-      } else if (firstExpTitle) {
-        summaryText = `An experienced professional from ${firstExpTitle}, seeking new opportunities to apply a proven track record of success.`;
-      }
-      const summaryField = document.getElementById('summary');
-      summaryField.value = summaryText;
-      bindCharLimit(summaryField, false); // Trigger char limit update
-      genStatus.classList.add('hidden');
-    });
+    const status = document.getElementById('generate-summary-status');
+    status.classList.remove('hidden');
+
+    // Simulate API delay
+    setTimeout(() => {
+      const data = extractSummaryData();
+      const text = generateSummaryText(data);
+
+      const field = document.getElementById('summary');
+      field.value = text;
+      bindCharLimit(field, false);   // update character-count UI
+      status.classList.add('hidden');
+    }, 1500);
   }
+  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);
 
   // ---- Generate CV Preview ----
   generateBtn.addEventListener('click', () => {

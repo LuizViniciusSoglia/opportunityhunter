@@ -216,8 +216,8 @@ p {
 /* ---------------------------------------------------------------------- */
 .btn-add {
   display: inline-block;
-  background: var(--tertiary-color);
-  box-shadow: 0 0 10px var(--tertiary-color);
+  background: #c045fd;
+  box-shadow: 0 0 10px #c045fd;
   color: #121212;
   padding: 0.5rem 1rem;
   border: none;

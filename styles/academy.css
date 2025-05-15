@@ -49,8 +49,14 @@ h1 {
   font-size: 3em;
 }
 
-#title-1 {
-  color: var(--primary-color);
+.gradientGenZ {
+  background: linear-gradient(90deg, #035cc3, #bf8dc8, #f262af);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#title-1 .title-icon {
   text-shadow: 0 0 15px var(--primary-color);
 }
 

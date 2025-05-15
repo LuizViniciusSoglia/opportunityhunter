@@ -109,10 +109,14 @@
     const item = document.createElement('div');
     item.className = 'educationItem';
     item.innerHTML = `
-        <button class="btn-delete">X</button>
+      <button type="button" class="btn-delete">X</button>
+      <button type="button" class="toggle-edit">✎ Edit</button>
+      <div class="item-content" contenteditable="false">
         <h4 class="item-meta">${title}</h4>
         <p class="item-meta">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</p>
-        <p class="item-meta">${desc}</p>`;
+        <p class="item-meta">${desc}</p>
+      </div>`;
+    item.querySelector('.toggle-edit').addEventListener('click', toggleEditSave);
     let eduCount = eduList.childElementCount;
     eduList.appendChild(item);
     eduCount++;
@@ -138,10 +142,13 @@
     const item = document.createElement('div');
     item.className = 'experienceItem';
     item.innerHTML = `
-        <button class="btn-delete">X</button>
+      <button type="button" class="btn-delete">X</button>
+      <button type="button" class="toggle-edit">✎ Edit</button>
+      <div class="item-content" contenteditable="false">
         <h4 class="item-meta">${title}</h4>
         <p class="item-meta">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</p>
-        <p class="item-meta">${desc}</p>`;
+        <p class="item-meta">${desc}</p>
+      </div>`;
     let expCount = expList.childElementCount;
     expList.appendChild(item);
     expCount++;
@@ -151,6 +158,45 @@
     }
     closeModal(modalExp, modalExpForm);
   });
+
+  // Edit/save an education or experience item by clicking the button
+  function toggleEditSave(e) {
+    const item = this.closest('.experienceItem, .educationItem');
+    const content = item.querySelector('.item-content');
+    const isEditing = content.isContentEditable;
+    if (isEditing) {
+      // Save mode
+      content.contentEditable = 'false';
+      this.textContent = '✎ Edit';
+
+      // Extract updated sub-elements
+
+      //const title = content[0].innerText.trim();
+      //const locale = content[1].innerText.trim();
+      //const desc = content[2].innerText.trim();
+
+      // TODO: Persist these values to your data model.
+      // E.g., update hidden inputs, or rebuild the summary data object.
+      // Example:
+      // document.querySelector(`#hidden-${item.dataset.id}-title`).value = title;
+      // …
+
+      // Optionally, immediately regenerate summary:
+      // generateSummary();
+    } else {
+      // Edit mode
+      content.contentEditable = 'true';
+      this.textContent = '✔ Save';
+      // Move cursor to end for convenience:
+      const range = document.createRange();
+      range.selectNodeContents(content);
+      range.collapse(false);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      content.focus();
+    }
+  }
 
   // ---- Add Language Inline ----
   addLangBtn.addEventListener('click', () => {
@@ -221,7 +267,7 @@
 
   // ---- Format YYYY-MM to “Mon YYYY” ----
   function formatMonth(v) {
-    if (!v) return '';
+    if (!v) return 'Present';
     const [y, m] = v.split('-');
     const d = new Date(y, m - 1);
     return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });

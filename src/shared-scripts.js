@@ -3,7 +3,7 @@ function checkAuthenticationEarly() {
     try {
         const token = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? Cookies.get('access_token') : null;
 
-        /*if (!isValidJWT(token)) {
+        if (!isValidJWT(token)) {
             // Redirect to login page immediately if not authenticated
             const currentUrl = encodeURIComponent(window.location.href);
             // Simulate a mouse click:
@@ -12,7 +12,7 @@ function checkAuthenticationEarly() {
             window.location.replace(`./login.html?origin=${currentUrl}`);
             // Stop further execution
             return false;
-        }*/
+        }
 
         // If authenticated, add event listener to initialize app once DOM is loaded
         if (document.readyState === "loading") {

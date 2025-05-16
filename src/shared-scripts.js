@@ -59,7 +59,7 @@ function initializeApp() {
     putCommonElements(); // Insert common UI elements
     // Add event listeners for the hamburger menu and close button
     document.getElementById('logoutBtn').addEventListener('click', logoutUser);
-    document.getElementById('logoutLink').addEventListener('click', () => { logoutUser(); return false; });
+    document.getElementById('logoutLink').addEventListener('click', logoutUser);
     loadUserInfo(); // Load user information from cookies
     HamburgerMenuConfig(); // Initialize the hamburger menu and nav bar overlay
     // Show the appHeader and appContainer now that authentication is confirmed

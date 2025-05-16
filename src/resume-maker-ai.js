@@ -1,9 +1,3 @@
-// Import the authentication check function
-import { checkAuthenticationEarly } from './shared-scripts.js';
-
-// Import the functions to generate the resume summary
-import { extractSummaryData, generateSummaryText } from './summary-generator.js';
-
 (function () {
   // Execute authentication check immediately when script loads
   // before any DOM content is shown to user

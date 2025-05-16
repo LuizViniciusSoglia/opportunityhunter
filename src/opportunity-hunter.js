@@ -1,6 +1,3 @@
-// Import the authentication check function
-import { checkAuthenticationEarly, isValidJWT, logoutUser } from './shared-scripts.js';
-
 (function () {
   // Execute authentication check immediately when script loads
   // before any DOM content is shown to user

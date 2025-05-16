@@ -1,125 +1,89 @@
-// Import the cookie utilities
-import { setCookie, setJSONCookie } from './cookie-utils.js';
-
 // OAuth2 Configuration
-const OAUTH_CONFIG = {
-    CLIENT_ID: '877506323603-9fhfhbia4vdm3odosobiouf4n019vhar.apps.googleusercontent.com',
-    REDIRECT_URI: 'https://luizviniciussoglia.github.io/opportunityhunter/login.html',
-    APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbySg3bwEA0H7L5cY57TnfCyamoylcHsjFLXKZdvtQJHB5AqaOB1bFSNSSC8H1COnqUl/exec',
-    SCOPES: 'email profile'
-};
+const CLIENT_ID = '877506323603-9fhfhbia4vdm3odosobiouf4n019vhar.apps.googleusercontent.com'; // Google Client ID
+const REDIRECT_URI = 'https://luizviniciussoglia.github.io/opportunityhunter/login.html'; // URL where Google will redirect after login (back to login page)
+// URL of Web App in Apps Script that handles the OAuth2 flow (backend)
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySg3bwEA0H7L5cY57TnfCyamoylcHsjFLXKZdvtQJHB5AqaOB1bFSNSSC8H1COnqUl/exec';
+// Scopes for the OAuth2 request
+const SCOPES = 'email profile';
 
-// Cache DOM elements for better performance
-const elements = {
-    btnGoogleLogin: document.getElementById('btnGoogleLogin'),
-    loading: document.getElementById('loading'),
-    errorMessage: document.getElementById('errorMessage')
-};
-
-// Initialize the page
-function initPage() {
-    // Hide loading spinner and error message by default
-    elements.loading.style.display = 'none';
-    elements.errorMessage.style.display = 'none';
-
-    // Set up event listeners
-    elements.btnGoogleLogin.addEventListener('click', handleGoogleLogin);
-
-    // Check if we're being redirected back from Google after login
-    checkForAuthRedirect();
-}
-
-// Generate a cryptographically secure random state for OAuth
-function generateSecureState() {
-    const array = new Uint8Array(16);
-    window.crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-}
-
-// Display error message
-function displayError(message) {
-    elements.loading.style.display = 'none';
-    elements.errorMessage.style.display = 'block';
-    elements.errorMessage.textContent = message;
-    console.error(message);
-}
-
-// Handle Google login button click
-function handleGoogleLogin() {
+// Function to login with Google
+document.getElementById('btnGoogleLogin').addEventListener('click', function () {
     try {
         // Hide error message and show loading spinner
-        elements.errorMessage.style.display = 'none';
-        elements.loading.style.display = 'block';
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
 
-        // Generate a secure random state for security
-        const state = generateSecureState();
+        // Generate a random state for security
+        const state = Math.random().toString(36).substring(2, 15);
         localStorage.setItem('oauth_state', state);
 
-        // Handle the redirect URL
-        const redirect = determineRedirectUrl();
+        // Store the URL that the user came from to redirect them back after successful login
+        let redirect = './index.html'; // Default redirect URL if origin is not allowed
+        const urlParams = new URLSearchParams(window.location.search);
+        const origin = urlParams.get('origin');
+        if (origin) {
+            try {
+                const decodedOrigin = decodeURIComponent(origin);
+                const currentSiteUrl = window.location.origin; // protocol + "//" + host of the current page (login.html)
+                // Use the haveSameProtocolAndHost function to verify the origin is from our site
+                if (haveSameProtocolAndHost(decodedOrigin, currentSiteUrl)) {
+                    redirect = decodedOrigin; // Only set redirect if origin has the same protocol and host as our site
+                } else {
+                    console.log('Redirect blocked: Origin is from a different domain');
+                }
+            } catch (error) {
+                console.error('Invalid redirect URL parameter:', error);
+                // Keep the default redirect if there was an error
+            }
+        }
+
         localStorage.setItem('redirect_after_login', redirect);
 
-        // Build OAuth2 request parameters
+        // OAuth2 request parameters
         const authParams = new URLSearchParams({
-            client_id: OAUTH_CONFIG.CLIENT_ID,
-            redirect_uri: OAUTH_CONFIG.REDIRECT_URI,
+            client_id: CLIENT_ID,
+            redirect_uri: REDIRECT_URI,
             response_type: 'code',
-            scope: OAUTH_CONFIG.SCOPES,
+            scope: SCOPES,
             state: state,
             access_type: 'offline',
             prompt: 'consent'
         });
 
         // Redirect to Google consent page
+        // Simulate a mouse click:
+        //window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`;
+        // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
         window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`);
     } catch (error) {
-        displayError('Error redirecting to Google consent page');
+        document.getElementById('loading').style.display = 'none'; // Hide loading
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'Error redirecting to Google consent page';
         console.error('Error:', error);
     }
-}
+});
 
-// Determine the redirect URL after successful login
-function determineRedirectUrl() {
-    let redirect = './index.html'; // Default redirect URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const origin = urlParams.get('origin');
-
-    if (origin) {
-        try {
-            const decodedOrigin = decodeURIComponent(origin);
-            const currentSiteUrl = window.location.origin;
-
-            // Verify the origin is from our site
-            if (haveSameProtocolAndHost(decodedOrigin, currentSiteUrl)) {
-                redirect = decodedOrigin;
-            } else {
-                console.log('Redirect blocked: Origin is from a different domain');
-            }
-        } catch (error) {
-            console.error('Invalid redirect URL parameter:', error);
-        }
-    }
-
-    return redirect;
-}
-
-// Check if two URLs have the same protocol and host (security measure)
 function haveSameProtocolAndHost(url1, url2) {
     try {
-        const parsedUrl1 = new URL(url1);
+        const parsedUrl1 = new URL(url1); // Create URL objects to parse the URLs
         const parsedUrl2 = new URL(url2);
 
-        return (
+        return ( // Compare protocol (e.g., 'https:') and host (e.g., 'example.com')
             parsedUrl1.protocol === parsedUrl2.protocol &&
             parsedUrl1.host === parsedUrl2.host
         );
-    } catch (error) {
+    } catch (error) { // Handle invalid URLs
         return false;
     }
 }
 
-// Check if we've been redirected back from Google OAuth
-async function checkForAuthRedirect() {
+// Check if we're being redirected back from Google after login
+// code, state and error are URL parameters returned by Google after login (not use these names for other purposes)
+window.addEventListener('load', function () {
+
+    document.getElementById('loading').style.display = 'none'; // Hide loading spinner by default
+    document.getElementById('errorMessage').style.display = 'none'; // Hide error message by default
+
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const state = urlParams.get('state');
@@ -127,7 +91,8 @@ async function checkForAuthRedirect() {
 
     // Check if there's an error
     if (error) {
-        displayError('Authentication error: ' + error);
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'Authentication error: ' + error;
         return;
     }
 
@@ -136,69 +101,54 @@ async function checkForAuthRedirect() {
         // Verify state for security
         const savedState = localStorage.getItem('oauth_state');
         if (state !== savedState) {
-            displayError('Security error: invalid state');
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('errorMessage').textContent = 'Security error: invalid state';
             return;
         }
 
-        await processAuthCode(code);
-    }
-}
+        // Show loading
+        document.getElementById('loading').style.display = 'block';
 
-// Process the authentication code from Google
-async function processAuthCode(code) {
-    try {
-        elements.loading.style.display = 'block';
-
-        const response = await fetch(OAUTH_CONFIG.APPS_SCRIPT_URL, {
+        // Send the code to the backend for processing
+        fetch(APPS_SCRIPT_URL, {
             method: 'POST',
-            body: JSON.stringify({
-                code: code,
-                redirect_uri: OAUTH_CONFIG.REDIRECT_URI
+            /*headers: { // headers causes CORS issues with Apps Script Web App (avoiding CORS preflight)
+                'Content-Type': 'application/json'
+            },*/
+            body: JSON.stringify({ code: code, redirect_uri: REDIRECT_URI })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Store the access token in cookie
+                    Cookies.set('access_token', data.access_token, {
+                        expires: 0.5, // 12 hours (0.5 days)
+                        secure: true,
+                        sameSite: 'strict'
+                    });
+                    // Store the user data in cookie
+                    Cookies.set('user_data', JSON.stringify(data.user), {
+                        expires: 0.5, // 12 hours (0.5 days)
+                        secure: true,
+                        sameSite: 'strict'
+                    });
+                    // Redirect to the page the user came from (origin) or default to index.html
+                    const redirect = localStorage.getItem('redirect_after_login') || './index.html';
+                    window.location.href = redirect; // Redirect to the original page
+                } else {
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('errorMessage').textContent = data.message || 'Authentication error';
+                }
             })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            // Successfully authenticated, store tokens and user data
-            storeAuthData(data);
-
-            // Redirect to the page the user came from
-            const redirect = localStorage.getItem('redirect_after_login') || './index.html';
-            window.location.href = redirect;
-        } else {
-            displayError(data.message || 'Authentication error');
-        }
-    } catch (error) {
-        displayError('Error processing authentication');
-        console.error('Error:', error);
-    } finally {
-        elements.loading.style.display = 'none';
-
-        // Clean up local storage
-        localStorage.removeItem('oauth_state');
-        localStorage.removeItem('redirect_after_login');
+            .catch(error => {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'Error processing authentication';
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                document.getElementById('loading').style.display = 'none'; // Hide loading
+                localStorage.removeItem('oauth_state'); // Clear state
+                localStorage.removeItem('redirect_after_login'); // Clear the redirect location to avoid redirect loops
+            });
     }
-}
-
-// Store authentication data in cookies
-function storeAuthData(data) {
-    // Store the access token in cookie
-    setCookie('access_token', data.access_token, {
-        expires: 0.5, // 12 hours (0.5 days)
-        secure: true,
-        sameSite: 'strict',
-        partitioned: false  // Since sameSite is 'strict', partitioned is set to false
-    });
-
-    // Store the user data in cookie - using the JSON helper function
-    setJSONCookie('user_data', data.user, {
-        expires: 0.5, // 12 hours (0.5 days)
-        secure: true,
-        sameSite: 'strict',
-        partitioned: false  // Since sameSite is 'strict', partitioned is set to false
-    });
-}
-
-// Initialize the page when the window loads
-window.addEventListener('load', initPage);
+});

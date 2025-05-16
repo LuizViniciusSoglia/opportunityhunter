@@ -1,18 +1,13 @@
-// Import the cookie utilities
-import {
-    getCookie,
-    removeCookie,
-    getJSONCookie
-} from './cookie-utils.js';
-
 // Authentication check that runs before DOM is fully loaded
 function checkAuthenticationEarly() {
     try {
-        const token = getCookie('access_token');
+        const token = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? Cookies.get('access_token') : null;
 
         if (!isValidJWT(token)) {
             // Redirect to login page immediately if not authenticated
             const currentUrl = encodeURIComponent(window.location.href);
+            // Simulate a mouse click:
+            //window.location.href = `./login.html?origin=${currentUrl}`;
             // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
             window.location.replace(`./login.html?origin=${currentUrl}`);
             // Stop further execution
@@ -64,7 +59,7 @@ function initializeApp() {
     putCommonElements(); // Insert common UI elements
     // Add event listeners for the hamburger menu and close button
     document.getElementById('logoutBtn').addEventListener('click', logoutUser);
-    document.getElementById('logoutLink').addEventListener('click', logoutUser);
+    document.getElementById('logoutLink').addEventListener('click', () => { logoutUser(); return false; });
     loadUserInfo(); // Load user information from cookies
     HamburgerMenuConfig(); // Initialize the hamburger menu and nav bar overlay
     // Show the appHeader and appContainer now that authentication is confirmed
@@ -137,11 +132,11 @@ function loadUserInfo() {
     const userName = document.getElementById('userName');
     const userAvatar = document.getElementById('userAvatar');
 
-    // Get user data from cookie
-    const user = getJSONCookie('user_data');
+    // Check if Cookies library is available and user_data cookie exists
+    const user = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? JSON.parse(Cookies.get('user_data') || '{}') : null;
 
     if (!user || typeof user !== 'object') {
-        //console.log('User data not found in cookies');
+        console.log('User data not found in cookies');
         userName.textContent = 'User';
         return;
     }
@@ -165,11 +160,16 @@ function loadUserInfo() {
 // Handle logout
 function logoutUser() {
     // Clear cookies
-    removeCookie('access_token');
-    removeCookie('user_data');
-
+    if (typeof Cookies !== 'undefined' && typeof Cookies.remove === 'function') {
+        Cookies.remove('access_token');
+        Cookies.remove('user_data');
+    } else {
+        console.warn('Cookies library is not available. Unable to clear cookies.');
+    }
     // Redirect to login page
     const currentUrl = encodeURIComponent(window.location.href); // Encode the current URL for redirection
+    // Simulate a mouse click:
+    //window.location.href = `./login.html?origin=${currentUrl}`;
     // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
     window.location.replace(`./login.html?origin=${currentUrl}`);
 }
@@ -233,10 +233,3 @@ function HamburgerMenuConfig() {
         }
     });
 }
-
-// Export functions that need to be accessible from other modules
-export {
-    checkAuthenticationEarly,
-    isValidJWT,
-    logoutUser
-};

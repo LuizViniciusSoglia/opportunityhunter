@@ -10,14 +10,14 @@ function checkAuthenticationEarly() {
     try {
         const token = getCookie('access_token');
 
-        /*if (!isValidJWT(token)) {
+        if (!isValidJWT(token)) {
             // Redirect to login page immediately if not authenticated
             const currentUrl = encodeURIComponent(window.location.href);
             // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
             window.location.replace(`./login.html?origin=${currentUrl}`);
             // Stop further execution
             return false;
-        }*/
+        }
 
         // If authenticated, add event listener to initialize app once DOM is loaded
         if (document.readyState === "loading") {

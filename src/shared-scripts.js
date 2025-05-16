@@ -80,7 +80,7 @@ function putCommonElements() {
         <div class="nav-menu">
         <div class="nav-header">
             <img src="./img/logo.png" alt="GenZ Crowd AI" class="nav-logo">
-            <button id="closeNavBtn" class="close-nav-btn" aria-label="Close navigation menu">
+            <button type="button" id="closeNavBtn" class="close-nav-btn" aria-label="Close navigation menu">
             <span class="close-line"></span>
             <span class="close-line"></span>
             </button>
@@ -104,7 +104,7 @@ function putCommonElements() {
     <header id="appHeader" aria-label="Application Header">
         <!-- Hamburger Menu Button -->
         <div class="hamburger-menu-container">
-        <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open navigation menu">
+        <button type="button" id="hamburgerBtn" class="hamburger-btn" aria-label="Open navigation menu">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -114,7 +114,7 @@ function putCommonElements() {
         <div class="user-info">
         <img id="userAvatar" src="./img/avatardefault.png" alt="User avatar">
         <span id="userName" class="user-name">Loading...</span>
-        <button id="logoutBtn" class="logout-btn" aria-label="Sign out">SIGN OUT</button>
+        <button type="button" id="logoutBtn" class="logout-btn" aria-label="Sign out">SIGN OUT</button>
         </div>
     </header>`;
 

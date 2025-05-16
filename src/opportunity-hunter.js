@@ -186,6 +186,7 @@
     filtered.forEach(([title, loc, url, comp]) => {
       const div = document.createElement('div');
       div.className = 'resultElement';
+      div.role = "listitem";
       div.innerHTML = `
         <a href="${url ? url + '" target="_blank"' : '#mainContent" target="_self"'}>${title || 'N/A'}</a><br>
         Company: ${comp || 'N/A'}<br>

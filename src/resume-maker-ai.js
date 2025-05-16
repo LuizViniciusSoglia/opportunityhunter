@@ -100,6 +100,11 @@
       modalEduForm.reportValidity();
       return;
     }
+    let eduCount = eduList.childElementCount;
+    if (eduCount >= MAX_EDU) {
+      addEduBtn.disabled = true;
+      eduError.classList.remove('hidden');
+    }
     const title = escapeHtml(document.getElementById('eduTitle').value.trim());
     const loc = escapeHtml(document.getElementById('eduLocation').value.trim());
     const start = escapeHtml(document.getElementById('eduStart').value);
@@ -109,15 +114,15 @@
     const item = document.createElement('div');
     item.className = 'educationItem';
     item.innerHTML = `
-      <button type="button" class="btn-delete">X</button>
-      <button type="button" class="toggle-edit">✎ Edit</button>
+      <button type="button" class="btn-delete">&#x2716;</button>
+      <button type="button" class="toggle-edit-save">✎ Edit</button>
       <div class="item-content" contenteditable="false">
         <h4 class="item-meta">${title}</h4>
         <p class="item-meta">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</p>
         <p class="item-meta">${desc}</p>
       </div>`;
-    item.querySelector('.toggle-edit').addEventListener('click', toggleEditSave);
-    let eduCount = eduList.childElementCount;
+    item.querySelector('.btn-delete').addEventListener('click', deleteItemList);
+    item.querySelector('.toggle-edit-save').addEventListener('click', toggleEditSave);
     eduList.appendChild(item);
     eduCount++;
     if (eduCount >= MAX_EDU) {
@@ -133,6 +138,11 @@
       modalExpForm.reportValidity();
       return;
     }
+    let expCount = expList.childElementCount;
+    if (expCount >= MAX_EXP) {
+      addExpBtn.disabled = true;
+      expError.classList.remove('hidden');
+    }
     const title = escapeHtml(document.getElementById('expTitle').value.trim());
     const loc = escapeHtml(document.getElementById('expLocation').value.trim());
     const start = escapeHtml(document.getElementById('expStart').value);
@@ -142,14 +152,15 @@
     const item = document.createElement('div');
     item.className = 'experienceItem';
     item.innerHTML = `
-      <button type="button" class="btn-delete">X</button>
-      <button type="button" class="toggle-edit">✎ Edit</button>
+      <button type="button" class="btn-delete">&#x2716;</button>
+      <button type="button" class="toggle-edit-save">✎ Edit</button>
       <div class="item-content" contenteditable="false">
         <h4 class="item-meta">${title}</h4>
         <p class="item-meta">${loc} | ${formatMonth(start)} - ${formatMonth(end)}</p>
         <p class="item-meta">${desc}</p>
       </div>`;
-    let expCount = expList.childElementCount;
+    item.querySelector('.btn-delete').addEventListener('click', deleteItemList);
+    item.querySelector('.toggle-edit-save').addEventListener('click', toggleEditSave);
     expList.appendChild(item);
     expCount++;
     if (expCount >= MAX_EXP) {
@@ -159,45 +170,6 @@
     closeModal(modalExp, modalExpForm);
   });
 
-  // Edit/save an education or experience item by clicking the button
-  function toggleEditSave(e) {
-    const item = this.closest('.experienceItem, .educationItem');
-    const content = item.querySelector('.item-content');
-    const isEditing = content.isContentEditable;
-    if (isEditing) {
-      // Save mode
-      content.contentEditable = 'false';
-      this.textContent = '✎ Edit';
-
-      // Extract updated sub-elements
-
-      //const title = content[0].innerText.trim();
-      //const locale = content[1].innerText.trim();
-      //const desc = content[2].innerText.trim();
-
-      // TODO: Persist these values to your data model.
-      // E.g., update hidden inputs, or rebuild the summary data object.
-      // Example:
-      // document.querySelector(`#hidden-${item.dataset.id}-title`).value = title;
-      // …
-
-      // Optionally, immediately regenerate summary:
-      // generateSummary();
-    } else {
-      // Edit mode
-      content.contentEditable = 'true';
-      this.textContent = '✔ Save';
-      // Move cursor to end for convenience:
-      const range = document.createRange();
-      range.selectNodeContents(content);
-      range.collapse(false);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      content.focus();
-    }
-  }
-
   // ---- Add Language Inline ----
   addLangBtn.addEventListener('click', () => {
     let langCount = langList.childElementCount;
@@ -205,7 +177,7 @@
     const row = document.createElement('div');
     row.className = 'language-row';
     row.innerHTML = `
-        <button class="btn-delete">X</button>
+        <button type="button" class="btn-delete">&#x2716;</button>
         <input type="text" name="language[]" maxlength="20" placeholder="Language">
         <div class="char-limit-msg hidden"></div>
         <select name="languageLevel[]">
@@ -215,6 +187,7 @@
           <option>Fluent</option>
           <option>Native</option>
         </select>`;
+    row.querySelector('.btn-delete').addEventListener('click', deleteItemList);
     langList.appendChild(row);
     bindCharLimit(row.querySelector('input[maxlength]'));
     langCount++;
@@ -224,35 +197,70 @@
     }
   });
 
+  // ---- Helper: Edit/save an education or experience item by clicking the button
+  function toggleEditSave(e) {
+    if (e.target && e.target.nodeName === "BUTTON") {
+      if (e.target.classList.contains("toggle-edit-save")) {
+        const item = this.closest('.experienceItem, .educationItem');
+        const content = item.querySelector('.item-content');
+        const isEditing = content.isContentEditable;
+        if (isEditing) {
+          // Save mode
+          content.contentEditable = 'false';
+          this.textContent = '✎ Edit';
+
+          // Extract updated sub-elements
+
+          //const title = content[0].innerText.trim();
+          //const locale = content[1].innerText.trim();
+          //const desc = content[2].innerText.trim();
+
+          // TODO: Persist these values to your data model.
+          // E.g., update hidden inputs, or rebuild the summary data object.
+          // Example:
+          // document.querySelector(`#hidden-${item.dataset.id}-title`).value = title;
+          // …
+
+          // Optionally, immediately regenerate summary:
+          // generateSummary();
+        } else {
+          // Edit mode
+          content.contentEditable = 'true';
+          this.textContent = '✔ Save';
+          // Move cursor to end for convenience:
+          const range = document.createRange();
+          range.selectNodeContents(content);
+          range.collapse(false);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          content.focus();
+        }
+      }
+    }
+  }
+
   // ---- Helper: delete an item in a list
   function deleteItemList(e) {
     // If a delete button has been clicked on a list element, this removes its parent element (the element containing the delete button)
-    let nItems = this.childElementCount;
-    if (nItems <= 0) { return; }
     if (e.target && e.target.nodeName === "BUTTON") {
       if (e.target.classList.contains("btn-delete")) {
-        const parent = this.parentElement;
-        const addBtn = parent.querySelector('.btn-add');
-        const msgError = parent.querySelector('.error-msg');
+        const parent = this.parentNode;
+        const grandparent = parent.parentNode;
+        let nItems = grandparent.childElementCount;
+        if (nItems < 1) { return; }
+        const addBtn = grandparent.parentNode.querySelector('.btn-add');
+        const msgError = grandparent.parentNode.querySelector('.error-msg');
         if (addBtn) {
           if (addBtn.disabled) { addBtn.disabled = false; }
         }
         if (msgError) {
           if (!msgError.classList.contains("hidden")) { msgError.classList.add('hidden'); }
         }
-        e.target.parentNode.remove();
+        parent.remove();
       }
     }
   }
-
-  // ---- Delete Education Item ----
-  eduList.addEventListener('click', deleteItemList);
-
-  // ---- Delete Experience Item ----
-  expList.addEventListener('click', deleteItemList);
-
-  // ---- Delete Language Item ----
-  langList.addEventListener('click', deleteItemList);
 
   // ---- Helper to escape HTML ----
   function escapeHtml(unsafe) {

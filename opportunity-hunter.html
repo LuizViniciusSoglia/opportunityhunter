@@ -40,7 +40,7 @@
         <img src="./img/logo.png" alt="GenZ Crowd AI" class="logo">
         <h1>Opportunity Hunter <span class="title-icon" aria-hidden="true">&#x1F48E;</span></h1>
         <p>Select the criteria and click the Search button.</p>
-        <form id="searchForm" aria-label="Opportunity Search Form">
+        <form id="searchForm" aria-label="Opportunity Search Form" role="search">
           <div class="form-group">
             <label for="query">Search for (optional):</label>
             <input type="search" id="query" name="query" aria-label="Search Query"
@@ -64,14 +64,14 @@
           <button type="submit" id="searchBtn" aria-label="Search opportunities">Search</button>
         </form>
 
-        <div id="loader" aria-hidden="true" role="status"></div>
+        <div id="loader" aria-hidden="true" role="status" role="contentinfo"></div>
       </div>
     </main>
 
     <!-- Container for search results -->
-    <div id="resultsContainer" aria-label="Search Results">
+    <div id="resultsContainer">
       <p id="matchesFound"></p>
-      <div id="resultsSearch"></div>
+      <div id="resultsSearch" aria-label="Search Results" role="list"></div>
     </div>
 
     <footer>

@@ -152,7 +152,7 @@ Keyframes for loaders and animations
     }
 }
 
-@keyframes glowPulse {
+/*@keyframes glowPulse {
 
     0%,
     100% {
@@ -162,7 +162,7 @@ Keyframes for loaders and animations
     50% {
         box-shadow: 0 0 25px var(--neon-glow), 0 0 80px rgba(3, 123, 234, 0.3);
     }
-}
+}*/
 
 @keyframes borderGlow {
 
@@ -260,8 +260,8 @@ Header Styles
     margin-left: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px var(--neon-glow);
-    animation: glowPulse 3s infinite;
+    box-shadow: 0 0 25px var(--neon-glow), 0 0 80px rgba(3, 123, 234, 0.3);
+    /* animation: glowPulse 3s infinite; */
 }
 
 .hamburger-btn:hover {

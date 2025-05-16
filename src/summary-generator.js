@@ -99,3 +99,9 @@ function generateSummaryText(data) {
         return `${firstName} ${lastName} is a motivated individual eager to leverage a diverse skill set in ${topSkillList}${strongLang ? ` and fluent in ${strongLang}` : ''}. They bring strong adaptability, quick learning, and a collaborative mindset to any role.`;
     }
 }
+
+// Export functions that need to be accessible from other modules
+export {
+    extractSummaryData,
+    generateSummaryText
+};

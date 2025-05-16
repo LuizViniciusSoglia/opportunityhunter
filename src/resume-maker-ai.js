@@ -1,3 +1,9 @@
+// Import the authentication check function
+import { checkAuthenticationEarly } from './shared-scripts.js';
+
+// Import the functions to generate the resume summary
+import { extractSummaryData, generateSummaryText } from './summary-generator.js';
+
 (function () {
   // Execute authentication check immediately when script loads
   // before any DOM content is shown to user
@@ -346,7 +352,7 @@
       }
       ${data.languages.length ?
         `<h2>Languages</h2>
-        <ul class="langList">${data.languages.map(l => `<li>${l.name} (${l.level})</li>`).join('')}</ul>` : ``
+        <ul class="langList">${data.languages.map(l => `<li>${l.name}${l.level ? ` (${l.level})` : ``}</li>`).join('')}</ul>` : ``
       }
       ${data.skills.length ?
         `<h2>Skills</h2>

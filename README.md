@@ -43,7 +43,7 @@
 Start your remote job hunt with **opportunityhunter** and join the future of work.
 
 **[🔗 Visit opportunityhunter now](#)**  
-(*Soon!*)
+(*Soon as Possible!*)
 
 ---
 Made with 💡 by **Genz Crowd AI**

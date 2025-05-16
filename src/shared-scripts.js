@@ -1,18 +1,23 @@
+// Import the cookie utilities
+import {
+    getCookie,
+    removeCookie,
+    getJSONCookie
+} from './cookie-utils.js';
+
 // Authentication check that runs before DOM is fully loaded
 function checkAuthenticationEarly() {
     try {
-        const token = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? Cookies.get('access_token') : null;
+        const token = getCookie('access_token');
 
-        if (!isValidJWT(token)) {
+        /*if (!isValidJWT(token)) {
             // Redirect to login page immediately if not authenticated
             const currentUrl = encodeURIComponent(window.location.href);
-            // Simulate a mouse click:
-            //window.location.href = `./login.html?origin=${currentUrl}`;
             // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
             window.location.replace(`./login.html?origin=${currentUrl}`);
             // Stop further execution
             return false;
-        }
+        }*/
 
         // If authenticated, add event listener to initialize app once DOM is loaded
         if (document.readyState === "loading") {
@@ -59,6 +64,7 @@ function initializeApp() {
     putCommonElements(); // Insert common UI elements
     // Add event listeners for the hamburger menu and close button
     document.getElementById('logoutBtn').addEventListener('click', logoutUser);
+    document.getElementById('logoutLink').addEventListener('click', logoutUser);
     loadUserInfo(); // Load user information from cookies
     HamburgerMenuConfig(); // Initialize the hamburger menu and nav bar overlay
     // Show the appHeader and appContainer now that authentication is confirmed
@@ -93,7 +99,7 @@ function putCommonElements() {
             </li>
             <li><a href="./academy.html" class="nav-link"><span class="nav-icon">&#x1F4A1;</span>GenZ Academy</a>
             </li>
-            <li><a href="#" class="nav-link sign-out" onclick="logoutUser(); return false;"><span
+            <li><a href="#" id="logoutLink" class="nav-link sign-out"><span
                 class="nav-icon">&#x27A1;&#xFE0F;</span>Sign
                 Out</a></li>
         </ul>
@@ -131,11 +137,11 @@ function loadUserInfo() {
     const userName = document.getElementById('userName');
     const userAvatar = document.getElementById('userAvatar');
 
-    // Check if Cookies library is available and user_data cookie exists
-    const user = typeof Cookies !== 'undefined' && typeof Cookies.get === 'function' ? JSON.parse(Cookies.get('user_data') || '{}') : null;
+    // Get user data from cookie
+    const user = getJSONCookie('user_data');
 
     if (!user || typeof user !== 'object') {
-        console.log('User data not found in cookies');
+        //console.log('User data not found in cookies');
         userName.textContent = 'User';
         return;
     }
@@ -159,16 +165,11 @@ function loadUserInfo() {
 // Handle logout
 function logoutUser() {
     // Clear cookies
-    if (typeof Cookies !== 'undefined' && typeof Cookies.remove === 'function') {
-        Cookies.remove('access_token');
-        Cookies.remove('user_data');
-    } else {
-        console.warn('Cookies library is not available. Unable to clear cookies.');
-    }
+    removeCookie('access_token');
+    removeCookie('user_data');
+
     // Redirect to login page
     const currentUrl = encodeURIComponent(window.location.href); // Encode the current URL for redirection
-    // Simulate a mouse click:
-    //window.location.href = `./login.html?origin=${currentUrl}`;
     // Simulate an HTTP redirect (removes the URL from the document history, so it is not possible to use the "back" button)
     window.location.replace(`./login.html?origin=${currentUrl}`);
 }
@@ -232,3 +233,10 @@ function HamburgerMenuConfig() {
         }
     });
 }
+
+// Export functions that need to be accessible from other modules
+export {
+    checkAuthenticationEarly,
+    isValidJWT,
+    logoutUser
+};

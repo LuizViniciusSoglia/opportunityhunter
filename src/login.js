@@ -35,7 +35,7 @@ function initPage() {
     checkForAuthRedirect();
 
     // Check if user is already authenticated
-    checkSession();
+    //checkSession();
 
     // Hide loading spinner and error message by default
     toggleElement(elements.loading, false);

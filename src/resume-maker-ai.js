@@ -114,7 +114,7 @@
     const item = document.createElement('div');
     item.className = 'educationItem';
     item.innerHTML = `
-      <button type="button" class="btn-delete">&#x2716;</button>
+      <button type="button" class="btn-delete">&#10006;</button>
       <button type="button" class="toggle-edit-save">✎ Edit</button>
       <div class="item-content" contenteditable="false">
         <h4 class="item-meta">${title}</h4>
@@ -152,7 +152,7 @@
     const item = document.createElement('div');
     item.className = 'experienceItem';
     item.innerHTML = `
-      <button type="button" class="btn-delete">&#x2716;</button>
+      <button type="button" class="btn-delete">&#10006;</button>
       <button type="button" class="toggle-edit-save">✎ Edit</button>
       <div class="item-content" contenteditable="false">
         <h4 class="item-meta">${title}</h4>
@@ -177,7 +177,7 @@
     const row = document.createElement('div');
     row.className = 'language-row';
     row.innerHTML = `
-        <button type="button" class="btn-delete">&#x2716;</button>
+        <button type="button" class="btn-delete">&#10006;</button>
         <input type="text" name="language[]" maxlength="20" placeholder="Language">
         <div class="char-limit-msg hidden"></div>
         <select name="languageLevel[]">

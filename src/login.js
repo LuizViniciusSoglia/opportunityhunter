@@ -26,6 +26,10 @@ const elements = {
  * Initialize the page
  */
 function initPage() {
+    // Hide loading spinner and error message by default
+    toggleElement(elements.loading, false);
+    toggleElement(elements.errorMessage, false);
+
     if (SECURITY.TOKEN_STORAGE_METHOD === 'cookie' && !areCookiesEnabled) {
         displayError("Error: Cookies are blocked or not supported by your browser.");
         return;
@@ -36,10 +40,6 @@ function initPage() {
 
     // Check if we're being redirected back from Google after login
     checkForAuthRedirect();
-
-    // Hide loading spinner and error message by default
-    toggleElement(elements.loading, false);
-    toggleElement(elements.errorMessage, false);
 
     // Set up event listeners
     if (elements.btnGoogleLogin) {
@@ -339,7 +339,7 @@ async function checkForAuthRedirect() {
             displayError('Security error: invalid state parameter');
             return;
         }
-
+        toggleElement(elements.loading, true);
         await processAuthCode(code);
     }
 }
@@ -351,8 +351,6 @@ async function checkForAuthRedirect() {
  */
 async function processAuthCode(code) {
     try {
-        toggleElement(elements.loading, true);
-
         // Validate code before sending
         if (!code || typeof code !== 'string') {
             throw new Error('Invalid authorization code');

@@ -31,11 +31,11 @@ function initPage() {
         return;
     }
 
-    // Check if we're being redirected back from Google after login
-    checkForAuthRedirect();
-
     // Check if user is already authenticated
     checkSession();
+
+    // Check if we're being redirected back from Google after login
+    checkForAuthRedirect();
 
     // Hide loading spinner and error message by default
     toggleElement(elements.loading, false);
@@ -216,10 +216,13 @@ function handleGoogleLogin() {
         toggleElement(elements.errorMessage, false);
         toggleElement(elements.loading, true);
 
+        // Clear all previous auth data
+        clearAuthData();
+        sessionStorage.clear();
+
         // Generate a secure random state for CSRF protection
         const state = generateSecureState();
         sessionStorage.setItem(OAUTH_CONFIG.STATE_KEY, state);
-        sessionStorage.setItem('session_token', state);
 
         // Determine and store the redirect URL
         const redirect = determineRedirectUrl();
@@ -433,6 +436,8 @@ function storeAuthData(data) {
             });
             break;
     }
+    const state = sessionStorage.getItem(OAUTH_CONFIG.STATE_KEY);
+    sessionStorage.setItem('session_token', state);
 }
 
 // Initialize the page when the DOM is fully loaded

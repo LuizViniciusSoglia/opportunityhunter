@@ -35,7 +35,7 @@ function initPage() {
     checkForAuthRedirect();
 
     // Check if user is already authenticated
-    //checkSession();
+    checkSession();
 
     // Hide loading spinner and error message by default
     toggleElement(elements.loading, false);
@@ -357,9 +357,9 @@ async function processAuthCode(code) {
 
         const response = await fetch(OAUTH_CONFIG.APPS_SCRIPT_URL, {
             method: 'POST',
-            headers: {
+            /*headers: { // To avoid CORS problems (Apps script does not need headers)
                 'Content-Type': 'application/json'
-            },
+            },*/
             body: JSON.stringify({
                 code: code,
                 redirect_uri: OAUTH_CONFIG.REDIRECT_URI

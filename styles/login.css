@@ -12,6 +12,9 @@
     --error-color: #ff3b30;
     --error-glow: rgba(255, 59, 48, 0.7);
     --error-bg: rgba(255, 59, 48, 0.3);
+    --success-color: #34c759;
+    --success-glow: rgba(52, 199, 89, 0.7);
+    --success-bg: rgba(52, 199, 89, 0.3);
     --white: #ffffff;
     --font-main: 'Arial', sans-serif;
     --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
@@ -110,18 +113,30 @@ main {
     font-size: 1.2em;
 }
 
-/* Error message */
-.error-message {
+/* status message */
+.status-message {
     display: none;
-    color: var(--error-color);
     font-weight: bold;
-    text-shadow: 0 0 5px var(--error-glow);
     margin: 20px 0;
     padding: 8px;
-    border-left: 3px solid var(--error-color);
     text-align: left;
-    background-color: var(--error-bg);
     border-radius: 4px;
+}
+
+/* Error message */
+.error-message {
+    color: var(--error-color);
+    text-shadow: 0 0 5px var(--error-glow);
+    border-left: 3px solid var(--error-color);
+    background-color: var(--error-bg);
+}
+
+/* Success message */
+.success-message {
+    color: var(--success-color);
+    text-shadow: 0 0 5px var(--success-glow);
+    border-left: 3px solid var(--success-color);
+    background-color: var(--success-bg);
 }
 
 /* Loading indicator */

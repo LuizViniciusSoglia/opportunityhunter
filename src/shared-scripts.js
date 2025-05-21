@@ -4,7 +4,7 @@ function checkAuthenticationEarly() {
 
         if (!checkStorageSecurity()) {
             // Redirect to login page immediately if not have localStorage and sessionStorage
-            redirectToLogin('This application requires localStorage and sessionStorage to function properly.')
+            redirectToLogin('Error: This application requires localStorage and sessionStorage to function properly.')
             return false;
         }
 
@@ -14,9 +14,15 @@ function checkAuthenticationEarly() {
         // Then check if we have a valid token
         const token = getAuthToken();
 
+        if (!token) {
+            // Redirect to login page immediately if not have a token
+            redirectToLogin();
+            return false;
+        }
+
         if (!isValidJWT(token)) {
-            // Redirect to login page immediately if not authenticated
-            redirectToLogin('Authentication failed. Expired credentials.');
+            // Redirect to login page immediately, with error, if not authenticated
+            redirectToLogin('Error: Authentication failed. Invalid credentials.');
             return false;
         }
 
@@ -31,7 +37,7 @@ function checkAuthenticationEarly() {
     catch (error) {
         console.error('Authentication check error:', error);
         // Use generic error message that doesn't reveal system details
-        redirectToLogin('Authentication failed. Please log in again.');
+        redirectToLogin('Error: Authentication failed. Please log in again.');
         return false;
     }
 }
@@ -43,21 +49,7 @@ function checkAuthenticationEarly() {
 // Since GitHub Pages can't generate CSRF tokens, we'll implement 
 // alternative security measures that work with static sites
 
-// Generate a pseudo-random token for the current session
-function generateSessionToken() {
-    try {
-        const array = new Uint8Array(16);
-        window.crypto.getRandomValues(array);
-        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-    } catch (error) {
-        console.error('Error generating secure state:', error);
-        // Fallback to a less secure but functional alternative
-        return Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15);
-    }
-}
-
-// Local storage safety check
+// Session and Local storages safety check
 function checkStorageSecurity() {
     try {
         const testKey = 'security_test';
@@ -82,11 +74,26 @@ function checkStorageSecurity() {
 // Store the token in sessionStorage (persists only for current tab)
 function initializeSessionSecurity() {
     // Only generate a new token if one doesn't exist
-    if (!sessionStorage.getItem('session_token')) {
-        const token = generateSessionToken();
+    let token = sessionStorage.getItem('session_token');
+    if (!token) {
+        token = generateSessionToken();
         sessionStorage.setItem('session_token', token);
     }
-    return sessionStorage.getItem('session_token');
+    return token;
+}
+
+// Generate a pseudo-random token for the current session
+function generateSessionToken() {
+    try {
+        const array = new Uint8Array(16);
+        window.crypto.getRandomValues(array);
+        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    } catch (error) {
+        console.error('Error generating secure state:', error);
+        // Fallback to a less secure but functional alternative
+        return Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15);
+    }
 }
 
 // Add the token to all relevant requests
@@ -108,42 +115,6 @@ function getAuthToken() {
         return Cookies.get('access_token');
     }
     return null;
-}
-
-// Cache for user data to avoid multiple cookie reads
-let cachedUserData = null;
-
-// Get user data from cookies with caching
-function getUserData() {
-    if (cachedUserData) return cachedUserData;
-
-    if (typeof Cookies !== 'undefined' && typeof Cookies.get === 'function') {
-        try {
-            const userData = JSON.parse(Cookies.get('user_data') || '{}');
-            cachedUserData = userData;
-            return userData;
-        } catch (e) {
-            console.error('Failed to parse user data:', e);
-            return {};
-        }
-    }
-    return {};
-}
-
-// Redirect to login page with optional error message
-function redirectToLogin(message = null) {
-    const currentUrl = encodeURIComponent(window.location.href);
-    let redirectUrl = `./login.html?origin=${currentUrl}`
-
-    if (message) {
-        // Store error message in sessionStorage - can be used in login page
-        sessionStorage.setItem('auth_error', message);
-        // Redirect to login page with auth_failure parameter to prevent loops
-        redirectUrl += '&auth_failure=true';
-    }
-
-    // Use replace to prevent back button returning to protected page
-    window.location.replace(redirectUrl);
 }
 
 // Validate if the token is a valid JWT and not expired
@@ -182,56 +153,63 @@ function isValidJWT(token) {
 
 // Handle logout with CSRF protection
 function logoutUser() {
-    // Get CSRF token (you would need to implement the function checkCSRFToken)
-    //const csrfToken = getCSRFToken();
 
-    // Get the current session token (pseudo CSRF token)
+    // Get the current CSRF/session token
+    //const csrfToken = getCSRFToken(); // GitHub Pages can't generate CSRF tokens
     const csrfToken = getSessionToken();
 
     // Clear cookies with proper security attributes
     if (typeof Cookies !== 'undefined' && typeof Cookies.remove === 'function') {
 
-        /*if(checkCSRFToken(csrfToken)) {
+        /*if(checkCSRFToken(csrfToken)) { // You need to implement the checkCSRFToken function if you want to check here
             // Clear authentication data
             clearAuthData();
             // Redirect to login page
             redirectToLogin();
         }*/
 
-        // Redirect to login with session token as a parameter
+        // Alternative: redirect to login with session token as a parameter (because does't exist a real CSRF token)
         // This prevents CSRF attacks by requiring the token to match
         const currentUrl = encodeURIComponent(window.location.href);
         window.location.replace(`./login.html?origin=${currentUrl}&session_end=${csrfToken}`);
     } else {
         console.warn('Cookies library is not available. Unable to clear cookies.');
         // Fallback: redirect anyway
-
         //redirectToLogin();
 
-        // Redirect to login with session token as a parameter (because does't exist a real CSRF token)
+        // Alternative: redirect to login with session token as a parameter (because does't exist a real CSRF token)
         // This prevents CSRF attacks by requiring the token to match
         const currentUrl = encodeURIComponent(window.location.href);
         window.location.replace(`./login.html?origin=${currentUrl}&session_end=${csrfToken}`);
     }
 }
 
-// Get CSRF token (this is a placeholder - implement based on your backend)
+// Get CSRF token
+// This would typically come from a meta tag or a cookie set by your server
 /*function getCSRFToken() {
-    // This would typically come from a meta tag or a cookie set by your server
-    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    // Try to obtain the CSRF token from the meta tag or sessionStorage; if not possible, generate a pseudo-random token
+    // (GitHub Pages can't generate CSRF tokens: basic alternative security measure that work with static sites as GitHub Pages)
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || getSessionToken();
 }*/
-// Get CSRF token from meta tag
-function getCSRFToken() {
-    const metaTag = document.querySelector('meta[name="csrf-token"]');
-    if (!metaTag) {
-        //console.error('CSRF token meta tag not found');
-        //return '';
 
-        // Generate a pseudo-random token - GitHub Pages can't generate CSRF tokens
-        // (basic alternative security measure that work with static sites as GitHub Pages)
-        return getSessionToken();
+// Cache for user data to avoid multiple cookie reads
+let cachedUserData = null;
+
+// Get user data from cookies with caching
+function getUserData() {
+    if (cachedUserData) return cachedUserData;
+
+    if (typeof Cookies !== 'undefined' && typeof Cookies.get === 'function') {
+        try {
+            const userData = JSON.parse(Cookies.get('user_data') || '{}');
+            cachedUserData = userData;
+            return userData;
+        } catch (e) {
+            console.error('Failed to parse user data:', e);
+            return {};
+        }
     }
-    return metaTag.getAttribute('content');
+    return {};
 }
 
 function clearAuthData() {
@@ -252,7 +230,25 @@ function clearAuthData() {
     sessionStorage.setItem('session_token', sessionToken);
 }
 
+// Redirect to login page with optional error message
+function redirectToLogin(message = null) {
+    const currentUrl = encodeURIComponent(window.location.href);
+    let redirectUrl = `./login.html?origin=${currentUrl}`
+
+    if (message) {
+        // Store error message in sessionStorage - can be used in login page
+        sessionStorage.setItem('auth_error', message);
+        // Redirect to login page with auth_failure parameter to prevent loops
+        redirectUrl += '&auth_failure=true';
+    }
+
+    // Use replace to prevent back button returning to protected page
+    window.location.replace(redirectUrl);
+}
+
+// =========================================================================
 // Initialize app only after authentication is confirmed
+
 function initializeApp() {
     // Insert common UI elements
     renderCommonElements();

@@ -19,19 +19,33 @@ const SECURITY = {
 const elements = {
     btnGoogleLogin: document.getElementById('btnGoogleLogin'),
     loading: document.getElementById('loading'),
-    errorMessage: document.getElementById('errorMessage')
+    statusMessage: document.getElementById('statusMessage')
 };
 
 /**
  * Initialize the page
  */
 function initPage() {
-    // Hide loading spinner and error message by default
+    // Hide loading spinner and status message by default
     toggleElement(elements.loading, false);
-    toggleElement(elements.errorMessage, false);
+    toggleElement(elements.statusMessage, false);
 
+    // Set up event listeners
+    if (elements.btnGoogleLogin) {
+        elements.btnGoogleLogin.addEventListener('click', handleGoogleLogin);
+    } else {
+        console.error('Login button not found in the DOM');
+    }
+
+    // Check if cookies are blocked
     if (SECURITY.TOKEN_STORAGE_METHOD === 'cookie' && !areCookiesEnabled) {
-        displayError("Error: Cookies are blocked or not supported by your browser.");
+        displayMessage("Error: Cookies are blocked or not supported by your browser.", "error");
+        return;
+    }
+
+    // Session and Local storages safety check
+    if (!checkStorageSecurity()) {
+        displayMessage("Error: This application requires localStorage and sessionStorage to function properly.", "error");
         return;
     }
 
@@ -40,12 +54,17 @@ function initPage() {
 
     // Check if we're being redirected back from Google after login
     checkForAuthRedirect();
+}
 
-    // Set up event listeners
-    if (elements.btnGoogleLogin) {
-        elements.btnGoogleLogin.addEventListener('click', handleGoogleLogin);
-    } else {
-        console.error('Login button not found in the DOM');
+/**
+ * Toggle element visibility
+ * 
+ * @param {HTMLElement} element - The element to toggle
+ * @param {boolean} show - Whether to show or hide the element
+ */
+function toggleElement(element, show) {
+    if (element) {
+        element.style.display = show ? 'block' : 'none';
     }
 }
 
@@ -67,13 +86,84 @@ function areCookiesEnabled() {
     }
 }
 
+// Session and Local storages safety check
+function checkStorageSecurity() {
+    try {
+        const testKey = 'security_test';
+        const testValue = 'test_' + Date.now();
+
+        // Test if localStorage/sessionStorage works
+        localStorage.setItem(testKey, testValue);
+        localStorage.removeItem(testKey);
+
+        sessionStorage.setItem(testKey, testValue);
+        sessionStorage.removeItem(testKey);
+
+        return true;
+    } catch (e) {
+        console.error('Storage security check failed:', e);
+        // If storage is disabled or throws errors, we need to warn users
+        //alert('This application requires localStorage and sessionStorage to function properly. Please enable them in your browser settings.');
+        return false;
+    }
+}
+
 /**
  * Check if user is already authenticated and redirect if needed
  */
 function checkSession() {
     try {
-        let token = null;
+        // Get the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
 
+        // If we have a token AND we're being redirected due to auth failure
+        // (check if we were redirected from the index page with auth_failure to prevent loops)
+        const authFailure = urlParams.get('auth_failure');
+        if (authFailure) {
+            // Clear the invalid token to prevent future loops
+            //clearAuthData(); // DISABLED BECAUSE IT CAN CAUSE A LOGOUT USING MALICIOUS auth_failure=true
+            // Display any auth error messages stored in session by previous page (which returned an auth_failure)
+            const authError = sessionStorage.getItem('auth_error');
+            if (authError) {
+                displayMessage(authError, "error");
+                sessionStorage.removeItem('auth_error');
+            }
+            try {
+                // Remove the auth_failure parameter from URL
+                // (this prevents leaking message code in browser history)
+                const cleanUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            } catch (e) {
+                console.warn('Could not clean URL parameters:', e);
+            }
+            return;
+        }
+
+        // If there was a logout request
+        const sessionEnd = urlParams.get('session_end');
+        if (sessionEnd) { // logout request
+            // Validate against stored session token - to avoid CSRF attack
+            const currentToken = sessionStorage.getItem('session_token');
+            if (currentToken && currentToken === sessionEnd) {
+                // Valid logout - clear session completely and show logout message
+                clearAuthData();
+                displayMessage("Logged out.", "success");
+                try {
+                    // Remove sensitive parameters from URL for security
+                    // This prevents leaking authorization code in browser history
+                    const cleanUrl = window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                } catch (e) {
+                    console.warn('Could not clean URL parameters:', e);
+                }
+            } else {
+                // Invalid logout attempt - could be CSRF
+                console.warn('Invalid session token in logout');
+            }
+            return;
+        }
+
+        let token = null;
         // Get token based on the selected storage method
         switch (SECURITY.TOKEN_STORAGE_METHOD) {
             case 'sessionStorage':
@@ -84,127 +174,20 @@ function checkSession() {
                 break;
             case 'cookie':
             default:
-
                 token = Cookies.get('access_token');
                 break;
         }
 
-        // Only redirect if there's a token AND we're not in a redirect loop
-        if (token) {
-            // Check if we were redirected from the index page to prevent loops
-            const urlParams = new URLSearchParams(window.location.search);
-            const authFailure = urlParams.get('auth_failure');
-            const sessionEnd = urlParams.get('session_end');
-
-            // If we have a token AND we're being redirected due to auth failure
-            if (authFailure) {
-                // Clear the invalid token to prevent future loops
-                clearAuthData();
-                // Display any auth error messages stored in session by previous page
-                const authError = sessionStorage.getItem('auth_error');
-                if (authError) {
-                    displayError(authError);
-                    sessionStorage.removeItem('auth_error');
-                }
-                // Remove the auth_failure parameter from URL
-                const cleanUrl = window.location.pathname;
-                window.history.replaceState({}, document.title, cleanUrl);
-
-            } else if (sessionEnd) { // logout request
-                // Validate against stored session token
-                const currentToken = sessionStorage.getItem('session_token');
-                if (currentToken && currentToken === sessionEnd) {
-                    // Valid logout - clear session completely and show logout message
-                    clearAuthData();
-                    sessionStorage.clear();
-                    try {
-                        // Remove sensitive parameters from URL for security
-                        // This prevents leaking authorization code in browser history
-                        const cleanUrl = window.location.pathname;
-                        window.history.replaceState({}, document.title, cleanUrl);
-                    } catch (e) {
-                        console.warn('Could not clean URL parameters:', e);
-                    }
-                } else {
-                    // Invalid logout attempt - could be CSRF
-                    console.warn('Invalid session token in logout');
-                }
-
-            } else { // If we have a token AND we're not being redirected due to auth failure or logout
-                window.location.href = './index.html';
-            }
+        if (!token) { // If there's not a token, finalize the function
+            return;
         }
+
+        // If we have a token AND we're not being redirected due to auth failure or logout
+        window.location.href = './index.html';
+
     } catch (e) {
         console.warn('Session check error:', e);
     }
-}
-
-/**
- * Clear all authentication data
- */
-function clearAuthData() {
-    // Clear based on the selected storage method
-    switch (SECURITY.TOKEN_STORAGE_METHOD) {
-        case 'sessionStorage':
-            sessionStorage.removeItem('access_token');
-            sessionStorage.removeItem('user_data');
-            break;
-        case 'localStorage':
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user_data');
-            break;
-        case 'cookie':
-        default:
-            Cookies.remove('access_token');
-            Cookies.remove('user_data');
-            break;
-    }
-}
-
-/**
- * Toggle element visibility
- * 
- * @param {HTMLElement} element - The element to toggle
- * @param {boolean} show - Whether to show or hide the element
- */
-function toggleElement(element, show) {
-    if (element) {
-        element.style.display = show ? 'block' : 'none';
-    }
-}
-
-/**
- * Generate a cryptographically secure random state for OAuth
- * 
- * @returns {string} A secure random state string
- */
-function generateSecureState() {
-    try {
-        const array = new Uint8Array(16);
-        window.crypto.getRandomValues(array);
-        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-    } catch (error) {
-        console.error('Error generating secure state:', error);
-        // Fallback to a less secure but functional alternative
-        return Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15);
-    }
-}
-
-/**
- * Display error message to the user
- * 
- * @param {string} message - The error message to display
- */
-function displayError(message) {
-    toggleElement(elements.loading, false);
-
-    if (elements.errorMessage) {
-        toggleElement(elements.errorMessage, true);
-        elements.errorMessage.textContent = message;
-    }
-
-    console.error('Authentication error:', message);
 }
 
 /**
@@ -212,13 +195,12 @@ function displayError(message) {
  */
 function handleGoogleLogin() {
     try {
-        // Hide error message and show loading spinner
-        toggleElement(elements.errorMessage, false);
+        // Hide status message and show loading spinner
+        toggleElement(elements.statusMessage, false);
         toggleElement(elements.loading, true);
 
         // Clear all previous auth data
         clearAuthData();
-        sessionStorage.clear();
 
         // Generate a secure random state for CSRF protection
         const state = generateSecureState();
@@ -242,8 +224,26 @@ function handleGoogleLogin() {
         // Redirect to Google consent page
         window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?${authParams.toString()}`);
     } catch (error) {
-        displayError('Error redirecting to Google login' + error.message);
+        displayMessage('Error redirecting to Google login.', 'error');
         console.error('Login redirect error:', error);
+    }
+}
+
+/**
+ * Generate a cryptographically secure random state for OAuth
+ * 
+ * @returns {string} A secure random state string
+ */
+function generateSecureState() {
+    try {
+        const array = new Uint8Array(16);
+        window.crypto.getRandomValues(array);
+        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    } catch (error) {
+        console.error('Error generating secure state:', error);
+        // Fallback to a less secure but functional alternative
+        return Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15);
     }
 }
 
@@ -327,7 +327,7 @@ async function checkForAuthRedirect() {
 
     // Check if there's an error
     if (error) {
-        displayError('Authentication error: ' + error);
+        displayMessage('Authentication error.', 'error');
         return;
     }
 
@@ -336,7 +336,7 @@ async function checkForAuthRedirect() {
         // Verify state for security (CSRF protection)
         const savedState = sessionStorage.getItem(OAUTH_CONFIG.STATE_KEY);
         if (!savedState || state !== savedState) {
-            displayError('Security error: invalid state parameter');
+            displayMessage('Security error: invalid state parameter.', 'error');
             return;
         }
         toggleElement(elements.loading, true);
@@ -358,7 +358,7 @@ async function processAuthCode(code) {
 
         const response = await fetch(OAUTH_CONFIG.APPS_SCRIPT_URL, {
             method: 'POST',
-            /*headers: { // To avoid CORS problems (Apps script does not need headers)
+            /*headers: { // To avoid CORS problems (Google Apps script doesn't need headers)
                 'Content-Type': 'application/json'
             },*/
             body: JSON.stringify({
@@ -382,10 +382,10 @@ async function processAuthCode(code) {
             const redirect = sessionStorage.getItem(OAUTH_CONFIG.REDIRECT_KEY) || './index.html';
             window.location.href = redirect;
         } else {
-            displayError(data.message || 'Authentication failed');
+            displayMessage(data.message || 'Authentication failed.', 'error');
         }
     } catch (error) {
-        displayError('Error processing authentication: ' + error.message);
+        displayMessage('Error processing authentication.', 'error');
         console.error('Authentication processing error:', error);
     } finally {
         toggleElement(elements.loading, false);
@@ -435,7 +435,52 @@ function storeAuthData(data) {
             break;
     }
     const state = sessionStorage.getItem(OAUTH_CONFIG.STATE_KEY);
+    // Store the session token - for validating future requests to avoid CSRF attacks
     sessionStorage.setItem('session_token', state);
+}
+
+/**
+ * Clear all authentication data
+ */
+function clearAuthData() {
+    sessionStorage.clear(); // Clear access_token (if exist), user_data (if exist), session_token, auth_error
+    // Clear based on the selected storage method
+    switch (SECURITY.TOKEN_STORAGE_METHOD) {
+        case 'sessionStorage':
+            //sessionStorage.removeItem('access_token'); // Already deleted above
+            //sessionStorage.removeItem('user_data');
+            break;
+        case 'localStorage':
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user_data');
+            break;
+        case 'cookie':
+        default:
+            Cookies.remove('access_token');
+            Cookies.remove('user_data');
+            break;
+    }
+}
+
+/**
+ * Display status message to the user
+ * 
+ * @param {string} message - The status message to display
+ */
+function displayMessage(message = 'Error.', type = 'error') {
+    toggleElement(elements.loading, false);
+
+    if (elements.statusMessage) {
+        if (type === 'error') {
+            elements.statusMessage.className = 'status-message error-message';
+            console.error(message);
+        }
+        else {
+            elements.statusMessage.className = 'status-message success-message';
+        }
+        elements.statusMessage.textContent = message;
+        toggleElement(elements.statusMessage, true);
+    }
 }
 
 // Initialize the page when the DOM is fully loaded

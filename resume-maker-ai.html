@@ -138,7 +138,7 @@
         <!-- Summary -->
         <div class="form-group">
           <label for="summary">Short Summary</label>
-          <textarea id="summary" name="summary" rows="3" maxlength="300"
+          <textarea id="summary" name="summary" rows="3" maxlength="500"
             placeholder="A brief professional summary…"></textarea>
           <div class="char-limit-msg hidden"></div>
           <button type="button" class="btn-ai" id="generateSummaryBtn">
@@ -199,12 +199,12 @@
         <form id="modalExpForm" novalidate>
           <div class="form-group">
             <label for="expTitle">Position Title</label>
-            <input type="text" id="expTitle" name="company" maxlength="50" autocomplete="organization" required>
+            <input type="text" id="expTitle" name="company" maxlength="50" required>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="form-group">
             <label for="expLocation">Company - City, Country</label>
-            <input type="text" id="expLocation" name="location" maxlength="60" required>
+            <input type="text" id="expLocation" name="location" maxlength="60" autocomplete="organization" required>
             <div class="char-limit-msg hidden"></div>
           </div>
           <div class="form-group">

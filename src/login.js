@@ -382,7 +382,8 @@ async function processAuthCode(code) {
             const redirect = sessionStorage.getItem(OAUTH_CONFIG.REDIRECT_KEY) || './index.html';
             window.location.href = redirect;
         } else {
-            displayMessage(data.message || 'Authentication failed.', 'error');
+            //displayMessage(data.message || 'Authentication failed.', 'error'); // Avoid exposing server errors
+            displayMessage('Authentication failed.', 'error');
         }
     } catch (error) {
         displayMessage('Error processing authentication.', 'error');

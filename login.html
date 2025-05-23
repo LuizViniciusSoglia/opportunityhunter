@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Log in to GenZ Crowd AI Apps and access your account">
     <title>Log in - GenZ Crowd AI Apps</title>
@@ -11,9 +12,9 @@
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://* blob:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://accounts.google.com; frame-src 'self' https://accounts.google.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <!-- <meta http-equiv="X-Frame-Options" content="DENY"> -->
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-    <!-- Since GitHub Pages can't generate CSRF tokens -->
+    <!-- Disabled Since GitHub Pages cannot generate CSRF tokens -->
+    <!-- <meta name="csrf-param" content="authenticity_token"> -->
     <!-- <meta name="csrf-token" content="{{SERVER_GENERATED_TOKEN}}"> -->
 
 
@@ -27,13 +28,13 @@
     <!-- Third-party scripts with integrity check -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"
         integrity="sha512-nlp9/l96/EpjYBx7EP7pGASVXNe80hGhYAUrjeXnu/fyF5Py0/RXav4BBNs7n5Hx1WFhOEOWSAVjGeC3oKxDVQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Application script with defer to improve page load performance -->
     <script src="./src/login.js" defer></script>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./img/favicon.png">
+    <link rel="icon" type="image/png" href="./img/favicon.png">
 </head>
 
 <body>

@@ -104,11 +104,11 @@
 
       // Construct API parameters
       const params = new URLSearchParams({
+        token: token, // Pass token as URL parameter instead of header
         action: 'getOpportunities',
         query: elements.queryInput.value,
         country: elements.countrySelect.value,
-        company: elements.companySelect.value,
-        token: token // Pass token as URL parameter instead of header
+        company: elements.companySelect.value
       });
 
       let res;

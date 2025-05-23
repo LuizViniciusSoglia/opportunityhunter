@@ -282,22 +282,27 @@
   }
 
   // ---- Generate AI Summary ----
-  function generateSummary() {
-    const status = document.getElementById('generate-summary-status');
-    status.classList.remove('hidden');
-
-    // Simulate API delay
-    setTimeout(() => {
-      const data = extractSummaryData();
-      const text = generateSummaryText(data);
-
-      const field = document.getElementById('summary');
-      field.value = text;
-      bindCharLimit(field, false);   // update character-count UI
-      status.classList.add('hidden');
-    }, 1500);
+  const generateButtonSummary = document.getElementById('generateSummaryBtn');
+  const summaryOutputElement = document.getElementById('summary');
+  const statusSummary = document.getElementById('generate-summary-status');
+  if (generateButtonSummary && summaryOutputElement) {
+    generateButtonSummary.addEventListener('click', async () => {
+      try {
+        statusSummary.classList.remove('hidden');
+        summaryOutputElement.textContent = 'Generating summary...';
+        const cvData = extractSummaryData();
+        const summary = await generateSummaryText(cvData);
+        statusSummary.classList.add('hidden');
+        summaryOutputElement.textContent = summary;
+        bindCharLimit(summaryOutputElement, false); // update character-count UI
+      } catch (error) {
+        console.error("Error in summary generation process:", error);
+        summaryOutputElement.textContent = 'Failed to generate summary.';
+      }
+    });
+  } else {
+    console.error("Elements of Summary not found.");
   }
-  document.getElementById('generateSummaryBtn').addEventListener('click', generateSummary);
 
   // ---- Generate CV Preview ----
   generateBtn.addEventListener('click', () => {

@@ -13,7 +13,7 @@
 
   // Global variables
   // URL of the API endpoint (Google Apps Script Web App)
-  const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycbzUiN27zyvoF2fovw9on6jyfnqf2iU8NVQCkhiV6_obpq1WDlvzfhialDiAUPj1cp7VoA/exec';
+  const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycbzgY_3xY0Ke7wcW65uf18Xzg0Ej_rnsqmyc2Qh7fza5_ENfqvl2QG6dyFbqCZ4M7IzWfg/exec';
   let elements = {}; // Will store all DOM elements after they're cached
 
   // Initialize the search form and results container

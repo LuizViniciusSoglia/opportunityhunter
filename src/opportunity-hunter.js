@@ -13,7 +13,7 @@
 
   // Global variables
   // URL of the API endpoint (Google Apps Script Web App)
-  const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycbxfFXcOPR911qTI0G6J0i_Vqfl8RGtQm0wbGMwZeC_FBA4u1KO9GlhafmSHAVBU7AxjTw/exec';
+  const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycbzUiN27zyvoF2fovw9on6jyfnqf2iU8NVQCkhiV6_obpq1WDlvzfhialDiAUPj1cp7VoA/exec';
   let elements = {}; // Will store all DOM elements after they're cached
 
   // Initialize the search form and results container
@@ -174,7 +174,7 @@
     const filtered = (
       !companyFilter || companyFilter === 'All'
         ? response
-        : response.map(([title, location, url]) => [title, location, url, companyFilter])
+        : response.map(([title, location, url, category]) => [title, location, url, category, companyFilter])
     );
 
     if (!filtered.length) {
@@ -183,14 +183,15 @@
     }
 
     const frag = document.createDocumentFragment();
-    filtered.forEach(([title, loc, url, comp]) => {
+    filtered.forEach(([title, loc, url, cat, comp]) => {
       const div = document.createElement('div');
       div.className = 'resultElement';
       div.role = "listitem";
       div.innerHTML = `
         <a href="${url ? url + '" target="_blank"' : '#mainContent" target="_self"'}>${title || 'N/A'}</a><br>
-        Company: ${comp || 'N/A'}<br>
-        Location: ${loc || 'N/A'}
+        &#x1F3E2; Company: ${comp || 'N/A'}<br>
+        &#x1F310; Location: ${loc || 'N/A'}<br>
+        &#x1F3F7;&#xFE0F; Category: ${cat ? cat.replace("MainP -", "&#x1F51D;") : 'N/A'}
       `;
       frag.appendChild(div);
     });
